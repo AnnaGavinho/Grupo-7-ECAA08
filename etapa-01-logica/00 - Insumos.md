@@ -1,4 +1,6 @@
-# 00 - Insumos e Definição da Planta
+# Insumos e Definição da Planta
+
+# Industria escolhida: Indústria Alimentícia
 
 ## 1. Definição Formal da Planta
 A planta industrial atua no processamento agroindustrial e beneficiamento de grãos (amendoim) até a fabricação e embalagem automatizada de doces à base de amendoim (paçoca). O processo abrange desde a recepção, triagem, secagem, limpeza, seleção óptica, tratamento térmico (torra), moagem, dosagem, prensagem/compactação e embalagem final.
