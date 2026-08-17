@@ -2,6 +2,7 @@
 
 Na automação industrial (norma ISA-5.1), instrumentos e atuadores emitem e recebem sinais discretos (binários: $0$ = Falso / $1$ = Verdadeiro).
 
+<img width="1046" height="1001" alt="Captura de tela 2026-08-17 151735" src="https://github.com/user-attachments/assets/70cda424-d42d-4a96-a4bc-0b8e90d9b546" />
 
 Abaixo, as variáveis da planta industrial alimentícia (Processamento de Amendoim e Fabricação de Paçoca) são discretizadas em proposições lógicas, divididas por setores de controle local (CLPs):
 
