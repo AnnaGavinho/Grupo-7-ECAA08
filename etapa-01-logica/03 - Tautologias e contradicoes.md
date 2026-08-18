@@ -1,72 +1,64 @@
-# Validação Formal por Prova Lógica (Tautologia de Segurança)
+# Modelagem de Alarmes e Intertravamentos: Setor de Processamento de Paçoca
 
-Este documento apresenta a demonstração matemática de segurança da planta, assumindo as equações de intertravamento elaboradas na etapa anterior. O objetivo é provar ao SCADA-Core que combinações operacionais catastróficas são logicamente impossíveis.
+Este documento apresenta a lógica de controle e segurança para a planta de processamento, utilizando os conceitos de lógica proposicional para garantir a integridade dos ativos e a qualidade do produto final.
 
-## Prova de Segurança do Forno de Torra
+## 1. Representação Simbólica das Regras de Processo
 
-Para garantir a integridade da planta, devemos provar que o sistema de segurança impede o agravamento de um superaquecimento.
+As equações abaixo descrevem o comportamento esperado do sistema de supervisão e controle (SCADA-Core) diante de estados críticos e permissivos operacionais.
 
-* **Afirmação de Segurança:** "Sob as lógicas implementadas, é impossível o forno entrar em estado de sobretemperatura ($t_1$) e o queimador de gás permanecer ativo ($v_1$)."
-* **Proposição do Estado de Risco ($S_{risco}$):**
+### A. Alarme de Não-Conformidade na Recepção (Qualidade)
+No estágio inicial de processamento (Setor 100), o sistema monitora a integridade da matéria-prima. Caso a umidade do grão ($u_1$) ou a acidez ($q_1$) excedam os limites técnicos, ou em caso de acionamento de emergência ($e_1$), o motor da peneira de entrada ($m_1$) deve ser bloqueado para evitar contaminação do silo.
 
-$$
-S_{risco} \equiv t_1 \land v_1
-$$
+*   **Condição de Falha Detectada ($F_{qualidade}$):**
+    $$F_{qualidade} \equiv u_1 \lor q_1 \lor e_1$$
+*   **Equação de Bloqueio Operacional:**
+    $$F_{qualidade} \rightarrow \neg m_1$$
 
-### Premissa do Intertravamento (Aguardando definição da etapa 3)
+### B. Intertravamento de Segurança Térmica: Proteção do Forno
+No Setor 200, a segurança contra incêndio é prioridade. Um estado crítico é definido pela detecção de chama ($c_1$) com a esteira do forno estática ($\neg m_2$) — situação que causaria a queima imediata do produto — ou pelo excesso de temperatura ($t_2$). Nestes casos, a válvula de gás ($v_1$) deve fechar e o alarme sonoro ($a_1$) deve atuar.
 
-*Nota para a Pessoa 3: Para que esta prova seja válida, o mapeamento de intertravamentos deverá conter uma regra de trip de emergência (falha) que inclua o sensor de temperatura ($t_1$) forçando o desligamento da válvula ($v_1$). Assumo aqui a regra básica:*
+*   **Condição de Risco de Incêndio ($F_{fogo}$):**
+    $$F_{fogo} \equiv (c_1 \land \neg m_2) \lor t_2$$
+*   **Regra de Segurança:**
+    $$F_{fogo} \rightarrow (\neg v_1 \land a_1)$$
 
-$$
-t_1 \rightarrow \neg v_1
-$$
+### C. Lógica de Atuação do Sistema de Descarte
+No Setor 400, o sistema de rejeição automática garante a padronização. A válvula de descarte ($v_3$) é acionada se houver detecção visual de defeito ($i_1$) ou detecção de metal ($d_1$), desde que haja pressão nominal no sistema pneumático ($p_{air}$) para realizar o sopro.
 
-### Demonstração Algébrica
+*   **Condição de Permissivo de Rejeição ($P_{rejeito}$):**
+    $$P_{rejeito} \equiv (i_1 \lor d_1) \land p_{air}$$
+*   **Regra de Operação:**
+    $$P_{rejeito} \rightarrow v_3$$
 
-Iniciamos convertendo a condicional do controlador para sua equivalência lógica básica ($\mathbf{A} \rightarrow \mathbf{B} \equiv \neg \mathbf{A} \lor \mathbf{B}$):
+---
 
-$$
-t_1 \rightarrow \neg v_1 \equiv \neg t_1 \lor \neg v_1
-$$
+## 2. Validação Formal por Prova Lógica (Tautologia de Segurança)
 
-O sistema operacional garante que esta regra é estritamente VERDADEIRA. Portanto, aplicamos a regra de proteção ao nosso suposto estado de risco via conjunção ($\land$):
+Para validar a confiabilidade do motor de intertravamento, provamos matematicamente que o **Estado de Risco** do forno é uma contradição sob as regras estabelecidas.
 
-$$
-S_{risco} \land (\text{Regra de Proteção})
-$$
+*   **Afirmação de Segurança:** "É logicamente impossível manter a válvula de gás aberta ($v_1$) se a chama estiver ativa ($c_1$) e a esteira estiver parada ($\neg m_2$)."
+*   **Proposição do Estado de Risco ($S_{risco}$):**
+    $$S_{risco} \equiv (c_1 \land \neg m_2) \land v_1$$
 
-$$
-S_{risco} \land (\neg t_1 \lor \neg v_1)
-$$
+### Demonstração:
+Dada a regra de intertravamento onde a condição crítica implica no desligamento da válvula:
+$$(c_1 \land \neg m_2) \rightarrow \neg v_1$$
 
-Substituímos o estado de risco pela sua proposição:
+Pela equivalência lógica do condicional ($\mathbf{A} \rightarrow \mathbf{B} \equiv \neg \mathbf{A} \lor \mathbf{B}$):
+$$\neg(c_1 \land \neg m_2) \lor \neg v_1$$
 
-$$
-(t_1 \land v_1) \land (\neg t_1 \lor \neg v_1)
-$$
+Aplicando a Lei de De Morgan:
+$$(\neg c_1 \lor m_2) \lor \neg v_1$$
 
-Aplicamos a propriedade distributiva da conjunção sobre a disjunção:
+Testamos a conjunção do **Estado de Risco** com a **Regra de Segurança** para verificar a consistência:
+$$((c_1 \land \neg m_2) \land v_1) \land (\neg c_1 \lor m_2 \lor \neg v_1)$$
 
-$$
-\big((t_1 \land v_1) \land \neg t_1\big) \lor \big((t_1 \land v_1) \land \neg v_1\big)
-$$
+**Distribuição dos termos:**
+1. $((c_1 \land \neg m_2 \land v_1) \land \neg c_1) \equiv \text{FALSO}$ (Contradição entre $c_1$ e $\neg c_1$)
+2. $((c_1 \land \neg m_2 \land v_1) \land m_2) \equiv \text{FALSO}$ (Contradição entre $\neg m_2$ e $m_2$)
+3. $((c_1 \land \neg m_2 \land v_1) \land \neg v_1) \equiv \text{FALSO}$ (Contradição entre $v_1$ e $\neg v_1$)
 
-Pela propriedade comutativa e associativa, podemos agrupar os termos opostos:
+**Resultado:**
+$$\text{FALSO} \lor \text{FALSO} \lor \text{FALSO} \equiv \text{FALSO}$$
 
-$$
-(t_1 \land \neg t_1 \land v_1) \lor (t_1 \land v_1 \land \neg v_1)
-$$
-
-Pela Lei da Contradição (uma variável e sua negação não podem ser verdadeiras simultaneamente, $A \land \neg A = \text{Falso}$):
-
-$$
-(\text{Falso} \land v_1) \lor (t_1 \land \text{Falso})
-$$
-
-Pela Lei da Anulação (qualquer termo em conjunção com Falso resulta em Falso):
-
-$$
-\text{Falso} \lor \text{Falso} \equiv \text{FALSO}
-$$
-
-**Conclusão:** O estado de risco ($S_{risco}$) avaliado sob as regras de intertravamento resulta em uma contradição insatisfatível (FALSO). A fábrica jamais operará sob essa combinação crítica de variáveis.
+**Conclusão:** A prova formal demonstra que, enquanto a lógica de intertravamento for verdadeira, o estado de risco é impossível (Contradição), garantindo a segurança matemática da operação.
