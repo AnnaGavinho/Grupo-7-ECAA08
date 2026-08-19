@@ -42,21 +42,20 @@ graph LR
     L5["Auto XOR Manual"] --> AND
     AND --> Permissivo["Permissivo Forno (True/False)"]
 ```
-
 ### 2.2. Intertravamento de Bloqueio Contínuo (Run Interlock)
 
 Mesmo após a partida, se qualquer condição crítica falhar, a operação é interrompida.
 
 $$
-\text{Trip}*{\text{Forno}}
-\equiv
-\neg f_1 \lor \neg g*{ok} \lor t_1 \lor e_1
+\text{Trip}*{\text{Forno}} \equiv \neg f_1 \lor \neg g*{ok} \lor t_1 \lor e_1
 $$
 
 Pelas Leis de De Morgan:
 
 $$
-\text{Trip}*{\text{Forno}}
+\text{Trip}*{\text{Forno}} \equiv \neg P*{\text{Forno_base}}
+$$
+
 \equiv
 \neg P*{\text{Forno_base}}
 $$
