@@ -15,38 +15,39 @@ As operações sobre variáveis proposicionais são definidas por operadores ló
 
 Um permissivo de partida (*Start Permissive*) é uma condição booleana que deve ser estritamente satisfeita para que um atuador receba o comando.
 
+
 ### 2.1. Permissivo do Forno de Torra ($P_{\text{Forno}}$)
 
 O acionamento do queimador do forno requer:
 
-* Exaustão de ar operante: $f_1$
-* Nível de gás adequado: $g_{ok}$
-* Temperatura inicial segura: $\neg t_1$
+* Exaustão de ar operante: $f_2$
+* Temperatura inicial segura: $\neg t_2$
 * Ausência de botão de emergência: $\neg e_1$
 * Modo operacional definido: $\text{Auto} \oplus \text{Manual}$
 
-$$
-P_{\text{Forno}}
-\equiv
-f_1 \land g_{ok} \land \neg t_1 \land \neg e_1
-\land
-(\text{Auto} \oplus \text{Manual})
-$$
+$$P_{\text{Forno}} \equiv f_2 \land \neg t_2 \land \neg e_1 \land (\text{Auto} \oplus \text{Manual})$$
 
 ```mermaid
 graph LR
-    L1["f₁ (Exaustão OK)"] --> AND["Bloco AND (Conjunção)"]
-    L2["g₍ok₎ (Nível Gás OK)"] --> AND
-    L3["¬t₁ (Temp. OK)"] --> AND
-    L4["¬e₁ (Sem Emergência)"] --> AND
-    L5["Auto XOR Manual"] --> AND
+    L1["f₂ (Exaustão OK)"] --> AND["Bloco AND (Conjunção)"]
+    L2["¬t₂ (Temp. OK)"] --> AND
+    L3["¬e₁ (Sem Emergência)"] --> AND
+    L4["Auto XOR Manual"] --> AND
     AND --> Permissivo["Permissivo Forno (True/False)"]
 ```
 ### 2.2. Intertrava de Bloqueio Contínuo (*Run Interlock*)
+
 Mesmo após a partida, se qualquer condição crítica falhar, a operação é interrompida.
 
-$$\text{Trip}_{\text{Forno}} \equiv \neg f_1 \lor \neg g_{ok} \lor t_1 \lor e_1$$
+$$
+\text{Trip}_{\text{Forno}} \equiv \neg f_2 \lor t_2 \lor e_1
+$$
 
 Pelas Leis de De Morgan:
 
-$$\text{Trip}_{\text{Forno}} \equiv \neg P_{\text{Forno-base}}$$
+$$
+\text{Trip}*{\text{Forno}} \equiv \neg P*{\text{Forno-base}}
+$$
+
+
+    
