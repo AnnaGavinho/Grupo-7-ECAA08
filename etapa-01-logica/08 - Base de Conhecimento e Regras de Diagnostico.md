@@ -1,10 +1,5 @@
 # Aula 08: Sistemas Especialistas — Base de Conhecimento e Regras de Diagnóstico da Fábrica de Paçoca
 
-**Disciplina:** ECAA08 — Automática (2026.2)  
-**Projeto:** SCADA-Core Automática / Linha de Produção de Paçoca  
-**Equipe:** Grupo 7  
-**Perfil:** Engenharia de Controle e Automação (Matemática Discreta & Sistemas Críticos)  
-
 ---
 
 ## 1. Fundamentos Matemáticos: Arquitetura de Sistemas Baseados em Regras (RBS)
