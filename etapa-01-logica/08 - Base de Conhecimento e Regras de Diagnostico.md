@@ -98,12 +98,3 @@ $$\text{Se } \text{Ant}(R_b) \subset \text{Ant}(R_a) \quad \text{e} \quad \text{
 Para garantir execução em tempo real, a Base de Conhecimento mantém um índice reverso $\mathcal{I}: \text{Fato} \rightarrow \mathcal{P}(\mathcal{R})$, permitindo ao motor de inferência recuperar instantaneamente apenas as regras afetadas pelos sensores que sofreram alteração no ciclo de scan.
 
 ---
-
-## 5. Entregáveis da Aula 08
-
-1. **Documentação Formal e Catálogo de Regras (`08 - Base de Conhecimento e Regras de Diagnostico.md`)**
-2. **Notebook Executável em Python (`08 - Base de Conhecimento e Regras de Diagnostico.ipynb`):**
-   - Implementação das classes `Fato`, `RegraDiagnostico` e `BaseConhecimentoSCADA`.
-   - Indexação rápida de antecedentes via tabelas hash.
-   - Algoritmo de auditoria automática de consistência e redundância.
-   - Simulação de disparo de diagnósticos com injeção de falhas na Fábrica de Paçoca.
