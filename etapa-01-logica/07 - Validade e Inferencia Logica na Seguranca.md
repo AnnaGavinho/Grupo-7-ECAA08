@@ -1,9 +1,5 @@
 # Aula 07: Validade, Inferência Lógica e Prova de Ausência de Falhas — Fábrica de Paçoca
 
-**Disciplina:** ECAA08 — Automática (2026.2)  
-**Projeto:** SCADA-Core Automática / Linha de Produção de Paçoca  
-**Equipe:** Grupo 7  
-**Perfil:** Engenharia de Controle e Automação (Matemática Discreta & Sistemas Críticos)  
 ---
 ## 1. Fundamentos Matemáticos: Teoria da Validade e Inferência Lógica
 Na matemática discreta e na lógica matemática aplicada à automação de sistemas críticos, um **argumento dedutivo** é uma estrutura relacional finita composta por um conjunto de proposições denominadas **premissas** $\{P_1, P_2, \dots, P_k\}$ e uma proposição terminal denominada **conclusão** $C$, formalizada pela notação em sequente:
