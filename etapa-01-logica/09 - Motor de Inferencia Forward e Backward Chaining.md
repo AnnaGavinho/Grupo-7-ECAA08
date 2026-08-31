@@ -1,10 +1,5 @@
 # Aula 09: Motor de Inferência — Algoritmos Forward e Backward Chaining Integrados ao SCADA-Core
 
-**Disciplina:** ECAA08 — Automática (2026.2)  
-**Projeto:** SCADA-Core Automática / Linha de Produção de Paçoca  
-**Equipe:** Grupo 7  
-**Perfil:** Engenharia de Controle e Automação (Matemática Discreta & Sistemas Críticos)  
-
 ---
 
 ## 1. Fundamentos Matemáticos: Teoria dos Motores de Inferência Dedutiva
@@ -115,12 +110,3 @@ graph TD
 
 ---
 
-## 4. Entregável da Aula 09
-
-* **Documento Técnico de Arquitetura do Motor (`09 - Motor de Inferencia Forward e Backward Chaining.md`)**
-* **Notebook Executável (`09 - Motor de Inferencia Forward e Backward Chaining.ipynb`):**
-  1. Motor completo de **Forward Chaining** com arbitragem de prioridades SIL e trilha de justificativa (*explanation log*).
-  2. Motor completo de **Backward Chaining** com árvore de diagnóstico de causa-raiz (*proof tree*).
-  3. Simulação de múltiplos cenários de contingência industrial da fábrica de paçoca.
-  4. Módulo de auditoria de causa-raiz investigativo para auxílio ao operador na IHM.
-  5. Benchmark de tempo real comprovando latências de inferência inferiores a $1\text{ ms}$ por ciclo de scan.
