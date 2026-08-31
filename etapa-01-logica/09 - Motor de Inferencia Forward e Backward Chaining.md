@@ -32,13 +32,10 @@ graph LR
 
 ### 1.1. Encadeamento para Frente (*Forward Chaining* — Raciocínio Guiado por Dados)
 
-* **Conceito Matemático:** Parte dos fatos observados $\mathcal{F}_0$ (sinais discretizados dos sensores ISA-5.1) e dispara sucessivas regras de produção cujos antecedentes estejam satisfeitos, adicionando os consequentes deduzidos à memória de trabalho até atingir um **ponto fixo** (*fixed point*):
-  $$\mathcal{F}_{k+1} = \mathcal{F}_k \cup \{C_i \mid (A_{i,1} \land \dots \land A_{i,m} \rightarrow C_i) \in \mathcal{R} \land \{A_{i,1}, \dots, A_{i,m}\} \subseteq \mathcal{F}_k\}$$
-* **Propriedades:**
+- **Conceito Matemático:** Parte dos fatos observados $\mathcal{F}_0$ (sinais discretizados dos sensores ISA-5.1) e dispara sucessivas regras de produção cujos antecedentes estejam satisfeitos, adicionando os consequentes deduzidos à memória de trabalho até atingir um **ponto fixo** (*fixed point*): $\mathcal{F}_{k+1} = \mathcal{F}_k \cup \{C_i \mid (A_{i,1} \wedge \dots \wedge A_{i,m} \rightarrow C_i) \in \mathcal{R} \wedge \{A_{i,1}, \dots, A_{i,m}\} \subseteq \mathcal{F}_k\}$
+- **Propriedades:**
   - **Monotônico e Convergente:** O operador de inferência $T_{\mathcal{R}}(\mathcal{F})$ é monótono crescente, garantindo convergência finita no menor modelo de Herbrand pelo Teorema do Ponto Fixo de Knaster-Tarski.
   - **Complexidade:** $O(N \cdot M)$ para $N$ fatos e $M$ regras com indexação em tabela hash.
-* **Aplicação na Automação:** **Supervisão em Tempo Real e Intertravamento de Segurança**. A cada ciclo de varredura (*scan cycle* de $10\text{ ms}$ a $50\text{ ms}$), o motor processa a telemetria e deduz imediatamente se a válvula de gás `XV-201` ou a esteira `M-401` devem ser desenergizadas.
-
 ---
 
 ### 1.2. Encadeamento para Trás (*Backward Chaining* — Raciocínio Guiado por Metas)
