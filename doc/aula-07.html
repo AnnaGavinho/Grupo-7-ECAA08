@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 07: Validade e Inferência Lógica | SCADA-Core Automática</title>
+  <meta name="description" content="Regras clássicas de inferência dedutiva e prova de ausência de falhas na fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 07</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 07</span>
+      <h1 class="page-title">Validade, Inferência Lógica e Prova de Ausência de Falhas</h1>
+      <p class="page-subtitle">Modus Ponens, Modus Tollens, Redução ao Absurdo e auditoria de consistência dos atuadores.</p>
+    </div>
+    
+    <h2>1. Fundamentos: Teoria da Validade e Inferência Lógica</h2>
+    <p>
+      Um <strong>argumento dedutivo</strong> é composto por um conjunto de <strong>premissas</strong>
+      $\{P_1, P_2, \dots, P_k\}$ e uma <strong>conclusão</strong> $C$, formalizado pela notação em sequente:
+    </p>
+    <p>$$P_1, P_2, \dots, P_k \vdash C$$</p>
+
+    <h3>1.1. Validade e Tautologia de Inferência</h3>
+    <p>
+      Um argumento é <strong>formalmente válido</strong> se e somente se é logicamente impossível que todas as
+      premissas sejam verdadeiras e a conclusão seja falsa — ou seja, o condicional correspondente é uma
+      <strong>tautologia</strong>:
+    </p>
+    <p>$$\text{Validade}(P_1,\dots,P_k \vdash C) \iff (P_1 \land \dots \land P_k) \rightarrow C \equiv \mathbf{1}$$</p>
+
+    <pre class="mermaid">
+graph LR
+    P1["Premissa P1"] --> AND["Conjuncao das Premissas"]
+    P2["Premissa P2"] --> AND
+    Pk["Premissa Pk"] --> AND
+    AND --> COND{"(P1 e ... e Pk) implica C"}
+    C["Conclusao C"] --> COND
+    COND -- "100% Verdadeiro" --> VAL["ARGUMENTO VALIDO - Tautologia"]
+    COND -- "Existe linha P=1 e C=0" --> INVAL["ARGUMENTO INVALIDO - Falacia / Risco"]
+    </pre>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">⚠️ Critério de Invalidez (Contraexemplo Operacional)</div>
+      <p>
+        Um argumento é inválido se existe ao menos um estado de processo tal que todas as premissas valem $1$ e
+        a conclusão vale $0$. Em automação, esse contraexemplo representa uma <strong>falha silenciosa de
+        segurança</strong>: a planta atende às condições nominais assumidas, mas executa uma ação perigosa.
+      </p>
+    </div>
+
+    <h3>1.2. Regras Clássicas de Inferência Dedutiva</h3>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Regra</th><th>Sequente</th><th>Interpretação em Automação</th></tr></thead>
+        <tbody>
+          <tr><td>Modus Ponens (MP)</td><td>$P \rightarrow Q, P \vdash Q$</td><td>Ativação determinística de intertravamento</td></tr>
+          <tr><td>Modus Tollens (MT)</td><td>$P \rightarrow Q, \neg Q \vdash \neg P$</td><td>Diagnóstico retroativo por sensor inativo</td></tr>
+          <tr><td>Silogismo Hipotético</td><td>$P{\to}Q, Q{\to}R \vdash P{\to}R$</td><td>Encadeamento hierárquico de proteções</td></tr>
+          <tr><td>Silogismo Disjuntivo</td><td>$P \lor Q, \neg P \vdash Q$</td><td>Chaveamento para rota redundante</td></tr>
+          <tr><td>Regra da Resolução</td><td>$P{\lor}Q, \neg P{\lor}R \vdash Q{\lor}R$</td><td>Motor de inferência SAT / cláusulas FNC</td></tr>
+          <tr><td>Dilema Construtivo</td><td>$P{\to}Q, R{\to}S, P{\lor}R \vdash Q{\lor}S$</td><td>Supervisão simultânea de múltiplos setores</td></tr>
+          <tr><td>Simplificação Conjuntiva</td><td>$P \land Q \vdash P$</td><td>Isolamento de variável a partir de vetor de alarmes</td></tr>
+          <tr><td>Adição Disjuntiva</td><td>$P \vdash P \lor Q$</td><td>Generalização de gatilho para matriz de alarme</td></tr>
+          <tr><td>Redução ao Absurdo (RAA)</td><td>$(P_1{\land}\dots{\land}P_k{\land}\neg C) \equiv 0 \Rightarrow P_1,\dots,P_k \vdash C$</td><td>Prova de impossibilidade de colisão e risco</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.3. Falácias Formais Comuns</h3>
+    <p><strong>Afirmação do Consequente</strong> ($P \rightarrow Q, Q \not\vdash P$):</p>
+    <p><em>"Se a receita foi dosada corretamente (P), o nível do silo atinge o alvo (Q). O nível atingiu o alvo, logo todos os ingredientes foram dosados na proporção exata."</em> — Erro: o silo pode ter atingido o nível só com amendoim por entupimento das válvulas de açúcar e sal.</p>
+    <p><strong>Negação do Antecedente</strong> ($P \rightarrow Q, \neg P \not\vdash \neg Q$):</p>
+    <p><em>"Se a emergência for pressionada (P), desligue o moinho (Q). A emergência não foi pressionada, logo mantenha o motor ligado."</em> — Erro: o motor pode precisar ser desligado por sobretemperatura ou fim de batelada.</p>
+
+    <h2>2. Prova de Ausência de Falhas (<em>Fault-Free Proof</em>)</h2>
+    <p>Sob as normas IEC 61508/61511 (SIL) e ISO 13849 (PL), a integridade da lógica de controle deve ser formalmente verificada:</p>
+    <ol>
+      <li><strong>Completude e Determinismo:</strong> todo cenário de risco mapeado ativa uma cadeia dedutiva que culmina no estado seguro.</li>
+      <li><strong>Consistência:</strong> é impossível que as regras deduzam ordens conflitantes para o mesmo atuador.</li>
+      <li><strong>Prova por RAA:</strong> o estado de perigo simultâneo à ativação da proteção gera contradição absoluta.</li>
+    </ol>
+
+    <h2>3. Cadeias de Inferência da Fábrica de Paçoca</h2>
+    <h3>3.1. Caso 1: Intertravamento Térmico do Forno de Torra</h3>
+    <p>$$
+    \begin{aligned}
+    P_1 &amp;: (t_2 \lor (c_1 \land \neg m_2)) \rightarrow F_{fogo} \\
+    P_2 &amp;: F_{fogo} \rightarrow (\neg v_1 \land a_1) \\
+    P_3 &amp;: t_2 \quad \text{(fato: TT-201 acusa sobretemperatura)} \\
+    \hline
+    \therefore C_1 &amp;: \neg v_1
+    \end{aligned}
+    $$</p>
+    <p><strong>Demonstração passo a passo:</strong></p>
+    <ol>
+      <li>$t_2$ (de $P_3$, fato de campo).</li>
+      <li>$t_2 \lor (c_1 \land \neg m_2)$ (Adição Disjuntiva em 1).</li>
+      <li>$F_{fogo}$ (Modus Ponens em 2 e $P_1$).</li>
+      <li>$\neg v_1 \land a_1$ (Modus Ponens em 3 e $P_2$).</li>
+      <li>$\mathbf{\neg v_1}$ (Simplificação Conjuntiva em 4). $\blacksquare$</li>
+    </ol>
+
+    <h3>3.2. Caso 2: Proteção de Qualidade e Segurança Alimentar</h3>
+    <p>$$
+    \begin{aligned}
+    P_1 &amp;: (d_1 \lor i_1) \rightarrow Def \\
+    P_2 &amp;: (Def \land p_{air}) \rightarrow v_3 \\
+    P_3 &amp;: d_1 \rightarrow \neg m_6 \\
+    P_4 &amp;: d_1 \land p_{air} \quad \text{(fato: metal detectado e pressão OK)} \\
+    \hline
+    \therefore C_2 &amp;: v_3 \land \neg m_6
+    \end{aligned}
+    $$</p>
+    <p><strong>Demonstração passo a passo:</strong></p>
+    <ol>
+      <li>$d_1$ (Simplificação Conjuntiva em $P_4$).</li>
+      <li>$p_{air}$ (Simplificação Conjuntiva em $P_4$).</li>
+      <li>$d_1 \lor i_1$ (Adição Disjuntiva em 1).</li>
+      <li>$Def$ (Modus Ponens em 3 e $P_1$).</li>
+      <li>$Def \land p_{air}$ (Conjunção entre 4 e 2).</li>
+      <li>$v_3$ (Modus Ponens em 5 e $P_2$).</li>
+      <li>$\neg m_6$ (Modus Ponens em 1 e $P_3$).</li>
+      <li>$\mathbf{v_3 \land \neg m_6}$ (Conjunção entre 6 e 7). $\blacksquare$</li>
+    </ol>
+
+    <h3>3.3. Caso 3: Redução ao Absurdo da Parada de Emergência (ESD-100)</h3>
+    <p>Provamos que o motor da peneira ($m_1$) não pode permanecer ligado quando a emergência ($e_1$) é acionada:</p>
+    <p><strong>Regra:</strong> $e_1 \rightarrow \neg m_1$. <strong>Hipótese de violação:</strong> $e_1 = 1$ e $m_1 = 1$ simultaneamente.</p>
+    <p>$$
+    \begin{aligned}
+    \Phi &amp;= (e_1 \rightarrow \neg m_1) \land e_1 \land m_1 \\
+    &amp;\equiv (\neg e_1 \lor \neg m_1) \land e_1 \land m_1 \\
+    &amp;\equiv ((\neg e_1 \land e_1 \land m_1) \lor (\neg m_1 \land e_1 \land m_1)) \\
+    &amp;\equiv (0 \land m_1) \lor (0 \land e_1) \equiv \mathbf{0}
+    \end{aligned}
+    $$</p>
+    <div class="callout callout-success">
+      <div class="callout-title">✅ Conclusão de Engenharia</div>
+      <p>Como a violação é uma contradição matemática ($\Phi \equiv 0$), o estado inseguro é inalcançável sob execução lógica estrita.</p>
+    </div>
+
+    <h2>4. Auditoria de Consistência da Matriz de Segurança</h2>
+    <p>$$\forall \text{Atuador } A_i,\quad \text{Cmd\_Liga}(A_i) \land \text{Cmd\_Desliga}(A_i) \equiv \mathbf{0}$$</p>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Atuador</th><th>Descrição</th><th>Condição de Liga</th><th>Condição de Desliga/Trip</th><th>Interseção</th></tr></thead>
+        <tbody>
+          <tr><td>XV-201</td><td>Válvula Gás Torra</td><td>$f_2 \land c_1 \land \neg p_{gas\_low}$</td><td>$t_2 \lor (c_1 \land \neg m_2) \lor p_{gas\_low}$</td><td><strong>0</strong> (isento de conflitos)</td></tr>
+          <tr><td>M-101</td><td>Motor Peneira Grãos</td><td>$\text{Cmd}_{partida} \land \neg u_1 \land \neg q_1 \land \neg e_1$</td><td>$u_1 \lor q_1 \lor e_1$</td><td><strong>0</strong> (isento de conflitos)</td></tr>
+          <tr><td>M-401</td><td>Esteira Embalagem</td><td>$\text{Cmd}_{auto} \land \neg d_1 \land \neg e_2$</td><td>$d_1 \lor e_2$</td><td><strong>0</strong> (isento de conflitos)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      O notebook <code>07 - Validade e Inferencia Logica.ipynb</code> implementa a classe
+      <code>ValidadorInferencias</code>, que varre exaustivamente as $2^n$ combinações para validar tautologias,
+      capturar contraexemplos, testar Redução ao Absurdo e auditar a matriz de segurança de todos os atuadores.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-06.html" class="btn btn-outline">← Aula 06: Quantificadores e Predicados</a>
+      <a href="aula-08.html" class="btn btn-primary">Aula 08: Base de Conhecimento →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

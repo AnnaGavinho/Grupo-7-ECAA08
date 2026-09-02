@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 08: Base de Conhecimento e Regras de Diagnóstico | SCADA-Core Automática</title>
+  <meta name="description" content="Sistema especialista baseado em regras (Cláusulas de Horn) para diagnóstico de falhas da fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 08</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 08</span>
+      <h1 class="page-title">Sistemas Especialistas — Base de Conhecimento e Regras de Diagnóstico</h1>
+      <p class="page-subtitle">Cláusulas de Horn, catálogo de falhas e auditoria formal de consistência da base de regras.</p>
+    </div>
+    
+    <h2>1. Arquitetura de Sistemas Baseados em Regras (RBS)</h2>
+    <p>
+      Para estruturar o raciocínio automatizado do motor supervisório, emprega-se a teoria dos
+      <strong>Sistemas Especialistas Baseados em Regras</strong>. Formalmente, o sistema é modelado pela tripla:
+    </p>
+    <p>$$\langle \mathcal{F}, \mathcal{R}, \mathcal{E} \rangle$$</p>
+    <ul>
+      <li><strong>$\mathcal{F}$ (Base de Fatos):</strong> conjunto dinâmico de proposições da telemetria instantânea: $\mathcal{F}(t) = \{f_1, \dots, f_m\}$.</li>
+      <li><strong>$\mathcal{R}$ (Base de Conhecimento):</strong> conjunto de regras em <strong>Cláusulas de Horn Definidas</strong>: $R_i: \text{SE}\left(\bigwedge_{j=1}^{k} A_{i,j}\right) \text{ENTÃO } C_i$, equivalente a $R_i \equiv \left(\bigvee_j \neg A_{i,j}\right) \lor C_i$.</li>
+      <li><strong>$\mathcal{E}$ (Resolução de Conflitos):</strong> algoritmo determinístico de arbitragem por prioridade SIL, especificidade lógica e tempo crítico de resposta.</li>
+    </ul>
+
+    <pre class="mermaid">
+graph TD
+    subgraph "Nivel 0: Instrumentacao de Campo ISA-5.1"
+        SEN["Sensores - TT-201, MD-401, WT-301, PS-402 etc"] --> DISC["Discretizacao e Alarmes 4-20mA / Profinet"]
+    end
+    subgraph "Nivel 1: Memoria e Conhecimento SCADA-Core"
+        DISC --> FATOS["Base de Fatos Dinamica F(t)"]
+        REGRAS["Base de Conhecimento R - Clausulas de Horn"] --> MATCH["Motor de Casamento de Padroes"]
+        FATOS --> MATCH
+    end
+    subgraph "Nivel 2: Arbitragem e Diagnostico Especialista"
+        MATCH --> AGENDA["Conjunto de Conflito - Agenda de Regras Ativadas"]
+        AGENDA --> ARBITR["Arbitrador de Conflitos - Prioridade SIL"]
+        ARBITR --> INFER["Inferencia de Novos Fatos e Acoes"]
+        INFER --> POP["Disparo de POPs e Intertravamento Seguro"]
+    end
+    </pre>
+
+    <h2>2. Vantagens Computacionais das Cláusulas de Horn</h2>
+    <p>O problema SAT geral é NP-completo, mas restringir a base a Cláusulas de Horn Definidas confere:</p>
+    <ol>
+      <li><strong>Raciocínio em tempo linear $O(N)$:</strong> forward chaining com complexidade $O(n \cdot m)$, viabilizando ciclos determinísticos (&lt; 50 ms).</li>
+      <li><strong>Monotonicidade lógica:</strong> $\mathcal{F}_1 \subseteq \mathcal{F}_2 \implies \text{Ded}(\mathcal{F}_1 \cup \mathcal{R}) \subseteq \text{Ded}(\mathcal{F}_2 \cup \mathcal{R})$ — novos fatos nunca invalidam conclusões anteriores.</li>
+      <li><strong>Ausência de ambiguidade:</strong> cada cláusula tem um único consequente positivo.</li>
+    </ol>
+
+    <h2>3. Catálogo Especialista de Falhas</h2>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>ID</th><th>Setor/CLP</th><th>Antecedentes</th><th>Consequente</th><th>Causa-Raiz</th><th>Severidade</th><th>t. máx.</th></tr></thead>
+        <tbody>
+          <tr><td>R-01</td><td>200/CLP02</td><td>TT-201_HIGH ∧ TS-201_ON</td><td>RISCO_INCENDIO_TORRA</td><td>Sobreaquecimento crítico no forno</td><td>CRÍTICA (10)</td><td>0,5 s</td></tr>
+          <tr><td>R-02</td><td>200/CLP02</td><td>TS-201_ON ∧ M-201_OFF</td><td>ACUMULO_AMENDOIM_QUEIMA</td><td>Esteira parada com queimador ativo</td><td>CRÍTICA (10)</td><td>0,5 s</td></tr>
+          <tr><td>R-03</td><td>400/CLP04</td><td>MD-401_METAL</td><td>CONTAMINACAO_ALIMENTAR_METAL</td><td>Fragmento metálico na linha</td><td>CRÍTICA (10)</td><td>0,2 s</td></tr>
+          <tr><td>R-04</td><td>400/CLP04</td><td>PS-402_LOW ∧ M-401_ON</td><td>FALHA_SISTEMA_REJEICAO</td><td>Pressão pneumática insuficiente</td><td>ALTA (9)</td><td>1,0 s</td></tr>
+          <tr><td>R-05</td><td>300/CLP03</td><td>WT-301_ERR ∨ WT-302_ERR ∨ WT-303_ERR</td><td>DESVIO_RECEITA_PACOCA</td><td>Desbalanceamento na pesagem</td><td>ALTA (8)</td><td>2,0 s</td></tr>
+          <tr><td>R-06</td><td>100/CLP01</td><td>MT-101_HIGH ∨ AT-101_HIGH</td><td>GRAO_DEGRADADO_REJEICAO</td><td>Umidade/acidez fora do padrão</td><td>ALTA (8)</td><td>3,0 s</td></tr>
+          <tr><td>R-07</td><td>400/CLP04</td><td>TT-401_LOW ∧ SE-401_ON</td><td>FALHA_SELAGEM_EMBALAGEM</td><td>Subtemperatura na barra seladora</td><td>MÉDIA (6)</td><td>2,0 s</td></tr>
+          <tr><td>R-08</td><td>300/CLP03</td><td>M-301_CURRENT_HIGH ∧ LT-301_LOW</td><td>TRAVAMENTO_MECANICO_MOINHO</td><td>Sobrecarga sem carga de amendoim</td><td>ALTA (8)</td><td>1,0 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Cada regra crítica está vinculada a um <strong>POP (Procedimento Operacional Padrão)</strong> específico —
+      por exemplo, <code>POP-TOR-01</code> corta a válvula de gás <code>XV-201</code> e soa o alarme
+      <code>ALM-201</code>; <code>POP-SEG-01</code> para a esteira <code>M-401</code> e aciona o sopro de
+      rejeição <code>XV-401</code>.
+    </p>
+
+    <h2>4. Métodos Formais de Auditoria e Consistência</h2>
+    <h3>4.1. Verificação de Não-Contradição</h3>
+    <p>$$\nexists R_a, R_b \in \mathcal{R} \;|\; \text{Ant}(R_a) \equiv \text{Ant}(R_b) \;\land\; \text{Cons}(R_a) = \neg\,\text{Cons}(R_b)$$</p>
+    <h3>4.2. Detecção de Redundância e Subsunção</h3>
+    <p>$$\text{Se } \text{Ant}(R_b) \subset \text{Ant}(R_a) \;\land\; \text{Cons}(R_a) = \text{Cons}(R_b) \implies R_a \text{ é redundante}$$</p>
+    <h3>4.3. Indexação em Tabela Hash (O(1))</h3>
+    <p>
+      A base mantém um índice reverso $\mathcal{I}: \text{Fato} \rightarrow \mathcal{P}(\mathcal{R})$, permitindo
+      ao motor recuperar instantaneamente apenas as regras afetadas pelos sensores alterados no ciclo de scan.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-07.html" class="btn btn-outline">← Aula 07: Validade e Inferência</a>
+      <a href="aula-09.html" class="btn btn-primary">Aula 09: Motor de Inferência →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 01: Kick-off e Arquitetura do SCADA-Core | SCADA-Core Automática</title>
+  <meta name="description" content="Estruturação em 4 camadas e arquitetura orientada a objetos do motor algorítmico do SCADA-Core.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 01</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 01</span>
+      <h1 class="page-title">Kick-off e Arquitetura do SCADA-Core</h1>
+      <p class="page-subtitle">Como o motor algorítmico do supervisório é organizado, camada por camada, ao longo do semestre.</p>
+    </div>
+    
+    <h2>1. Objetivo da Aula de Abertura</h2>
+    <p>
+      A Aula 01 estabelece a arquitetura de software e o vocabulário comum que serão usados em todas as
+      aulas seguintes do Módulo 1. Antes de mergulhar nas provas formais, o Grupo 7 definiu como o motor
+      algorítmico do <strong>SCADA-Core</strong> será estruturado em código, e como cada camada de matemática
+      discreta do semestre vai se encaixar nesse motor.
+    </p>
+
+    <h2>2. Estrutura em 4 Camadas</h2>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Camada</th><th>Módulo Matemático</th><th>Função Operacional no SCADA</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Camada 1</strong></td><td>Lógica Formal &amp; Sistemas Especialistas</td><td>Intertravamento de segurança, prova de tautologias e diagnóstico de causa-raiz (Módulo 1 — este site).</td></tr>
+          <tr><td><strong>Camada 2</strong></td><td>Teoria dos Grafos</td><td>Grafo de setores/esteiras, Dijkstra para desvio de rotas de processo (Módulo 2).</td></tr>
+          <tr><td><strong>Camada 3</strong></td><td>Teoria das Árvores</td><td>Busca $O(\log n)$ em árvore de tags, supressão de inundação de alarmes ISA-18.2 (Módulo 3).</td></tr>
+          <tr><td><strong>Camada 4</strong></td><td>Teoria das Relações</td><td>Matriz de permissões, relações de equivalência entre lotes e sequenciamento Grafcet (Módulo 4).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. Classe Base <code>TagSCADA</code></h2>
+    <p>
+      Todo instrumento da planta (sensor ou atuador) é representado como uma instância de uma classe comum,
+      que guarda o valor bruto do sinal (analógico ou digital), o tag ISA-5.1, o setor a que pertence e a
+      função de discretização (contínuo → proposição booleana) usada na Aula 02:
+    </p>
+    <pre><code class="language-python">class TagSCADA:
+    def __init__(self, tag, setor, tipo, valor_bruto=0.0, limite_critico=None):
+        self.tag = tag                    # Ex: "TT-201"
+        self.setor = setor                # Ex: "Setor 200 - Torra"
+        self.tipo = tipo                  # analogico | digital
+        self.valor_bruto = valor_bruto    # sinal 4-20 mA ou estado 0/1
+        self.limite_critico = limite_critico
+
+    def proposicao(self):
+        # Converte o sinal bruto em uma proposicao booleana (Aula 02)
+        if self.tipo == "digital":
+            return bool(self.valor_bruto)
+        return self.valor_bruto &gt;= self.limite_critico</code></pre>
+
+    <h2>4. Organização do Repositório</h2>
+    <p>
+      O código de cada aula é entregue em um notebook próprio, dentro da pasta <code>etapa-01-logica/</code>
+      do repositório do grupo — veja a árvore completa e as convenções de commit na página
+      <a href="diretrizes-github.html">GitHub &amp; 5W2H</a>.
+    </p>
+
+    <div class="page-nav">
+      <a href="etapa-01-logica.html" class="btn btn-outline">← Índice da Etapa 01</a>
+      <a href="aula-02.html" class="btn btn-primary">Aula 02: Mapeamento de Variáveis →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

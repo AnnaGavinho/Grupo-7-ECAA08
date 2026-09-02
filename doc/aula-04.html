@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 04: Conectivos e Permissivos | SCADA-Core Automática</title>
+  <meta name="description" content="Implementação dos conectivos lógicos e dos blocos de permissivo de partida (Start Permissive) do Forno de Torra.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 04</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 04</span>
+      <h1 class="page-title">Lógica Proposicional — Conectivos e Blocos de Permissivos</h1>
+      <p class="page-subtitle">Operadores lógicos fundamentais e permissivos de partida segura para o Forno de Torra.</p>
+    </div>
+    
+    <h2>1. Fundamentos Matemáticos: Conectivos Lógicos</h2>
+    <p>
+      Na matemática discreta, uma proposição é uma sentença declarativa que assume um e apenas um
+      valor-verdade: Verdadeiro ($1$) ou Falso ($0$). As operações sobre variáveis proposicionais são
+      definidas por operadores lógicos:
+    </p>
+    <ul>
+      <li><strong>Negação</strong> ($\neg A$): inverte o valor-verdade.</li>
+      <li><strong>Conjunção</strong> ($A \land B$): verdadeira se ambos os operandos forem verdadeiros. Modela condições em série.</li>
+      <li><strong>Disjunção</strong> ($A \lor B$): verdadeira se ao menos um dos operandos for verdadeiro. Modela falhas em paralelo.</li>
+      <li><strong>Disjunção Exclusiva</strong> ($A \oplus B$): verdadeira se exatamente um dos operandos for verdadeiro. Usada em seletores de modo.</li>
+    </ul>
+
+    <h2>2. Aplicação em Engenharia: Permissivos de Partida</h2>
+    <p>
+      Um <strong>permissivo de partida</strong> (<em>Start Permissive</em>) é uma condição booleana que deve
+      ser estritamente satisfeita para que um atuador receba o comando.
+    </p>
+
+    <h3>2.1. Permissivo do Forno de Torra ($P_{\text{Forno}}$)</h3>
+    <p>O acionamento do queimador do forno requer:</p>
+    <ul>
+      <li>Exaustão de ar operante: $f_2$</li>
+      <li>Temperatura inicial segura: $\neg t_2$</li>
+      <li>Ausência de botão de emergência: $\neg e_1$</li>
+      <li>Modo operacional definido: $\text{Auto} \oplus \text{Manual}$</li>
+    </ul>
+    <p>$$P_{\text{Forno}} \equiv f_2 \land \neg t_2 \land \neg e_1 \land (\text{Auto} \oplus \text{Manual})$$</p>
+
+    <pre class="mermaid">
+graph LR
+    L1["f2 - Exaustao OK"] --> AND["Bloco AND - Conjuncao"]
+    L2["not t2 - Temp OK"] --> AND
+    L3["not e1 - Sem Emergencia"] --> AND
+    L4["Auto XOR Manual"] --> AND
+    AND --> Permissivo["Permissivo Forno - True/False"]
+    </pre>
+
+    <h3>2.2. Intertrava de Bloqueio Contínuo (<em>Run Interlock</em>)</h3>
+    <p>Mesmo após a partida, se qualquer condição crítica falhar, a operação é interrompida.</p>
+    <p>$$\text{Trip}_{\text{Forno}} \equiv \neg f_2 \lor t_2 \lor e_1$$</p>
+    <p>Pelas Leis de De Morgan, o trip é exatamente a negação do permissivo-base:</p>
+    <p>$$\text{Trip}_{\text{Forno}} \equiv \neg P_{\text{Forno-base}}$$</p>
+
+    <h2>3. Notebook: Implementação e Validação Exaustiva</h2>
+    <pre><code class="language-python">def NOT(p: bool) -&gt; bool: return not p
+def AND(p: bool, q: bool) -&gt; bool: return p and q
+def OR(p: bool, q: bool) -&gt; bool: return p or q
+def XOR(p: bool, q: bool) -&gt; bool: return p ^ q
+
+def permissivo_forno(f2, t2, e1, auto_mode, manual_mode):
+    modo_valido = XOR(auto_mode, manual_mode)
+    permissivo = f2 and NOT(t2) and NOT(e1) and modo_valido
+    trip = NOT(f2) or t2 or e1
+    return {
+        'Permissivo_Habilitado': permissivo,
+        'Trip_Ativo': trip,
+        'Modo_Valido': modo_valido,
+    }</code></pre>
+
+    <p>Cenários de teste avaliados no notebook:</p>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Cenário</th><th>Permissivo</th><th>Trip Ativo</th><th>Modo Válido</th></tr></thead>
+        <tbody>
+          <tr><td>Operação Normal (Auto)</td><td>True</td><td>False</td><td>True</td></tr>
+          <tr><td>Falha de Exaustão</td><td>False</td><td>True</td><td>True</td></tr>
+          <tr><td>Sobreaquecimento</td><td>False</td><td>True</td><td>True</td></tr>
+          <tr><td>Parada de Emergência Ativa</td><td>False</td><td>True</td><td>True</td></tr>
+          <tr><td>Conflito de Modo (Auto e Manual juntos)</td><td>False</td><td>False</td><td>False</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      A tabela-verdade exaustiva sobre $f_2, t_2, e_1$ (8 combinações) confirma que o permissivo só libera o
+      forno em uma única combinação segura, validando o bloco lógico antes da implementação em CLP.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-03.html" class="btn btn-outline">← Aula 03: Tautologias e Contradições</a>
+      <a href="aula-05.html" class="btn btn-primary">Aula 05: Formas Normais →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

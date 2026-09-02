@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 06: Quantificadores e Predicados | SCADA-Core Automática</title>
+  <meta name="description" content="Lógica de primeira ordem (∀, ∃) aplicada ao módulo de varredura global de sensores da fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 06</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 06</span>
+      <h1 class="page-title">Lógica de Predicados, Quantificadores e Varredura Global de Sensores</h1>
+      <p class="page-subtitle">Módulo de varredura global (SCADA State Scanning Engine) com lógica de primeira ordem.</p>
+    </div>
+    
+    <h2>1. Fundamentos: Lógica de Predicados e Quantificadores</h2>
+    <p>
+      Nas Aulas 02 a 05, as condições de segurança foram tratadas via <strong>Lógica Proposicional</strong>,
+      com cada sinal discretizado em uma variável booleana fixa. Porém, uma planta com dezenas de instrumentos
+      torna o software supervisório rígido se cada sensor for tratado individualmente. Para superar essa
+      limitação, emprega-se a <strong>Lógica de Primeira Ordem (LPO)</strong>.
+    </p>
+    <ul>
+      <li><strong>Universo de discurso $\mathcal{U}$:</strong> conjunto de todos os elementos sob supervisão (instrumentos, setores, atuadores, motores).</li>
+      <li><strong>Predicado $P(x)$:</strong> função proposicional parametrizada que mapeia um elemento $x \in \mathcal{U}$ em um valor-verdade.</li>
+    </ul>
+
+    <h3>1.1. Quantificador Universal (∀)</h3>
+    <p>$$\forall x \in \mathcal{U}, P(x) \iff P(i_1) \land P(i_2) \land \dots \land P(i_n)$$</p>
+    <p>Basta um único contraexemplo $P(k) = \text{Falso}$ para invalidar toda a proposição (curto-circuito de falsidade).</p>
+
+    <h3>1.2. Quantificador Existencial (∃)</h3>
+    <p>$$\exists x \in \mathcal{U}, Q(x) \iff Q(i_1) \lor Q(i_2) \lor \dots \lor Q(i_n)$$</p>
+    <p>Basta uma única testemunha $Q(k) = \text{Verdadeiro}$ para validar a proposição (curto-circuito de veracidade).</p>
+
+    <h3>1.3. Quantificação sobre Subdomínios Restritos</h3>
+    <p>
+      Frequentemente quantifica-se apenas sobre uma classe restrita de instrumentos (ex.: só termômetros do
+      Forno de Torra).
+    </p>
+    <p>$$\forall x \in \mathcal{S}, P(x) \iff \forall x\,(\text{PertenceAoSetor}(x,\mathcal{S}) \rightarrow P(x))$$</p>
+    <p>$$\exists x \in \mathcal{S}, Q(x) \iff \exists x\,(\text{PertenceAoSetor}(x,\mathcal{S}) \land Q(x))$$</p>
+    <div class="callout callout-info">
+      <div class="callout-title">⚠️ Importante</div>
+      <p>A implicação ($\rightarrow$) no universal garante que elementos fora do subconjunto não falseiem a avaliação por vacuidade ($F \rightarrow P(x) \equiv V$). No existencial, a conjunção ($\land$) garante que a testemunha pertença de fato ao subdomínio.</p>
+    </div>
+
+    <h3>1.4. De Morgan para Quantificadores</h3>
+    <p>$$\neg(\forall x\, P(x)) \equiv \exists x\,(\neg P(x)) \qquad \neg(\exists x\, Q(x)) \equiv \forall x\,(\neg Q(x))$$</p>
+    <p><em>"Não é verdade que todos os instrumentos estão calibrados"</em> ⟺ <em>"Existe ao menos um instrumento descalibrado"</em>.</p>
+
+    <h2>2. Motor de Varredura Global (SCADA-Core)</h2>
+    <pre class="mermaid">
+graph TD
+    A["Inicio do Scan Cycle SCADA"] --> B["Amostragem dos Barramentos e Tags"]
+    B --> C{"Para todo x em Instrumentos: Online e Calibrado?"}
+    C -- "Sim" --> D["Prontidao Global de Instrumentacao: OK"]
+    C -- "Nao - existe x nao Online" --> E["Alarme: Falha de Instrumento"]
+    D --> F{"Existe x em DetectoresMetais: MetalDetectado?"}
+    F -- "Sim - Contaminacao" --> G["INTERTRAVAMENTO CRITICO: Parada M-401"]
+    F -- "Nao" --> H["Verificacao de Alivio Termico"]
+    H --> I{"Existe t em Termometros_Forno: Temp maior que 160 C?"}
+    I -- "Sim" --> J["TRIP FORNO: Corte de Gas XV-201 + Alarme ALM-201"]
+    I -- "Nao" --> K["Permissivo de Producao Liberado"]
+    </pre>
+
+    <h2>3. Tabela de Predicados Operacionais</h2>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Predicado</th><th>Notação</th><th>Descrição Física</th></tr></thead>
+        <tbody>
+          <tr><td>IsOnline(x)</td><td>$O(x)$</td><td>Instrumento responde no barramento sem timeout</td></tr>
+          <tr><td>IsCalibrado(x)</td><td>$C(x)$</td><td>Instrumento dentro da validade de calibração</td></tr>
+          <tr><td>IsSaudavel(x)</td><td>$S(x)$</td><td>$O(x) \land C(x)$ — integridade completa do canal</td></tr>
+          <tr><td>IsSobretemperatura(x)</td><td>$T_{hi}(x)$</td><td>Transmissor de temp. reporta $T &gt; T_{max}$ (ex: Forno &gt; 160°C)</td></tr>
+          <tr><td>IsMetalDetectado(x)</td><td>$D_{met}(x)$</td><td>Detector acusa fragmento ferroso/não-ferroso</td></tr>
+          <tr><td>IsDefeitoOptico(x)</td><td>$I_{vis}(x)$</td><td>Câmera de IA detecta paçoca quebrada/coloração anômala</td></tr>
+          <tr><td>IsPressaoArOK(x)</td><td>$P_{air}(x)$</td><td>Pressostato mede pressão pneumática &gt; 6 bar</td></tr>
+          <tr><td>IsMotorLigado(x)</td><td>$M_{on}(x)$</td><td>Contator/inversor reporta confirmação de giro</td></tr>
+          <tr><td>IsEmergenciaAtiva(x)</td><td>$E_{act}(x)$</td><td>Botão de emergência físico está pressionado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Equações Lógicas Globais de Supervisão</h3>
+    <p><strong>Prontidão Geral da Planta:</strong></p>
+    <p>$$\text{PlantReadiness} \iff (\forall x \in \mathcal{I}, \text{IsSaudavel}(x)) \land (\neg \exists e \in \mathcal{E}, \text{IsEmergenciaAtiva}(e))$$</p>
+    <p><strong>Intertrava Crítica de Segurança Alimentar:</strong></p>
+    <p>$$\text{QualityTrip} \iff (\exists d \in \mathcal{D}_{met}, \text{IsMetalDetectado}(d)) \lor (\exists v \in \mathcal{V}_{vis}, \text{IsDefeitoOptico}(v))$$</p>
+    <p><strong>Alívio Térmico do Forno:</strong></p>
+    <p>$$\text{ThermalTrip}_{\text{Forno}} \iff \exists t \in \mathcal{T}_{\text{Forno}}, \text{IsSobretemperatura}(t)$$</p>
+    <p><strong>Permissivo de Rota e Embalagem:</strong></p>
+    <p>$$\text{Perm}_{\text{Embalagem}} \iff (\forall p \in \mathcal{P}_{\text{Pneum}}, \text{IsPressaoArOK}(p)) \land (\exists m \in \mathcal{M}_{\text{Esteiras}}, \text{IsMotorLigado}(m))$$</p>
+
+    <h2>4. Notebook: Motor de Quantificação</h2>
+    <pre><code class="language-python">def forall(dominio, predicado):
+    contraexemplos = [x for x in dominio if not predicado(x)]
+    return (len(contraexemplos) == 0, contraexemplos)
+
+def exists(dominio, predicado):
+    testemunhas = [x for x in dominio if predicado(x)]
+    return (len(testemunhas) &gt; 0, testemunhas)
+
+def forall_in(dominio, guarda, predicado):
+    return forall([x for x in dominio if guarda(x)], predicado)
+
+def exists_in(dominio, guarda, predicado):
+    return exists([x for x in dominio if guarda(x)], predicado)
+
+class SCADAScanningEngine:
+    def __init__(self, instrumentos):
+        self.instrumentos = instrumentos
+
+    def executar_varredura(self):
+        univ_saudavel, falhas = forall(self.instrumentos, is_saudavel)
+        emergencia, _ = exists_in(self.instrumentos,
+            lambda i: i.tipo == TipoInstrumento.EMERGENCIA, is_emergencia_ativa)
+        plant_readiness = univ_saudavel and not emergencia
+
+        metal, _ = exists_in(self.instrumentos,
+            lambda i: i.tipo == TipoInstrumento.DETECTOR_METAL, is_metal_detectado)
+        defeito, _ = exists_in(self.instrumentos,
+            lambda i: i.tipo == TipoInstrumento.CAMERA_VISAO, is_defeito_optico)
+        quality_trip = metal or defeito
+
+        thermal_trip, _ = exists_in(self.instrumentos,
+            lambda i: i.setor == Setor.SETOR_200, is_sobretemperatura)
+
+        return {
+            "PlantReadiness_OK": plant_readiness,
+            "QualityTrip_Ativo": quality_trip,
+            "ThermalTrip_Forno_Ativo": thermal_trip,
+        }</code></pre>
+    <p>
+      Em cenários de teste, o motor detectou corretamente contaminação por metal (Cenário A) e sobreaquecimento
+      do forno com $TT{-}201 = 175^\circ\text{C} &gt; 160^\circ\text{C}$ (Cenário B), disparando os respectivos
+      trips.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-05.html" class="btn btn-outline">← Aula 05: Formas Normais</a>
+      <a href="aula-07.html" class="btn btn-primary">Aula 07: Validade e Inferência →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

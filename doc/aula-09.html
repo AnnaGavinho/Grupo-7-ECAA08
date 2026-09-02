@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 09: Motor de Inferência Forward e Backward Chaining | SCADA-Core Automática</title>
+  <meta name="description" content="Algoritmos de encadeamento para frente e para trás integrados ao SCADA-Core da fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 09</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 09</span>
+      <h1 class="page-title">Motor de Inferência — Forward e Backward Chaining Integrados</h1>
+      <p class="page-subtitle">Base de conhecimento hierárquica em 3 camadas e cadeias multi-hop de diagnóstico.</p>
+    </div>
+    
+    <h2>1. Teoria dos Motores de Inferência Dedutiva</h2>
+    <p>
+      O <strong>Motor de Inferência</strong> é o cérebro algorítmico do SCADA-Core: aplica regras de inferência
+      (primordialmente <strong>Modus Ponens</strong>) sobre a Base de Fatos da telemetria para deduzir
+      diagnósticos, intertravamentos e POPs. Dada uma Base de Fatos $\mathcal{F}$ e Cláusulas de Horn
+      $A_1 \land \dots \land A_k \rightarrow C$, existem duas estratégias fundamentais:
+    </p>
+
+    <pre class="mermaid">
+graph LR
+    subgraph "Forward Chaining - Data-Driven"
+        F1["Fatos de Campo - Sensores"] --> R1["Casamento de Padroes"]
+        R1 --> D1["Novos Fatos / Intertravamentos"]
+        D1 --> A1["Acao de Emergencia e POPs"]
+    end
+    subgraph "Backward Chaining - Goal-Driven"
+        G1["Hipotese / Alarme a Explicar"] --> R2["Busca de Regras Causais"]
+        R2 --> S1["Submetas e Fatos Necessarios"]
+        S1 --> P1["Arvore de Causa-Raiz - RCA"]
+    end
+    </pre>
+
+    <h3>1.1. Forward Chaining (Guiado por Dados)</h3>
+    <p>
+      Parte dos fatos observados $\mathcal{F}_0$ e dispara sucessivas regras cujos antecedentes estejam
+      satisfeitos, adicionando os consequentes até atingir um <strong>ponto fixo</strong>:
+    </p>
+    <p>$$\mathcal{F}_{k+1} = \mathcal{F}_k \cup \{C_i \mid (A_{i,1} \land \dots \land A_{i,m} \rightarrow C_i) \in \mathcal{R} \land \{A_{i,1},\dots,A_{i,m}\} \subseteq \mathcal{F}_k\}$$</p>
+    <p>
+      É <strong>monotônico e convergente</strong> (Teorema do Ponto Fixo de Knaster-Tarski), com complexidade
+      $O(N \cdot M)$ com indexação em tabela hash.
+    </p>
+
+    <h3>1.2. Backward Chaining (Guiado por Metas)</h3>
+    <p>
+      Parte de uma <strong>meta de diagnóstico</strong> $G$ (ex.: "Por que o forno desarmou?") e busca
+      recursivamente (DFS) na base de regras:
+    </p>
+    <p>$$\text{Provar}(G) \iff G \in \mathcal{F} \;\lor\; \exists (A_1 \land \dots \land A_k \rightarrow G) \in \mathcal{R} \;|\; \forall j, \text{Provar}(A_j)$$</p>
+    <p>Constrói árvores de prova AND/OR para <strong>Root Cause Analysis (RCA)</strong>, com prevenção de ciclos via pilha de metas ativas.</p>
+
+    <h3>1.3. Comparativo Arquitetural</h3>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Característica</th><th>Forward Chaining</th><th>Backward Chaining</th></tr></thead>
+        <tbody>
+          <tr><td>Gatilho inicial</td><td>Amostragem de sensores</td><td>Pergunta/hipótese do operador</td></tr>
+          <tr><td>Direção do fluxo</td><td>Dados → Conclusões</td><td>Hipótese → Sinais primários</td></tr>
+          <tr><td>Tempo de execução</td><td>&lt; 2 ms (determinístico)</td><td>Sob demanda (investigativo)</td></tr>
+          <tr><td>Função no SCADA</td><td>Intertravamento e Trip Automático</td><td>Diagnóstico de Causa-Raiz (RCA)</td></tr>
+          <tr><td>Rastreabilidade</td><td>Trilha linear (Agenda Trail)</td><td>Árvore hierárquica de prova</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Base de Conhecimento Hierárquica em 3 Camadas</h2>
+    <pre class="mermaid">
+graph TD
+    subgraph "Camada 1: Telemetria de Campo ISA-5.1"
+        S1["TT-201_HIGH - Temp maior 160C"]
+        S2["TS-201_ON - Chama Ativa"]
+        S3["M-201_OFF - Esteira Parada"]
+        S4["FS-201_LOW - Exaustao Baixa"]
+        S5["MD-401_METAL - Metal Detectado"]
+        S6["PS-402_LOW - Pressao Ar menor 6 bar"]
+        S7["WT-301_ERR - Erro Peso Amendoim"]
+    end
+    subgraph "Camada 2: Estados Intermediarios"
+        S1 & S3 --> F1["SUPER_AQUECIMENTO_AMENDOIM"]
+        S2 & S4 --> F2["FALHA_COMBUSTAO_FORNO"]
+        F1 --> R1["RISCO_INCENDIO_TORRA"]
+        F2 --> R1
+        S5 --> F3["LOTE_CONTAMINADO_METAL"]
+        S6 & F3 --> F4["FALHA_EJECAO_PNEUMATICA"]
+        S7 --> F5["DESVIO_RECEITA_PACOCA"]
+    end
+    subgraph "Camada 3: Intertravamentos e POPs"
+        R1 --> A1["TRIP_CORTE_GAS_XV201 + ALM-201"]
+        F3 --> A2["ACIONAMENTO_SOPRO_XV401"]
+        F4 --> A3["PARADA_EMERGENCIA_ESTEIRA_M401"]
+        F5 --> A4["BLOQUEIO_MOEGA_XV301"]
+    end
+    </pre>
+
+    <h2>3. Catálogo de Regras em Cláusulas de Horn</h2>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>ID</th><th>Antecedentes</th><th>Consequente</th><th>Severidade</th><th>Ação / POP</th></tr></thead>
+        <tbody>
+          <tr><td>R-101</td><td>TT-201_HIGH ∧ M-201_OFF</td><td>SUPER_AQUECIMENTO_AMENDOIM</td><td>ALTA</td><td>Estado térmico crítico derivado</td></tr>
+          <tr><td>R-102</td><td>TS-201_ON ∧ FS-201_LOW</td><td>FALHA_COMBUSTAO_FORNO</td><td>ALTA</td><td>Risco de acúmulo de gases no forno</td></tr>
+          <tr><td>R-103</td><td>SUPER_AQUECIMENTO ∨ FALHA_COMBUSTAO</td><td>RISCO_INCENDIO_TORRA</td><td><strong>CRÍTICA</strong> (10)</td><td>Declaração de risco iminente de fogo</td></tr>
+          <tr><td>R-104</td><td>RISCO_INCENDIO_TORRA</td><td>TRIP_CORTE_GAS_XV201</td><td><strong>CRÍTICA</strong> (10)</td><td>POP-TOR-01: cortar XV-201, exaustão máx., soar ALM-201</td></tr>
+          <tr><td>R-201</td><td>MD-401_METAL</td><td>LOTE_CONTAMINADO_METAL</td><td><strong>CRÍTICA</strong> (10)</td><td>Violação de segurança alimentar</td></tr>
+          <tr><td>R-202</td><td>LOTE_CONTAMINADO ∧ PS-402_OK</td><td>ACIONAMENTO_SOPRO_XV401</td><td>ALTA (8)</td><td>POP-REJ-01: ejeção automática</td></tr>
+          <tr><td>R-203</td><td>LOTE_CONTAMINADO ∧ PS-402_LOW</td><td>FALHA_EJECAO_PNEUMATICA</td><td><strong>CRÍTICA</strong> (10)</td><td>Ejeção falhou por falta de pressão</td></tr>
+          <tr><td>R-204</td><td>FALHA_EJECAO_PNEUMATICA</td><td>PARADA_EMERGENCIA_ESTEIRA_M401</td><td><strong>CRÍTICA</strong> (10)</td><td>POP-SEG-01: parar M-401</td></tr>
+          <tr><td>R-301</td><td>WT-301_ERR ∨ WT-302_ERR ∨ WT-303_ERR</td><td>DESVIO_RECEITA_PACOCA</td><td>ALTA (8)</td><td>Falha na dosagem de ingredientes</td></tr>
+          <tr><td>R-302</td><td>DESVIO_RECEITA_PACOCA</td><td>BLOQUEIO_MOEGA_XV301</td><td>ALTA (8)</td><td>POP-DOS-03: inibir descarga, parar M-301</td></tr>
+          <tr><td>R-401</td><td>MT-101_HIGH ∨ AT-101_HIGH</td><td>GRAO_DEGRADADO_REJEICAO</td><td>ALTA (8)</td><td>POP-REC-01: bloquear entrada do Silo 101</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Observe a cadeia <strong>multi-hop</strong>: R-101/R-102 → R-103 → R-104 encadeiam três camadas de
+      inferência até o comando final de trip, ilustrando como o forward chaining converge para o ponto fixo em
+      poucos disparos.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-08.html" class="btn btn-outline">← Aula 08: Base de Conhecimento</a>
+      <a href="aula-10.html" class="btn btn-primary">Aula 10: Integração Final →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 03: Tautologias e Contradições | SCADA-Core Automática</title>
+  <meta name="description" content="Prova formal de que o estado de risco do Forno de Torra é uma contradição sob as regras de intertravamento.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 03</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 03</span>
+      <h1 class="page-title">Tautologias e Contradições</h1>
+      <p class="page-subtitle">Modelagem de alarmes e intertravamentos no setor de processamento de paçoca.</p>
+    </div>
+    
+    <p>
+      Este capítulo apresenta a lógica de controle e segurança para a planta de processamento, utilizando os
+      conceitos de <strong>lógica proposicional</strong> para garantir a integridade dos ativos e a qualidade
+      do produto final.
+    </p>
+
+    <h2>1. Representação Simbólica das Regras de Processo</h2>
+    <p>As equações abaixo descrevem o comportamento esperado do sistema de supervisão e controle (SCADA-Core) diante de estados críticos e permissivos operacionais.</p>
+
+    <h3>A. Alarme de Não-Conformidade na Recepção (Qualidade)</h3>
+    <p>
+      No Setor 100, o sistema monitora a integridade da matéria-prima. Caso a umidade do grão ($u_1$) ou a
+      acidez ($q_1$) excedam os limites técnicos, ou em caso de acionamento de emergência ($e_1$), o motor da
+      peneira de entrada ($m_1$) deve ser bloqueado para evitar contaminação do silo.
+    </p>
+    <p><strong>Condição de Falha Detectada:</strong></p>
+    <p>$$F_{qualidade} \equiv u_1 \lor q_1 \lor e_1$$</p>
+    <p><strong>Equação de Bloqueio Operacional:</strong></p>
+    <p>$$F_{qualidade} \rightarrow \neg m_1$$</p>
+
+    <h3>B. Intertravamento de Segurança Térmica: Proteção do Forno</h3>
+    <p>
+      No Setor 200, a segurança contra incêndio é prioridade. Um estado crítico é definido pela detecção de
+      chama ($c_1$) com a esteira do forno estática ($\neg m_2$) — situação que causaria a queima imediata do
+      produto — ou pelo excesso de temperatura ($t_2$). Nestes casos, a válvula de gás ($v_1$) deve fechar e o
+      alarme sonoro ($a_1$) deve atuar.
+    </p>
+    <p><strong>Condição de Risco de Incêndio:</strong></p>
+    <p>$$F_{fogo} \equiv (c_1 \land \neg m_2) \lor t_2$$</p>
+    <p><strong>Regra de Segurança:</strong></p>
+    <p>$$F_{fogo} \rightarrow (\neg v_1 \land a_1)$$</p>
+
+    <h3>C. Lógica de Atuação do Sistema de Descarte</h3>
+    <p>
+      No Setor 400, o sistema de rejeição automática garante a padronização. A válvula de descarte ($v_3$) é
+      acionada se houver detecção visual de defeito ($i_1$) ou detecção de metal ($d_1$), desde que haja
+      pressão nominal no sistema pneumático ($p_{air}$) para realizar o sopro.
+    </p>
+    <p><strong>Condição de Permissivo de Rejeição:</strong></p>
+    <p>$$P_{rejeito} \equiv (i_1 \lor d_1) \land p_{air}$$</p>
+    <p><strong>Regra de Operação:</strong></p>
+    <p>$$P_{rejeito} \rightarrow v_3$$</p>
+
+    <h2>2. Validação Formal por Prova Lógica (Tautologia de Segurança)</h2>
+    <p>
+      Para validar a confiabilidade do motor de intertravamento, provamos matematicamente que o
+      <strong>Estado de Risco</strong> do forno é uma <strong>contradição</strong> sob as regras estabelecidas.
+    </p>
+    <div class="callout callout-warning">
+      <div class="callout-title">🔥 Afirmação de Segurança</div>
+      <p>"É logicamente impossível manter a válvula de gás aberta ($v_1$) se a chama estiver ativa ($c_1$) e a esteira estiver parada ($\neg m_2$)."</p>
+    </div>
+    <p><strong>Proposição do Estado de Risco:</strong></p>
+    <p>$$S_{risco} \equiv (c_1 \land \neg m_2) \land v_1$$</p>
+
+    <h3>Demonstração</h3>
+    <p>Dada a regra de intertravamento onde a condição crítica implica no desligamento da válvula:</p>
+    <p>$$(c_1 \land \neg m_2) \rightarrow \neg v_1$$</p>
+    <p>Pela equivalência lógica do condicional ($A \rightarrow B \equiv \neg A \lor B$):</p>
+    <p>$$\neg(c_1 \land \neg m_2) \lor \neg v_1$$</p>
+    <p>Aplicando a Lei de De Morgan:</p>
+    <p>$$(\neg c_1 \lor m_2) \lor \neg v_1$$</p>
+    <p>Testamos a conjunção do <strong>Estado de Risco</strong> com a <strong>Regra de Segurança</strong> para verificar a consistência:</p>
+    <p>$$((c_1 \land \neg m_2) \land v_1) \land (\neg c_1 \lor m_2 \lor \neg v_1)$$</p>
+    <p><strong>Distribuição dos termos:</strong></p>
+    <ol>
+      <li>$((c_1 \land \neg m_2 \land v_1) \land \neg c_1) \equiv \text{FALSO}$ (Contradição entre $c_1$ e $\neg c_1$)</li>
+      <li>$((c_1 \land \neg m_2 \land v_1) \land m_2) \equiv \text{FALSO}$ (Contradição entre $\neg m_2$ e $m_2$)</li>
+      <li>$((c_1 \land \neg m_2 \land v_1) \land \neg v_1) \equiv \text{FALSO}$ (Contradição entre $v_1$ e $\neg v_1$)</li>
+    </ol>
+    <p><strong>Resultado:</strong></p>
+    <p>$$\text{FALSO} \lor \text{FALSO} \lor \text{FALSO} \equiv \text{FALSO}$$</p>
+
+    <div class="callout callout-success">
+      <div class="callout-title">✅ Conclusão</div>
+      <p>A prova formal demonstra que, enquanto a lógica de intertravamento for verdadeira, o estado de risco é impossível (contradição), garantindo a segurança matemática da operação.</p>
+    </div>
+
+    <h2>3. Notebook: Validação Computacional</h2>
+    <p>
+      O notebook <code>03 - Tautologias e contradições.ipynb</code> varre exaustivamente as $2^{12}$ combinações
+      das 12 variáveis de segurança e classifica cada expressão como Tautologia, Contradição ou Contingente:
+    </p>
+    <pre><code class="language-python">def alarme_recepcao(vars_):
+    # F_qualidade -&gt; not m1
+    falha = vars_['u1'] or vars_['q1'] or vars_['e1']
+    return (not falha) or (not vars_['m1'])
+
+def intertrava_forno(vars_):
+    # F_fogo -&gt; (not v1 and a1)
+    risco = (vars_['c1'] and not vars_['m2']) or vars_['t2']
+    return (not risco) or (not vars_['v1'] and vars_['a1'])
+
+def sistema_rejeito(vars_):
+    # P_rejeito -&gt; v3
+    permissivo = (vars_['i1'] or vars_['d1']) and vars_['p_air']
+    return (not permissivo) or vars_['v3']
+
+def estado_risco_forno(vars_):
+    # Situação proibida: Chama ativa, esteira parada e gás aberto
+    return vars_['c1'] and (not vars_['m2']) and vars_['v1']
+
+def regra_seguranca_forno(vars_):
+    # (c1 and not m2) -&gt; not v1
+    return not (vars_['c1'] and not vars_['m2']) or (not vars_['v1'])
+
+def prova_seguranca_matematica(vars_):
+    # Prova que o risco e a regra de segurança juntos resultam em FALSO
+    return estado_risco_forno(vars_) and regra_seguranca_forno(vars_)</code></pre>
+
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Expressão</th><th>Classificação</th></tr></thead>
+        <tbody>
+          <tr><td>Alarme Recepção (Regra)</td><td>Tautologia</td></tr>
+          <tr><td>Intertrava Forno (Regra)</td><td>Tautologia</td></tr>
+          <tr><td>Sistema Rejeito (Regra)</td><td>Tautologia</td></tr>
+          <tr><td>Prova de Segurança do Forno</td><td><strong>Contradição</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      As <strong>regras operacionais</strong> são tautologias (a regra de intertravamento é sempre respeitada
+      independentemente do estado dos sensores), enquanto a <strong>prova de segurança</strong> do estado
+      proibido é uma contradição — provando que o estado de risco é matematicamente impossível sob a lógica de
+      intertravamento estabelecida.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-02.html" class="btn btn-outline">← Aula 02: Mapeamento de Variáveis</a>
+      <a href="aula-04.html" class="btn btn-primary">Aula 04: Conectivos e Permissivos →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

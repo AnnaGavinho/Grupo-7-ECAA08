@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 10: Integração Final e Avaliação do Módulo 1 | SCADA-Core Automática</title>
+  <meta name="description" content="Pipeline unificado do SCADA-Core, testes de estresse e relatório de conformidade normativa do Módulo 1.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html" class="active">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-01-logica.html">Etapa 01</a> / Aula 10</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 01 • Aula 10</span>
+      <h1 class="page-title">Integração Final, Validação e Defesa do Módulo 1</h1>
+      <p class="page-subtitle">Pipeline unificado de supervisão operando em malha fechada sob bateria de testes de estresse.</p>
+    </div>
+    
+    <h2>1. Sumário Executivo do Módulo 1</h2>
+    <p>
+      O Módulo 1 do projeto SCADA-Core Automática estabeleceu o núcleo computacional de supervisão, segurança e
+      diagnóstico para a planta agroindustrial de beneficiamento de amendoim e fabricação automatizada de
+      paçoca. O objetivo central foi substituir lógicas empíricas e vulneráveis por
+      <strong>estruturas matemáticas rigorosas</strong>, provando formalmente que a planta opera em regime
+      determinístico, isenta de estados de risco de explosão, incêndio, contaminação alimentar ou danos aos
+      ativos mecânicos.
+    </p>
+
+    <pre class="mermaid">
+graph TD
+    subgraph "Nivel 0: Aquisicao e Discretizacao ISA-5.1"
+        INST["Parque de Instrumentos - Setores 100, 200, 300, 400"] --> SCAN["Modulo de Varredura Global LPO - Aula 06"]
+    end
+    subgraph "Nivel 1: Matriz de Seguranca e Intertravamento Rapido"
+        SCAN --> FNC["Matriz de Seguranca em FNC / Formas Normais - Aula 05"]
+        FNC --> TRIP["Intertravamento Direto / Trip Fail-Safe - Aulas 03 e 04"]
+        TRIP --> VAL["Prova de Ausencia de Falhas - Tautologias - Aula 07"]
+    end
+    subgraph "Nivel 2: Sistema Especialista de Diagnostico e RCA"
+        SCAN --> KB["Base de Conhecimento em Clausulas de Horn - Aula 08"]
+        KB --> FW["Motor Forward Chaining - Aula 09"]
+        KB --> BW["Motor Backward Chaining - Aula 09"]
+        FW --> ACT["Escalonamento de Acoes de Mitigacao"]
+        BW --> HMI["Arvore de Justificativa ao Operador"]
+    end
+    </pre>
+
+    <h2>2. Casos de Teste de Estresse e Validação Integrada</h2>
+    <p>O pipeline unificado do SCADA-Core foi submetido a 4 cenários industriais de estresse simultâneo:</p>
+
+    <h3>2.1. Caso 1: Emergência Térmica no Forno de Torra</h3>
+    <p><strong>Entrada:</strong> TT-201 registra 175°C &gt; 160°C, chama ativa (TS-201_ON) e esteira travada (M-201_OFF).</p>
+    <ul>
+      <li><em>Varredura LPO:</em> detecta contraexemplo térmico ($\exists t \in \mathcal{T}_{Forno}, T &gt; 160^\circ C$).</li>
+      <li><em>Forward Chaining:</em> dispara R-101 → R-103 → R-104, deduzindo RISCO_INCENDIO_TORRA e ativando TRIP_CORTE_GAS_XV201.</li>
+      <li><em>Ação:</em> desenergiza XV-201, liga exaustão máxima, executa POP-TOR-01.</li>
+      <li><em>RCA (backward chaining):</em> constrói árvore causal comprovando falha primária na esteira com queimador ativo.</li>
+    </ul>
+
+    <h3>2.2. Caso 2: Contaminação por Metal com Falha Pneumática</h3>
+    <p><strong>Entrada:</strong> MD-401_METAL e pressão de ar em 4,2 bar &lt; 6,0 bar (PS-402_LOW).</p>
+    <ul>
+      <li><em>Varredura LPO:</em> invalida o permissivo pneumático global da linha.</li>
+      <li><em>Forward Chaining:</em> dispara R-201 → R-203 → R-204, identificando que o sopro falharia, deduzindo PARADA_EMERGENCIA_ESTEIRA_M401.</li>
+      <li><em>Ação:</em> desliga M-401 instantaneamente, executa POP-SEG-01.</li>
+    </ul>
+
+    <h3>2.3. Caso 3: Desvio de Formulação na Dosagem</h3>
+    <p><strong>Entrada:</strong> balança de amendoim acusa erro de peso (WT-301_ERR).</p>
+    <ul>
+      <li><em>Forward Chaining:</em> dispara R-301 → R-302, deduzindo DESVIO_RECEITA_PACOCA.</li>
+      <li><em>Ação:</em> inibe XV-301, desliga o moinho M-301, executa POP-DOS-03.</li>
+    </ul>
+
+    <h3>2.4. Caso 4: Matéria-Prima Úmida com Parada de Emergência</h3>
+    <p><strong>Entrada:</strong> umidade em 12,5% &gt; 10% (MT-101_HIGH) e ESD-100 acionado.</p>
+    <ul>
+      <li><em>Varredura LPO:</em> IsSaudavel retorna False e ExisteEmergencia retorna True.</li>
+      <li><em>Intertravamento:</em> bloqueio imediato do motor M-101 e isolamento da entrada do Silo de Espera (POP-REC-01).</li>
+    </ul>
+
+    <h2>3. Relatório de Conformidade Normativa (IEC 61508 / SIL / ISA-5.1)</h2>
+    <div class="table-responsive">
+      <table>
+        <thead><tr><th>Critério</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td>Determinismo temporal do ciclo completo de supervisão</td><td>&lt; 1,5 ms (margem &gt; 95% sobre o limiar de 50 ms / 20 Hz)</td></tr>
+          <tr><td>Impossibilidade de conflito de comandos</td><td>$\forall A,\; \neg(A_{on} \land A_{off})$ — provado matematicamente</td></tr>
+          <tr><td>Monotonicidade e rastreabilidade</td><td>Trilha de auditoria completa (Agenda Trail) para HACCP/BPF</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>4. Estrutura do Notebook Integrado</h2>
+    <p>O notebook <code>10 - Integracao Final e Avaliacao do Modulo 1.ipynb</code> implementa a classe mestre <code>SCADACore_Modulo1</code>, orquestrando:</p>
+    <ul>
+      <li><strong>1.1</strong> Instanciação do parque completo de sensores e atuadores ISA-5.1.</li>
+      <li><strong>1.2</strong> Motor de varredura global LPO (∀, ∃).</li>
+      <li><strong>1.3</strong> Motor de inferência especialista com regras de 3 camadas.</li>
+      <li><strong>1.4</strong> Pipeline unificado de execução de ciclo de scan em malha fechada.</li>
+      <li><strong>1.5</strong> Bateria de 4 testes de estresse com asserções formais (<code>assert</code>).</li>
+      <li><strong>1.6</strong> Benchmark global de latência e throughput (10.000 ciclos).</li>
+      <li><strong>1.7</strong> Relatório final consolidado para apresentação e avaliação da disciplina.</li>
+    </ul>
+
+    <div class="callout callout-success">
+      <div class="callout-title">🎓 Status do Módulo 1</div>
+      <p>Todos os entregáveis das Aulas 02 a 10 foram validados computacionalmente (tabelas-verdade exaustivas, provas de equivalência e testes de estresse), com o pipeline de integração <strong>concluído</strong> e pronto para a defesa da disciplina.</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="aula-09.html" class="btn btn-outline">← Aula 09: Motor de Inferência</a>
+      <a href="etapa-01-logica.html" class="btn btn-primary">Voltar ao Índice da Etapa 01 →</a>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7 (SCADA-Core / Fábrica de Paçoca)</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
