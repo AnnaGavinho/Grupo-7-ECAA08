@@ -1,34 +1,34 @@
-# Aula 06: LÃ³gica de Predicados, Quantificadores e Varredura Global de Sensores
+# Aula 06: Lógica de Predicados, Quantificadores e Varredura Global de Sensores
 
-## 1. Fundamentos MatemÃ¡ticos: LÃ³gica de Predicados e Quantificadores
+## 1. Fundamentos Matemáticos: Lógica de Predicados e Quantificadores
 
-Nas etapas iniciais do projeto (Aulas 02 a 05), as condiÃ§Ãµes de seguranÃ§a e intertravamento foram tratadas atravÃ©s da **LÃ³gica Proposicional**, na qual cada sinal de sensor ou atuador Ã© discretizado em uma variÃ¡vel booleana fixa ($0$ ou $1$).
+Nas etapas iniciais do projeto (Aulas 02 a 05), as condições de segurança e intertravamento foram tratadas através da **Lógica Proposicional**, na qual cada sinal de sensor ou atuador é discretizado em uma variável booleana fixa ($0$ ou $1$).
 
-Contudo, uma planta industrial agroalimentÃ­cia automatizada â€” como a linha de fabricaÃ§Ã£o contÃ­nua de paÃ§oca â€” possui dezenas de instrumentos distribuÃ­dos entre recepÃ§Ã£o, torra, moagem, prensagem e embalagem. Tratar cada sensor individualmente em equaÃ§Ãµes estÃ¡ticas torna o software supervisÃ³rio rÃ­gido, nÃ£o escalÃ¡vel e sujeito a erros na manutenÃ§Ã£o de cÃ³digo.
+Contudo, uma planta industrial agroalimentícia automatizada — como a linha de fabricação contínua de paçoca — possui dezenas de instrumentos distribuídos entre recepção, torra, moagem, prensagem e embalagem. Tratar cada sensor individualmente em equações estáticas torna o software supervisório rígido, não escalável e sujeito a erros na manutenção de código.
 
-Para superar essa limitaÃ§Ã£o, emprega-se a **LÃ³gica de Primeira Ordem (LPO)** ou **LÃ³gica de Predicados**.
+Para superar essa limitação, emprega-se a **Lógica de Primeira Ordem (LPO)** ou **Lógica de Predicados**.
 
 ### 1.1. Universo de Discurso e Predicados
 
-* **Universo de Discurso ($\mathcal{U}$):** Conjunto de todos os elementos sob supervisÃ£o. Na arquitetura proposta, $\mathcal{U}$ pode ser o conjunto de todos os instrumentos ($\mathcal{I}$), setores de controle ($\mathcal{S}$), atuadores/vÃ¡lvulas ($\mathcal{V}$) ou motores/acionamentos ($\mathcal{M}$).
+* **Universo de Discurso ($\mathcal{U}$):** Conjunto de todos os elementos sob supervisão. Na arquitetura proposta, $\mathcal{U}$ pode ser o conjunto de todos os instrumentos ($\mathcal{I}$), setores de controle ($\mathcal{S}$), atuadores/válvulas ($\mathcal{V}$) ou motores/acionamentos ($\mathcal{M}$).
 
-* **Predicado $P(x)$:** FunÃ§Ã£o proposicional parametrizada que mapeia um elemento $x \in \mathcal{U}$ em um valor-verdade $\{\text{Verdadeiro}, \text{Falso}\}$.
+* **Predicado $P(x)$:** Função proposicional parametrizada que mapeia um elemento $x \in \mathcal{U}$ em um valor-verdade $\{\text{Verdadeiro}, \text{Falso}\}$.
 
-  * Exemplo: $\text{IsOnline}(x) \in \{0, 1\}$ indica se o instrumento $x$ estÃ¡ comunicando ativamente na rede industrial (Profinet/Modbus TCP).
+  * Exemplo: $\text{IsOnline}(x) \in \{0, 1\}$ indica se o instrumento $x$ está comunicando ativamente na rede industrial (Profinet/Modbus TCP).
 
-  * Exemplo: $\text{IsCalibrado}(x) \in \{0, 1\}$ indica se o instrumento $x$ estÃ¡ com laudo metrolÃ³gico vÃ¡lido.
+  * Exemplo: $\text{IsCalibrado}(x) \in \{0, 1\}$ indica se o instrumento $x$ está com laudo metrológico válido.
 
-  * Exemplo: $\text{SobreTemp}(x, T_{\text{max}}) \in \{0, 1\}$ indica se o termÃ´metro $x$ superou o limite seguro.
+  * Exemplo: $\text{SobreTemp}(x, T_{\text{max}}) \in \{0, 1\}$ indica se o termômetro $x$ superou o limite seguro.
 
 ### 1.2. Quantificador Universal ($\forall$)
 
-O quantificador universal estabelece que uma propriedade lÃ³gica Ã© satisfeita por **todos** os elementos do universo de discurso:
+O quantificador universal estabelece que uma propriedade lógica é satisfeita por **todos** os elementos do universo de discurso:
 
 $$
 \forall x \in \mathcal{U}, P(x)
 $$
 
-Em um domÃ­nio finito de instrumentos $\mathcal{U} = \{i_1, i_2, \dots, i_n\}$, a quantificaÃ§Ã£o universal equivale Ã  **conjunÃ§Ã£o generalizada**:
+Em um domínio finito de instrumentos $\mathcal{U} = \{i_1, i_2, \dots, i_n\}$, a quantificação universal equivale à **conjunção generalizada**:
 
 $$
 \forall x \in \mathcal{U}, P(x)
@@ -36,17 +36,17 @@ $$
 P(i_1) \land P(i_2) \land \dots \land P(i_n)
 $$
 
-* **CritÃ©rio de Curto-Circuito (Falsidade):** Basta a ocorrÃªncia de um Ãºnico elemento $k \in \mathcal{U}$ tal que $P(k) = \text{Falso}$ (denominado **contraexemplo**) para invalidar imediatamente toda a proposiÃ§Ã£o $\forall x P(x)$.
+* **Critério de Curto-Circuito (Falsidade):** Basta a ocorrência de um único elemento $k \in \mathcal{U}$ tal que $P(k) = \text{Falso}$ (denominado **contraexemplo**) para invalidar imediatamente toda a proposição $\forall x P(x)$.
 
 ### 1.3. Quantificador Existencial ($\exists$)
 
-O quantificador existencial expressa que uma propriedade Ã© satisfeita por **pelo menos um** elemento do domÃ­nio:
+O quantificador existencial expressa que uma propriedade é satisfeita por **pelo menos um** elemento do domínio:
 
 $$
 \exists x \in \mathcal{U}, Q(x)
 $$
 
-Para um universo finito $\mathcal{U} = \{i_1, i_2, \dots, i_n\}$, a quantificaÃ§Ã£o existencial equivale Ã  **disjunÃ§Ã£o generalizada**:
+Para um universo finito $\mathcal{U} = \{i_1, i_2, \dots, i_n\}$, a quantificação existencial equivale à **disjunção generalizada**:
 
 $$
 \exists x \in \mathcal{U}, Q(x)
@@ -54,13 +54,13 @@ $$
 Q(i_1) \lor Q(i_2) \lor \dots \lor Q(i_n)
 $$
 
-* **CritÃ©rio de Curto-Circuito (Veracidade):** Basta identificar uma Ãºnica **testemunha** (*witness*) $k \in \mathcal{U}$ tal que $Q(k) = \text{Verdadeiro}$ para validar imediatamente a proposiÃ§Ã£o $\exists x Q(x)$.
+* **Critério de Curto-Circuito (Veracidade):** Basta identificar uma única **testemunha** (*witness*) $k \in \mathcal{U}$ tal que $Q(k) = \text{Verdadeiro}$ para validar imediatamente a proposição $\exists x Q(x)$.
 
-### 1.4. QuantificaÃ§Ã£o sobre SubdomÃ­nios Restritos (Predicado GuardiÃ£o)
+### 1.4. Quantificação sobre Subdomínios Restritos (Predicado Guardião)
 
-Na engenharia de automaÃ§Ã£o, comumente quantifica-se apenas sobre uma classe restrita de instrumentos, por exemplo, apenas transmissores de temperatura do Forno de Torra ou apenas detectores de metais.
+Na engenharia de automação, comumente quantifica-se apenas sobre uma classe restrita de instrumentos, por exemplo, apenas transmissores de temperatura do Forno de Torra ou apenas detectores de metais.
 
-1. **Universal com DomÃ­nio Restrito (Exige ImplicaÃ§Ã£o $\rightarrow$):**
+1. **Universal com Domínio Restrito (Exige Implicação $\rightarrow$):**
 
 $$
 \forall x \in \mathcal{S}, P(x)
@@ -68,7 +68,7 @@ $$
 \forall x (\text{PertenceAoSetor}(x, \mathcal{S}) \rightarrow P(x))
 $$
 
-2. **Existencial com DomÃ­nio Restrito (Exige ConjunÃ§Ã£o $\land$):**
+2. **Existencial com Domínio Restrito (Exige Conjunção $\land$):**
 
 $$
 \exists x \in \mathcal{S}, Q(x)
@@ -78,17 +78,17 @@ $$
 
 > **IMPORTANT**
 >
-> A implicaÃ§Ã£o lÃ³gica ($\rightarrow$) Ã© indispensÃ¡vel no quantificador universal para assegurar que elementos fora do subconjunto nÃ£o falseiem a avaliaÃ§Ã£o por vacuidade:
+> A implicação lógica ($\rightarrow$) é indispensável no quantificador universal para assegurar que elementos fora do subconjunto não falseiem a avaliação por vacuidade:
 >
 > $$
 > F \rightarrow P(x) \equiv V
 > $$
 >
-> No existencial, a conjunÃ§Ã£o ($\land$) garante que a testemunha de fato pertenÃ§a ao subdomÃ­nio alvo.
+> No existencial, a conjunção ($\land$) garante que a testemunha de fato pertença ao subdomínio alvo.
 
-### 1.5. Leis de De Morgan para Quantificadores (Dualidade LÃ³gica)
+### 1.5. Leis de De Morgan para Quantificadores (Dualidade Lógica)
 
-A negaÃ§Ã£o formal de quantificadores Ã© o fundamento matemÃ¡tico para a engenharia de seguranÃ§a *Fail-Safe* e sÃ­ntese de alarmes:
+A negação formal de quantificadores é o fundamento matemático para a engenharia de segurança *Fail-Safe* e síntese de alarmes:
 
 $$
 \neg (\forall x P(x)) \equiv \exists x (\neg P(x))
@@ -98,59 +98,59 @@ $$
 \neg (\exists x Q(x)) \equiv \forall x (\neg Q(x))
 $$
 
-**InterpretaÃ§Ã£o na FÃ¡brica de PaÃ§oca:**
+**Interpretação na Fábrica de Paçoca:**
 
-* *"NÃ£o Ã© verdade que todos os instrumentos estÃ£o calibrados e comunicando"* $\iff$ *"Existe ao menos um instrumento offline ou descalibrado"*.
+* *"Não é verdade que todos os instrumentos estão calibrados e comunicando"* $\iff$ *"Existe ao menos um instrumento offline ou descalibrado"*.
 
-* *"NÃ£o existe contaminaÃ§Ã£o metÃ¡lica ou produto quebrado na linha"* $\iff$ *"Todos os sensores de qualidade atestam produto conforme"*.
+* *"Não existe contaminação metálica ou produto quebrado na linha"* $\iff$ *"Todos os sensores de qualidade atestam produto conforme"*.
 
 ---
 
-## 2. AplicaÃ§Ã£o em Engenharia: Motor de Varredura Global (SCADA-Core)
+## 2. Aplicação em Engenharia: Motor de Varredura Global (SCADA-Core)
 
-No ciclo de varredura (*scan cycle*) do SCADA-Core, o motor de diagnÃ³stico supervisiona periodicamente o ecossistema de instrumentos da planta de paÃ§oca.
+No ciclo de varredura (*scan cycle*) do SCADA-Core, o motor de diagnóstico supervisiona periodicamente o ecossistema de instrumentos da planta de paçoca.
 
 ```mermaid
 graph TD
-    A["InÃ­cio do Scan Cycle SCADA"] --> B["Amostragem dos Barramentos e Tags"]
-    B --> C{"âˆ€ x âˆˆ Instrumentos: Online(x) âˆ§ Calibrado(x)?"}
+    A["Início do Scan Cycle SCADA"] --> B["Amostragem dos Barramentos e Tags"]
+    B --> C{"∀ x ∈ Instrumentos: Online(x) ∧ Calibrado(x)?"}
     
-    C -- "Sim (True)" --> D["ProntidÃ£o Global de InstrumentaÃ§Ã£o: OK"]
-    C -- "NÃ£o (False) [âˆƒ x: Â¬Online(x)]" --> E["Alarme: Falha de Instrumento / ComunicaÃ§Ã£o"]
+    C -- "Sim (True)" --> D["Prontidão Global de Instrumentação: OK"]
+    C -- "Não (False) [∃ x: ¬Online(x)]" --> E["Alarme: Falha de Instrumento / Comunicação"]
     
-    D --> F{"âˆƒ x âˆˆ DetectoresMetais: MetalDetectado(x)?"}
-    F -- "Sim (True) [ContaminaÃ§Ã£o]" --> G["INTERTRAVAMENTO CRÃTICO: Parada da Esteira M-401"]
-    F -- "NÃ£o (False) [âˆ€ x: Â¬Metal(x)]" --> H["VerificaÃ§Ã£o de AlÃ­vio TÃ©rmico e Permissivos"]
+    D --> F{"∃ x ∈ DetectoresMetais: MetalDetectado(x)?"}
+    F -- "Sim (True) [Contaminação]" --> G["INTERTRAVAMENTO CRÍTICO: Parada da Esteira M-401"]
+    F -- "Não (False) [∀ x: ¬Metal(x)]" --> H["Verificação de Alívio Térmico e Permissivos"]
     
-    H --> I{"âˆƒ t âˆˆ Termometros_Forno: Temp(t) > 160Â°C?"}
-    I -- "Sim (True)" --> J["TRIP FORNO: Corte de GÃ¡s XV-201 + Alarme ALM-201"]
-    I -- "NÃ£o (False)" --> K["Permissivo de ProduÃ§Ã£o Liberado"]
+    H --> I{"∃ t ∈ Termometros_Forno: Temp(t) > 160°C?"}
+    I -- "Sim (True)" --> J["TRIP FORNO: Corte de Gás XV-201 + Alarme ALM-201"]
+    I -- "Não (False)" --> K["Permissivo de Produção Liberado"]
 ```
 
 ---
 
-## 3. Modelagem de Predicados da FÃ¡brica de PaÃ§oca (Grupo 7)
+## 3. Modelagem de Predicados da Fábrica de Paçoca (Grupo 7)
 
-Conforme o mapeamento formal de variÃ¡veis definido no catÃ¡logo ISA-5.1 da fÃ¡brica (Setores 100, 200, 300 e 400):
+Conforme o mapeamento formal de variáveis definido no catálogo ISA-5.1 da fábrica (Setores 100, 200, 300 e 400):
 
 ### 3.1. Tabela de Predicados Operacionais
 
-| **Predicado** | **NotaÃ§Ã£o** | **DescriÃ§Ã£o FÃ­sica no Processo** |
+| **Predicado** | **Notação** | **Descrição Física no Processo** |
 |---|---|---|
 | $\text{IsOnline}(x)$ | $O(x)$ | O instrumento $x$ responde no barramento de campo sem timeout |
-| $\text{IsCalibrado}(x)$ | $C(x)$ | O instrumento $x$ estÃ¡ dentro da validade de calibraÃ§Ã£o metrolÃ³gica |
+| $\text{IsCalibrado}(x)$ | $C(x)$ | O instrumento $x$ está dentro da validade de calibração metrológica |
 | $\text{IsSaudavel}(x)$ | $S(x)$ | $O(x) \land C(x)$ (Integridade completa do canal de sinal) |
 | $\text{IsSobretemperatura}(x)$ | $T_{\text{hi}}(x)$ | O transmissor de temperatura $x \in \mathcal{T}$ reporta $T > T_{\text{max}}$ (ex: Forno $> 160^\circ\text{C}$) |
-| $\text{IsMetalDetectado}(x)$ | $D_{\text{met}}(x)$ | O detector $x \in \mathcal{D}_{\text{met}}$ detecta fragmento ferroso/nÃ£o-ferroso |
-| $\text{IsDefeitoOptico}(x)$ | $I_{\text{vis}}(x)$ | A cÃ¢mera de IA $x \in \mathcal{V}_{\text{vis}}$ detecta paÃ§oca quebrada ou coloraÃ§Ã£o anÃ´mala |
-| $\text{IsPressaoArOK}(x)$ | $P_{\text{air}}(x)$ | O pressostato $x \in \mathcal{P}$ mede pressÃ£o da rede pneumÃ¡tica $> 6\text{ bar}$ |
-| $\text{IsValvulaAberta}(x)$ | $V_{\text{op}}(x)$ | A vÃ¡lvula $x \in \mathcal{V}$ confirma sensor de fim de curso em estado ABERTA |
-| $\text{IsMotorLigado}(x)$ | $M_{\text{on}}(x)$ | O contator/inversor do motor $x \in \mathcal{M}$ reporta confirmaÃ§Ã£o de giro |
-| $\text{IsEmergenciaAtiva}(x)$ | $E_{\text{act}}(x)$ | O botÃ£o de emergÃªncia fÃ­sico $x \in \mathcal{E}$ estÃ¡ pressionado |
+| $\text{IsMetalDetectado}(x)$ | $D_{\text{met}}(x)$ | O detector $x \in \mathcal{D}_{\text{met}}$ detecta fragmento ferroso/não-ferroso |
+| $\text{IsDefeitoOptico}(x)$ | $I_{\text{vis}}(x)$ | A câmera de IA $x \in \mathcal{V}_{\text{vis}}$ detecta paçoca quebrada ou coloração anômala |
+| $\text{IsPressaoArOK}(x)$ | $P_{\text{air}}(x)$ | O pressostato $x \in \mathcal{P}$ mede pressão da rede pneumática $> 6\text{ bar}$ |
+| $\text{IsValvulaAberta}(x)$ | $V_{\text{op}}(x)$ | A válvula $x \in \mathcal{V}$ confirma sensor de fim de curso em estado ABERTA |
+| $\text{IsMotorLigado}(x)$ | $M_{\text{on}}(x)$ | O contator/inversor do motor $x \in \mathcal{M}$ reporta confirmação de giro |
+| $\text{IsEmergenciaAtiva}(x)$ | $E_{\text{act}}(x)$ | O botão de emergência físico $x \in \mathcal{E}$ está pressionado |
 
-### 3.2. EquaÃ§Ãµes LÃ³gicas Globais de SupervisÃ£o
+### 3.2. Equações Lógicas Globais de Supervisão
 
-1. **ProntidÃ£o Geral da Planta para Partida ($\text{PlantReadiness}$):**
+1. **Prontidão Geral da Planta para Partida ($\text{PlantReadiness}$):**
 
 $$
 \text{PlantReadiness}
@@ -160,7 +160,7 @@ $$
 (\neg \exists e \in \mathcal{E}, \text{IsEmergenciaAtiva}(e))
 $$
 
-2. **Intertrava CrÃ­tica de SeguranÃ§a Alimentar ($\text{QualityTrip}$):**
+2. **Intertrava Crítica de Segurança Alimentar ($\text{QualityTrip}$):**
 
 $$
 \text{QualityTrip}
@@ -170,7 +170,7 @@ $$
 (\exists v \in \mathcal{V}_{\text{vis}}, \text{IsDefeitoOptico}(v))
 $$
 
-3. **Intertravamento de AlÃ­vio TÃ©rmico do Forno de Torra ($\text{ThermalTrip}_{\text{Forno}}$):**
+3. **Intertravamento de Alívio Térmico do Forno de Torra ($\text{ThermalTrip}_{\text{Forno}}$):**
 
 $$
 \text{ThermalTrip}_{\text{Forno}}
@@ -190,5 +190,3 @@ $$
 \land
 (\exists m \in \mathcal{M}_{\text{Esteiras}}, \text{IsMotorLigado}(m))
 $$
-
-
