@@ -337,3 +337,4 @@
     log('Ciclo de varredura concluído (scan &lt; 1.5 ms).', 'info');
   }, 6000);
 })();
+
