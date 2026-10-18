@@ -17,15 +17,15 @@ utilizando uma fila de prioridade baseada em Min-Heap binário.
 
 ```mermaid
 graph LR
-    SILO101["SILO-101 (Amendoim)"] -->|15.0m| MAN301["MAN-301 (Dosagem)"]
-    SILO102["SILO-102 (Açúcar/Sal)"] -->|12.0m| MAN301
-    MAN301 -->|8.0m| MOI301A["MOI-301A (Moinho A)"]
-    MAN301 -->|10.0m| MOI301B["MOI-301B (Moinho B)"]
-    MOI301A -->|25.0m| HOM301["HOM-301 (Homogeneizador)"]
-    MOI301B -->|22.0m| HOM301
-    HOM301 -->|30.0m (Direto)| PRN401["PRN-401 (Prensa)"]
-    HOM301 -->|18.0m| MOE302["MOE-302 (Moega Pulmão)"]
-    MOE302 -->|20.0m| PRN401
+    SILO101["SILO-101 (Amendoim)"] -->|"15.0m"| MAN301["MAN-301 (Dosagem)"]
+    SILO102["SILO-102 (Açúcar/Sal)"] -->|"12.0m"| MAN301
+    MAN301 -->|"8.0m"| MOI301A["MOI-301A (Moinho A)"]
+    MAN301 -->|"10.0m"| MOI301B["MOI-301B (Moinho B)"]
+    MOI301A -->|"25.0m"| HOM301["HOM-301 (Homogeneizador)"]
+    MOI301B -->|"22.0m"| HOM301
+    HOM301 -->|"30.0m (Direto)"| PRN401["PRN-401 (Prensa)"]
+    HOM301 -->|"18.0m"| MOE302["MOE-302 (Moega Pulmão)"]
+    MOE302 -->|"20.0m"| PRN401
 ```
 
 ---
