@@ -16,15 +16,15 @@ Na automação de processos agroindustriais de sólidos a granel e transporte pn
 
 ```mermaid
 graph LR
-    SILO101["SILO-101 (Amendoim)"] -->|XV-301| MAN301["MAN-301 (Dosagem)"]
-    SILO102["SILO-102 (Açúcar/Sal)"] -->|XV-302| MAN301
-    MAN301 -->|XV-303A| MOI301A["MOI-301A (Moinho A)"]
-    MAN301 -->|XV-303B| MOI301B["MOI-301B (Moinho B)"]
-    MOI301A -->|XV-304A| HOM301["HOM-301 (Homogeneizador)"]
-    MOI301B -->|XV-304B| HOM301
-    HOM301 -->|XV-401 (Direto)| PRN401["PRN-401 (Prensa)"]
-    HOM301 -->|XV-402| MOE302["MOE-302 (Moega Pulmão)"]
-    MOE302 -->|XV-403| PRN401
+    SILO101["SILO-101 (Amendoim)"] -->|"XV-301"| MAN301["MAN-301 (Dosagem)"]
+    SILO102["SILO-102 (Açúcar/Sal)"] -->|"XV-302"| MAN301
+    MAN301 -->|"XV-303A"| MOI301A["MOI-301A (Moinho A)"]
+    MAN301 -->|"XV-303B"| MOI301B["MOI-301B (Moinho B)"]
+    MOI301A -->|"XV-304A"| HOM301["HOM-301 (Homogeneizador)"]
+    MOI301B -->|"XV-304B"| HOM301
+    HOM301 -->|"XV-401 (Direto)"| PRN401["PRN-401 (Prensa)"]
+    HOM301 -->|"XV-402"| MOE302["MOE-302 (Moega Pulmão)"]
+    MOE302 -->|"XV-403"| PRN401
 ```
 
 ---
