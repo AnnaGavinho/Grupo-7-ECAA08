@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 16: Problemas Eulerianos e Inspeção de Infraestrutura | SCADA-Core Automática</title>
+  <meta name="description" content="Circuitos Eulerianos, Algoritmo de Hierholzer e inspeção de manutenção preditiva na fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 16</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 16</span>
+      <h1 class="page-title">Problemas Eulerianos e Inspeção de Infraestrutura</h1>
+      <p class="page-subtitle">Teorema de Euler, Algoritmo de Hierholzer e inspeção autônoma de corrosão na fábrica de paçoca.</p>
+    </div>
+
+    <h2>1. O Teorema de Euler e a Inspeção Total</h2>
+    <p>
+      Para realizar a varredura periódica de corrosão e deposição de pó de amendoim sem desperdício de energia de bateria, um robô de manutenção móvel deve percorrer cada duto e esteira <strong>exatamente uma vez</strong>.
+    </p>
+    $$\forall v \in V, \quad \deg(v) \equiv 0 \pmod 2$$
+    <p>
+      Pelo <strong>Teorema de Euler (1736)</strong>, um grafo conexo admite um circuito euleriano fechado se e somente se todos os seus vértices possuírem grau par.
+    </p>
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+graph LR
+    BASE["BASE_INSPECAO"] --- RECEPCAO["RECEPCAO"]
+    RECEPCAO --- LIMPEZA["LIMPEZA"]
+    LIMPEZA --- SECAGEM["SECAGEM"]
+    SECAGEM --- SILO["SILO"]
+    SILO --- SELECAO["SELECAO_OPTICA"]
+    SELECAO --- TORRA["TORRA"]
+    TORRA --- DESPEL["DESPEL."]
+    DESPEL --- MOAGEM["MOAGEM"]
+    MOAGEM --- DOSAGEM["DOSAGEM"]
+    DOSAGEM --- PRENSA["PRENSA"]
+    PRENSA --- EMBALAGEM["EMBALAGEM"]
+    EMBALAGEM --- BASE
+    SILO --- TORRA
+    TORRA --- MOAGEM
+    MOAGEM --- PRENSA
+    PRENSA --- SILO
+      </pre>
+    </div>
+
+    <h2>2. O Algoritmo de Hierholzer em $O(|E|)$</h2>
+    <p>
+      O Algoritmo de Hierholzer utiliza uma pilha LIFO e remoção contínua de arestas visitadas. Como cada trecho é percorrido e desempilhado exatamente uma vez, o algoritmo atinge a complexidade linear assintótica ideal $O(|E|)$.
+    </p>
+    <div class="callout callout-info">
+      <div class="callout-title">Validação na Fábrica de Paçoca</div>
+      <p>
+        Como todos os 12 equipamentos da malha de manutenção possuem grau par ($2$ ou $4$), o circuito retornado pelo algoritmo parte de <code>BASE_INSPECAO</code>, visita todos os 16 trechos da planta sem repetir nenhum e retorna à base com sucesso.
+      </p>
+    </div>
+
+    <div class="page-nav">
+      <a href="aula-15.html" class="btn btn-outline">← Aula 15: Simulação de Falhas</a>
+      <a href="aula-17.html" class="btn btn-primary">Avançar para Aula 17: Problemas Hamiltonianos →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

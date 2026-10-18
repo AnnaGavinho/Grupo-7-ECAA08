@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 15: Simulação de Falhas e Desvio Automático | SCADA-Core Automática</title>
+  <meta name="description" content="Simulação de contingências em tempo real, punição topológica e segurança funcional IEC 61511 na fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 15</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 15</span>
+      <h1 class="page-title">Simulação de Falhas e Desvio Automático</h1>
+      <p class="page-subtitle">Punição topológica em tempo real, segurança funcional IEC 61511 e desvio autônomo.</p>
+    </div>
+
+    <h2>1. Reconfiguração Dinâmica de Grafos em Tempo Real</h2>
+    <p>
+      Na ocorrência de um bloqueio mecânico ou sobrecarga de motor em um duto $(u, v)$, o sistema executa a **punição topológica**:
+    </p>
+    $$W(u, v) \leftarrow \infty$$
+    <p>
+      Isso faz com que o algoritmo de Dijkstra ignore imediatamente a aresta com defeito e recalcule instantaneamente o menor caminho por ramais de contingência ativos.
+    </p>
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+graph LR
+    TORRA["TORRA (Forno de Torra)"] -->|"Falha: W -> inf"| DESPEL["DESPEL. (Despeliculador)"]
+    TORRA -.->|"Desvio Automático (XV-201)"| PULMAO["PULMAO_TORRA (Silo Pulmão)"]
+    PULMAO -.->|"Esteira Auxiliar (CV-201)"| DESPEL
+    DESPEL -->|"CV-107"| MOAGEM["MOAGEM (Moinhos A/B)"]
+      </pre>
+    </div>
+
+    <h2>2. Tempo de Decisão SIS e Norma IEC 61511</h2>
+    <p>
+      Em conformidade com a norma <strong>IEC 61511</strong> para Sistemas Instrumentados de Segurança (SIS), o tempo de resposta de segurança do processo é dado por:
+    </p>
+    $$\text{PST} \geq T_{\text{detecção}} + T_{\text{decisão}} + T_{\text{atuação}}$$
+    <p>
+      Nos testes computacionais da fábrica de paçoca, o recálculo algorítmico consome apenas <strong>$0{,}14\text{ ms}$</strong>, comprovando que a latência de decisão digital é ordens de grandeza inferior ao tempo de acionamento mecânico dos atuadores e válvulas pneumáticas ($1{,}5\text{ a } 3\text{ s}$).
+    </p>
+
+    <h2>3. Conectividade e Detecção de Pontes (Tarjan)</h2>
+    <p>
+      Uma aresta é uma <strong>ponte</strong> (*bridge*) se a sua desconexão divide a planta em componentes desconectados. Pelo algoritmo de Tarjan ($O(|V|+|E|)$), o SCADA verifica se um trecho com falha possui caminhos redundantes: como a linha entre torra e despeliculagem dispõe do ramal do silo pulmão, a linha é $2$-aresta-conexa, garantindo disponibilidade contínua sem parada de emergência do forno.
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-14.html" class="btn btn-outline">← Aula 14: Menor Caminho</a>
+      <a href="aula-16.html" class="btn btn-primary">Avançar para Aula 16: Problemas Eulerianos →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

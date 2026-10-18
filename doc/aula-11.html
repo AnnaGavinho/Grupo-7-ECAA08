@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 11: Modelagem da Tubulação e Instrumentos como Grafo | SCADA-Core Automática</title>
+  <meta name="description" content="Modelagem formal da rede de transporte pneumático e roscas helicoidais da fábrica de paçoca como dígrafo ponderado.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 11</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 11</span>
+      <h1 class="page-title">Modelagem da Tubulação e Instrumentos como Grafo</h1>
+      <p class="page-subtitle">Representação da malha de transporte da Fábrica de Paçoca como Dígrafo Ponderado $G = (V, E, W)$.</p>
+    </div>
+
+    <h2>1. Fundamentação Matemática: Dígrafos Industriais</h2>
+    <p>
+      Na automação de processos agroindustriais, a transferência de grãos, pós e massas homogeneizadas é formalmente descrita pela tripla ordenada de um <strong>Dígrafo Ponderado</strong>:
+    </p>
+    $$G = (V, E, W)$$
+    <ul>
+      <li><strong>$V$ (Vértices):</strong> Conjunto finito de equipamentos de processo: silos de amendoim e açúcar, manifold de dosagem, moinhos de martelo, homogeneizador de massa, moega pulmão e prensa de compactação ($|V| = 8$).</li>
+      <li><strong>$E \subseteq V \times V$ (Arestas Dirigidas):</strong> Trechos físicos de transporte com sentido de escoamento unidirecional ($|E| = 9$).</li>
+      <li><strong>$W: E \to \mathbb{R}^+$ (Função de Ponderação):</strong> Custo operacional associado a cada duto (comprimento físico em metros $L\text{ [m]}$ ou perda de carga $\Delta P$).</li>
+    </ul>
+
+    <h2>2. Topologia da Rede Nuclear de Processo</h2>
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+graph LR
+    SILO101["SILO-101: Amendoim"] -->|"15m - XV-301"| MAN301["MAN-301: Manifold"]
+    SILO102["SILO-102: Açúcar e Sal"] -->|"12m - XV-302"| MAN301
+    MAN301 -->|"8m - XV-303A"| MOI301A["MOI-301A: Moinho A"]
+    MAN301 -->|"10m - XV-303B"| MOI301B["MOI-301B: Moinho B"]
+    MOI301A -->|"25m - XV-304A"| HOM301["HOM-301: Homogeneizador"]
+    MOI301B -->|"22m - XV-304B"| HOM301
+    HOM301 -->|"30m - XV-401"| PRN401["PRN-401: Prensa"]
+    HOM301 -->|"18m - XV-402"| MOE302["MOE-302: Moega Pulmão"]
+    MOE302 -->|"20m - XV-403"| PRN401
+      </pre>
+    </div>
+
+    <h2>3. Lema do Aperto de Mãos Dirigido</h2>
+    <p>
+      Para qualquer dígrafo, a soma dos graus de saída deve ser estritamente igual à soma dos graus de entrada, igualando a cardinalidade do conjunto de arestas:
+    </p>
+    $$\sum_{v \in V} \deg^+(v) = \sum_{v \in V} \deg^-(v) = |E| = 9$$
+    <p>
+      Essa invariante matemática é implementada no SCADA-Core como teste automatizado de integridade para auditar o banco de dados do P&amp;ID digital da planta.
+    </p>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr><th>Equipamento (Vértice)</th><th>$\deg^-$ (Alimentação)</th><th>$\deg^+$ (Descarga)</th><th>Função Operacional</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>SILO-101_Amendoim</code></td><td>0</td><td>1</td><td>Armazenamento de Grãos Descascados</td></tr>
+          <tr><td><code>SILO-102_Acucar</code></td><td>0</td><td>1</td><td>Armazenamento de Sacarose e Cloreto de Sódio</td></tr>
+          <tr><td><code>MAN-301_Dosagem</code></td><td>2</td><td>2</td><td>Manifold Dosador Gravimétrico</td></tr>
+          <tr><td><code>MOI-301A</code></td><td>1</td><td>1</td><td>Moinho de Martelos A (Linha 1)</td></tr>
+          <tr><td><code>MOI-301B</code></td><td>1</td><td>1</td><td>Moinho de Martelos B (Linha 2 Reserva)</td></tr>
+          <tr><td><code>HOM-301_Massa</code></td><td>2</td><td>2</td><td>Misturador Homogeneizador de Massa</td></tr>
+          <tr><td><code>MOE-302_Pulmao</code></td><td>1</td><td>1</td><td>Silo Pulmão Intermediário de Amortecimento</td></tr>
+          <tr><td><code>PRN-401_Prensa</code></td><td>2</td><td>0</td><td>Prensa Rotativa de Compactação Final</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-nav">
+      <a href="etapa-02-grafos.html" class="btn btn-outline">← Visão Geral da Etapa 02</a>
+      <a href="aula-12.html" class="btn btn-primary">Avançar para Aula 12: Matrizes e Balanço →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

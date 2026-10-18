@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 17: Problemas Hamiltonianos e Roteamento de AGV | SCADA-Core Automática</title>
+  <meta name="description" content="Problema do Caixeiro-Viajante (TSP) para o AGV de amostragem de qualidade na fábrica de paçoca com Nearest Neighbor e 2-Opt.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 17</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 17</span>
+      <h1 class="page-title">Problemas Hamiltonianos e Roteamento de AGV</h1>
+      <p class="page-subtitle">Otimização de trajetórias do veículo guiado automaticamente para amostragem de qualidade (TSP).</p>
+    </div>
+
+    <h2>1. O Problema do Caixeiro-Viajante (TSP) na Qualidade</h2>
+    <p>
+      Na fábrica de paçoca, o veículo autônomo (AGV) é responsável por coletar alíquotas periódicas de controle de qualidade para testes de umidade, atividade de água ($a_w$) e granulometria. O veículo parte do <code>Laboratório de Qualidade</code>, deve visitar cada estação crítica de coleta <strong>exatamente uma vez</strong> e retornar à base:
+    </p>
+    <ul>
+      <li><code>SILO-101</code>: Amendoim cru;</li>
+      <li><code>SILO-102</code>: Sacarose e sal refinado;</li>
+      <li><code>TORRA</code>: Amendoim recém-torrado e despeliculado;</li>
+      <li><code>HOM-301</code>: Massa triturada com ponto de pasta;</li>
+      <li><code>PRN-401</code>: Paçoca prensada final.</li>
+    </ul>
+
+    <h2>2. Heurística do Vizinho Mais Próximo (NN) + Refinamento 2-Opt</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h4 style="color:#38bdf8;">1. Nearest Neighbor (NN)</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          Gera de forma gulosa uma rota inicial rápida em $O(n^2)$. Na malha da planta, a rota inicial resultou em:
+        </p>
+        <code style="font-size:0.8rem; display:block; padding:0.5rem; background:#091224; border-radius:4px; margin-top:0.5rem;">
+          Lab ➔ SILO-101 ➔ SILO-102 ➔ TORRA ➔ HOM-301 ➔ PRN-401 ➔ Lab (280.0m)
+        </code>
+      </div>
+      <div class="card">
+        <h4 style="color:#f59e0b;">2. Busca Local 2-Opt</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          Remove pares de arestas cruzadas e reconecta os trechos invertidos. Pela desigualdade triangular, reduz o percurso total:
+        </p>
+        <code style="font-size:0.8rem; display:block; padding:0.5rem; background:#091224; border-radius:4px; margin-top:0.5rem;">
+          Lab ➔ SILO-101 ➔ SILO-102 ➔ TORRA ➔ PRN-401 ➔ HOM-301 ➔ Lab (260.0m)
+        </code>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="aula-16.html" class="btn btn-outline">← Aula 16: Circuitos Eulerianos</a>
+      <a href="aula-18.html" class="btn btn-primary">Avançar para Aula 18: Logística e DAGs →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

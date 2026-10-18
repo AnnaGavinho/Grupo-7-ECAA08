@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 12: Matrizes de Incidência, Adjacência e Balanço de Massa | SCADA-Core Automática</title>
+  <meta name="description" content="Álgebra matricial aplicada à conservação mássica e topologia da fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 12</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 12</span>
+      <h1 class="page-title">Matrizes de Incidência, Adjacência e Balanço de Massa</h1>
+      <p class="page-subtitle">Aplicação da álgebra matricial de grafos na verificação de conservação de fluxo no SCADA.</p>
+    </div>
+
+    <h2>1. Matriz de Incidência Vértice-Aresta ($B$)</h2>
+    <p>
+      Para o dígrafo da fábrica de paçoca com $n = 8$ nós e $m = 9$ dutos, a Matriz de Incidência $B \in \{-1, 0, 1\}^{n \times m}$ define formalmente a incidência orientada:
+    </p>
+    $$B[i, j] = \begin{cases} -1, & \text{se a aresta } e_j \text{ sai do nó } v_i \text{ (origem)} \\ +1, & \text{se a aresta } e_j \text{ entra no nó } v_i \text{ (destino)} \\ 0, & \text{se o nó } v_i \text{ não incide na aresta } e_j \end{cases}$$
+
+    <div class="callout callout-info">
+      <div class="callout-title">Propriedade Fundamental: Soma por Coluna Nula</div>
+      <p>
+        Para qualquer coluna $j$, temos $\sum_{i=1}^n B[i, j] = 0$. Essa propriedade decorre da topologia orientada: cada duto possui exatamente uma origem ($-1$) e um destino ($+1$).
+      </p>
+    </div>
+
+    <h2>2. Balanço de Massa Matricial de Kirchhoff</h2>
+    <p>
+      Em regime permanente, a conservação de matéria em todos os nós da fábrica é equacionada como:
+    </p>
+    $$B \cdot \vec{Q} = \vec{S}$$
+    <p>
+      Onde $\vec{Q} \in \mathbb{R}^m$ é o vetor de vazões mássicas pelos dutos (em $\text{kg/h}$) e $\vec{S} \in \mathbb{R}^n$ é o vetor de fontes/sumidouros:
+    </p>
+    <ul>
+      <li>$\vec{S}[\text{SILO-101}] = -70{,}0\text{ kg/h}$ (descarga contínua de amendoim);</li>
+      <li>$\vec{S}[\text{SILO-102}] = -50{,}0\text{ kg/h}$ (descarga contínua de açúcar e sal);</li>
+      <li>$\vec{S}[\text{Equipamentos Intermediários}] = 0{,}0\text{ kg/h}$ (conservação estrita sem acúmulo);</li>
+      <li>$\vec{S}[\text{PRN-401}] = +120{,}0\text{ kg/h}$ (produção de paçoca compactada).</li>
+    </ul>
+
+    <h2>3. Ciclos Fundamentais e Espaço Nulo</h2>
+    <p>
+      A dimensão do núcleo de $B$ revela a quantidade exata de caminhos redundantes independentes:
+    </p>
+    $$\dim(\ker(B)) = m - n + 1 = 9 - 8 + 1 = 2$$
+    <p>
+      Os 2 graus de liberdade correspondem exatamente às malhas paralelas da fábrica:
+    </p>
+    <ol>
+      <li><strong>Ciclo de Moagem:</strong> Ramo paralelo via Moinho A (`MOI-301A`) ou Moinho B (`MOI-301B`).</li>
+      <li><strong>Ciclo de Alívio:</strong> Ramo direto `HOM-301 -> PRN-401` vs. desvio via Moega Pulmão `HOM-301 -> MOE-302 -> PRN-401`.</li>
+    </ol>
+
+    <div class="page-nav">
+      <a href="aula-11.html" class="btn btn-outline">← Aula 11: Modelagem</a>
+      <a href="aula-13.html" class="btn btn-primary">Avançar para Aula 13: Algoritmos de Busca →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

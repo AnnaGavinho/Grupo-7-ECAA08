@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 18: Grafos de Logística de Insumos e Produtos Acabados | SCADA-Core Automática</title>
+  <meta name="description" content="Redes multicamadas e Grafos Acíclicos Dirigidos (DAGs) aplicados à logística e rastreabilidade da fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 18</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 18</span>
+      <h1 class="page-title">Grafos de Logística de Insumos e Produtos Acabados</h1>
+      <p class="page-subtitle">Redes multicamadas e Grafos Acíclicos Dirigidos (DAGs) para controle de cadeia de suprimentos.</p>
+    </div>
+
+    <h2>1. O Fluxo de Materiais como Grafo Acíclico Dirigido (DAG)</h2>
+    <p>
+      O fluxo de transformação do amendoim e dos insumos até a expedição das caixas de paçoca é, por definição física, irreversível. Esse fluxo é modelado por um <strong>DAG</strong> ($G_M = (V_M, E_M, W_M)$): não existem caminhos orientados que retornem a nós anteriores no regime normal de produção.
+    </p>
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+flowchart LR
+    P["Portaria"] --> B["Balança entrada"]
+    B --> A["Recebimento / Galpão A"]
+    A --> AM["Box: Amendoim Cru"]
+    A --> AC["Box: Açúcar"]
+    A --> SA["Box: Sal"]
+    A --> GL["Tanque de Glucose"]
+    AM --> M["Moega de Recepção"]
+    AC --> M
+    SA --> M
+    GL --> D["Silos de Dosagem"]
+    M --> D
+    D --> MT["Torrador / Moinho"]
+    MT --> HOM["Homogeneização (HOM-301)"]
+    HOM --> PRN["Prensagem (PRN-401)"]
+    PRN --> ENS["Ensacamento Flow-Pack"]
+    ENS --> N1["Estoque Paçoca Tradicional"]
+    ENS --> N2["Estoque Paçoca Zero Açúcar"]
+    ENS --> N3["Estoque Paçoca Premium"]
+    N1 --> C["Docas de Expedição"]
+    N2 --> C
+    N3 --> C
+      </pre>
+    </div>
+
+    <h2>2. Algoritmo de Kahn e Ordenação Topológica</h2>
+    <p>
+      O <strong>Algoritmo de Kahn (1962)</strong> avalia repetidamente os vértices de grau de entrada zero ($\deg^- = 0$) em complexidade linear $O(|V| + |E|)$.
+    </p>
+    <div class="callout callout-info">
+      <div class="callout-title">Garantia de Rastreabilidade e Auditoria</div>
+      <p>
+        Qualquer lote de produção de paçoca é validado pelo sistema MES/SCADA conferindo se a sequência temporal dos apontamentos respeita rigorosamente a ordenação topológica do DAG, impedindo desvios de processo e garantindo controle sanitário total (HACCP).
+      </p>
+    </div>
+
+    <div class="page-nav">
+      <a href="aula-17.html" class="btn btn-outline">← Aula 17: Problemas Hamiltonianos</a>
+      <a href="etapa-02-grafos.html" class="btn btn-primary">Voltar para a Visão Geral da Etapa 02 →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

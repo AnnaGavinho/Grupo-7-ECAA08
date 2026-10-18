@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 14: Menor Caminho Dijkstra e Roteamento Dinâmico | SCADA-Core Automática</title>
+  <meta name="description" content="Otimização de rotas com Algoritmo de Dijkstra e Min-Heap na linha de dosagem, moagem e prensagem de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 14</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 14</span>
+      <h1 class="page-title">Menor Caminho Dijkstra e Roteamento Dinâmico</h1>
+      <p class="page-subtitle">Otimização métrica de distâncias com Min-Heap na linha de processamento de paçoca.</p>
+    </div>
+
+    <h2>1. Otimização de Trajetórias por Dijkstra</h2>
+    <p>
+      Para o dígrafo ponderado $G = (V, E, W)$, onde $W: E \to \mathbb{R}^+$ representa o comprimento físico real em metros dos trechos de transporte, o <strong>Algoritmo de Dijkstra</strong> calcula o percurso de custo mínimo com complexidade determinística:
+    </p>
+    $$O((|V| + |E|) \log |V|)$$
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+graph LR
+    SILO101["SILO-101 (Amendoim)"] -->|"15.0m"| MAN301["MAN-301 (Dosagem)"]
+    SILO102["SILO-102 (Açúcar/Sal)"] -->|"12.0m"| MAN301
+    MAN301 -->|"8.0m"| MOI301A["MOI-301A (Moinho A)"]
+    MAN301 -->|"10.0m"| MOI301B["MOI-301B (Moinho B)"]
+    MOI301A -->|"25.0m"| HOM301["HOM-301 (Homogeneizador)"]
+    MOI301B -->|"22.0m"| HOM301
+    HOM301 -->|"30.0m (Direto)"| PRN401["PRN-401 (Prensa)"]
+    HOM301 -->|"18.0m"| MOE302["MOE-302 (Moega Pulmão)"]
+    MOE302 -->|"20.0m"| PRN401
+      </pre>
+    </div>
+
+    <h2>2. Operação de Relaxação e Rastreamento Reverso</h2>
+    <p>
+      A cada iteração sobre a fronteira do Min-Heap, o algoritmo executa a <strong>relaxação</strong> de cada aresta $(u, v)$:
+    </p>
+    $$\text{se } d[u] + w(u, v) < d[v] \implies d[v] \leftarrow d[u] + w(u, v), \quad \text{pred}[v] \leftarrow u$$
+    <p>
+      O vetor de predecessores permite ao supervisório reconstruir o caminho ótimo de trás para frente em tempo linear $O(\text{comprimento do caminho})$:
+    </p>
+    $$\text{PRN-401} \leftarrow \text{HOM-301} \leftarrow \text{MOI-301B} \leftarrow \text{MAN-301} \leftarrow \text{SILO-101}$$
+    <p>
+      Resultando na distância mínima global de <strong>$77{,}0\text{ m}$</strong> (Moinho B). Em caso de indisponibilidade do Moinho B, o recálculo automático seleciona a rota pelo Moinho A com <strong>$78{,}0\text{ m}$</strong> ($+1{,}0\text{ m}$).
+    </p>
+
+    <div class="page-nav">
+      <a href="aula-13.html" class="btn btn-outline">← Aula 13: Algoritmos de Busca</a>
+      <a href="aula-15.html" class="btn btn-primary">Avançar para Aula 15: Simulação de Falhas →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

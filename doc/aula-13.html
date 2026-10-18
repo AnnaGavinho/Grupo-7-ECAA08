@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 13: Algoritmos de Busca BFS e DFS em Tubulações | SCADA-Core Automática</title>
+  <meta name="description" content="Busca em Largura (BFS) e Busca em Profundidade (DFS) aplicadas à minimização de manobras de válvulas e detecção de ciclos na fábrica de paçoca.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-brand">
+        <span class="scada-badge">SCADA-CORE</span>
+        <span>ECAA08 Automática</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="../index.html">🏠 Início</a></li>
+        <li><a href="etapa-01-logica.html">⚡ Etapa 01</a></li>
+        <li><a href="etapa-02-grafos.html" class="active">🕸️ Etapa 02 (Disponível)</a></li>
+        <li><a href="planta-pacoca.html">🏭 Planta da Fábrica</a></li>
+        <li><a href="diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">☀️</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <div class="breadcrumb"><a href="../index.html">Início</a> / <a href="etapa-02-grafos.html">Etapa 02</a> / Aula 13</div>
+    <div class="page-header">
+      <span class="page-kicker">Etapa 02 • Aula 13</span>
+      <h1 class="page-title">Algoritmos de Busca (BFS e DFS) em Redes de Transporte</h1>
+      <p class="page-subtitle">Minimização de acionamento de válvulas pneumáticas e enumeração exaustiva de rotas de contingência.</p>
+    </div>
+
+    <h2>1. Travessia em Redes de Transporte da Paçoca</h2>
+    <div class="card" style="margin-bottom: 2rem;">
+      <pre class="mermaid">
+graph LR
+    SILO101["SILO-101 (Amendoim)"] -->|"XV-301"| MAN301["MAN-301 (Dosagem)"]
+    SILO102["SILO-102 (Açúcar/Sal)"] -->|"XV-302"| MAN301
+    MAN301 -->|"XV-303A"| MOI301A["MOI-301A (Moinho A)"]
+    MAN301 -->|"XV-303B"| MOI301B["MOI-301B (Moinho B)"]
+    MOI301A -->|"XV-304A"| HOM301["HOM-301 (Homogeneizador)"]
+    MOI301B -->|"XV-304B"| HOM301
+    HOM301 -->|"XV-401 (Direto)"| PRN401["PRN-401 (Prensa)"]
+    HOM301 -->|"XV-402"| MOE302["MOE-302 (Moega Pulmão)"]
+    MOE302 -->|"XV-403"| PRN401
+      </pre>
+    </div>
+
+    <h2>2. Comparativo de Engenharia: BFS vs. DFS</h2>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr><th>Critério Operacional</th><th>Busca em Largura (BFS)</th><th>Busca em Profundidade (DFS)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Estrutura de Dados</strong></td><td>Fila FIFO (First-In, First-Out)</td><td>Pilha LIFO ou Recursão</td></tr>
+          <tr><td><strong>Caminho Mínimo em Válvulas</strong></td><td><strong>Sim:</strong> Garante menor número de comutações ($O(|V|+|E|)$).</td><td>Não: Depende da ordem de visitação dos ramos.</td></tr>
+          <tr><td><strong>Detecção de Ciclos</strong></td><td>Indireta</td><td><strong>Direta:</strong> Identifica arestas de retorno (*back edges*).</td></tr>
+          <tr><td><strong>Aplicação no SCADA</strong></td><td>Partida rápida com menor desgaste mecânico de atuadores.</td><td>Mapeamento preventivo de todas as 4 alternativas de contingência.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. Bloqueio Dinâmico de Equipamentos</h2>
+    <p>
+      Quando um sensor acusa sobretemperatura no mancal do Moinho A (`MOI-301A`), o SCADA injeta o nó no conjunto $V_{\text{bloq}}$. A busca ignora automaticamente os vizinhos pertencentes a $V_{\text{bloq}}$, retornando instantaneamente o caminho alternativo via Moinho B:
+    </p>
+    $$\text{SILO-101\_Amendoim} \xrightarrow{XV\text{-}301} \text{MAN-301} \xrightarrow{XV\text{-}303B} \text{MOI-301B} \xrightarrow{XV\text{-}304B} \text{HOM-301} \xrightarrow{XV\text{-}401} \text{PRN-401}$$
+
+    <div class="page-nav">
+      <a href="aula-12.html" class="btn btn-outline">← Aula 12: Matrizes</a>
+      <a href="aula-14.html" class="btn btn-primary">Avançar para Aula 14: Menor Caminho Dijkstra →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2026.2 ECAA08 Automática • Engenharia de Controle e Automação • UNIFEI — Grupo 7</p>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
