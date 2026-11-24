@@ -17,7 +17,7 @@ O **STP (IEEE 802.1D)** e o **RSTP (IEEE 802.1w)** resolvem isso escolhendo, de 
 
 Os riscos específicos da nossa planta orientam as decisões de projeto:
 
-* **Setor 200 (forno de torra):** gás natural/GLP, operação entre 160 °C e 180 °C, intertravamento de chama (`TS-201`, `XV-201`) — é o setor que mais exige visibilidade contínua no SCADA.
+* **Setor 200 (forno de torra):** gás natural/GLP, operação abaixo do limite de segurança de 160 °C (`TT-201`), intertravamento de chama (`TS-201`, `XV-201`) — é o setor que mais exige visibilidade contínua no SCADA.
 * **Setor 200 também concentra tráfego:** a selecionadora óptica com câmeras RGB lineares gera fluxo de imagens contínuo.
 * **Setor 400 e Expedição:** detecção de metais (`MD-401`) e bloqueio de expedição (`POP-SEG-01`, Aula 10) — se o CLP 04 não conseguir avisar o WMS, um palete contaminado pode ser expedido (falha de rastreabilidade HACCP).
 
