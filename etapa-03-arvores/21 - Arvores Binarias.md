@@ -20,7 +20,7 @@
 
 ### 1.1 Contextualização da Engenharia de Processos
 
-O **Forno Contínuo de Torra** (gás GN/GLP, $160^\circ\text{C}$ a $180^\circ\text{C}$ no processo) combina chama aberta, ar quente e poeira de amendoim, e por isso é o ponto de maior risco de incêndio da planta (`planta-pacoca.html`). A proteção é um **Sistema Instrumentado de Segurança (SIS)** que fecha a válvula de corte rápido de combustível `XV-201` quando uma condição insegura é detectada.
+O **Forno Contínuo de Torra** (gás GN/GLP, operação abaixo do limite de segurança de $160^\circ\text{C}$) combina chama aberta, ar quente e poeira de amendoim, e por isso é o ponto de maior risco de incêndio da planta (`planta-pacoca.html`). A proteção é um **Sistema Instrumentado de Segurança (SIS)** que fecha a válvula de corte rápido de combustível `XV-201` quando uma condição insegura é detectada.
 
 A Etapa 01 já formalizou essa lógica como $\text{Trip}_{\text{Forno}} \equiv \neg f_2 \lor t_2 \lor e_1$. Nesta aula, a mesma lógica é reorganizada como uma **árvore binária de decisão** de profundidade fixa, avaliada em **ordem de gravidade** e com curto-circuito.
 
@@ -59,7 +59,7 @@ graph TD
 | **4** | `M-201` | Esteira do forno | $m_2 = 0$ | 0 | 0 | 1 | Bloqueio por esteira parada |
 | **5 (folha)** | — | Todos conformes | $e_1 = t_2 = 0,\ f_2 = c_1 = m_2 = 1$ | 1 | 1 | 0 | Forno em produção normal |
 
-Nos trips térmico, de exaustão e de chama, a esteira **continua ligada** para descarregar o forno e evitar que a carga queime enquanto o gás está cortado. No `ESD-100` tudo é desenergizado.
+Nos trips térmico, de exaustão e de chama, a esteira **continua ligada** para descarregar o forno e evitar que a carga queime enquanto o gás está cortado. No `ESD-100` tudo é desenergizado. A BDT é avaliada com o forno em regime (estado `P4_TORRANDO` da Aula 24). Na partida, a purga e a ignição são sequenciadas pela rede de Petri da Aula 24: `XV-201` abre e `TS-201` tem um tempo de segurança para confirmar a chama; sem confirmação, o forno vai para bloqueio (`T4_FALHA_IGNICAO`).
 
 ### 1.5 Prova de Equivalência com a Etapa 01 e Complexidade
 
