@@ -6,4 +6,4 @@ O objetivo deste projeto é projetar a arquitetura completa de automação e sup
 
 A planta opera sob rigorosos padrões de controle de qualidade e rastreabilidade, integrando controle discreto, malhas analógicas contínuas (PID) e sistemas de visão computacional.
 
-Link: https://annagavinho.github.io/Grupo-7-ECAA08/doc/planta-pacoca.html
+Link: https://annagavinho.github.io/Grupo-7-ECAA08/
