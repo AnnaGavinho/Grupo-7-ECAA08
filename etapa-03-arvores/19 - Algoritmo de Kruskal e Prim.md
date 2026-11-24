@@ -68,7 +68,7 @@ O chão de fábrica é modelado formalmente pela tripla $G = (V, E, w)$:
 | $e_{14}$ | `SILO-101` $\leftrightarrow$ `DES-202` | Setor 100 $\leftrightarrow$ Setor 200 | $35{,}0\text{ m}$ | Tronco primário de ar comprimido do galpão de insumos |
 
 **Comprimento total linear da malha pré-otimização:**
-$$W_{\text{inicial}} = \sum_{e \in E} w(e) = 247{,}00\text{ metros}$$
+$$W_{\text{inicial}} = \sum_{e \in E} w(e) = 272{,}00\text{ metros}$$
 
 ---
 
@@ -178,9 +178,9 @@ graph LR
 
 > [!NOTE]
 > **Resultados Globais da Otimização Topológica:**
-> * **Comprimento Inicial da Malha Completa:** $247{,}00\text{ metros}$
+> * **Comprimento Inicial da Malha Completa:** $272{,}00\text{ metros}$
 > * **Comprimento da Árvore Geradora Mínima:** $99{,}00\text{ metros}$
-> * **Economia Linear de Infraestrutura:** $\mathbf{59{,}92\%}$ ($148{,}00\text{ metros}$ a menos de eletrocalhas e tubos)
+> * **Economia Linear de Infraestrutura:** $\mathbf{63{,}60\%}$ ($173{,}00\text{ metros}$ a menos de eletrocalhas e tubos)
 > * **Equivalência Estrita dos Métodos:** $W_{\text{Kruskal}} = W_{\text{Prim}} = 99{,}00\text{ m}$ (Verificado)
 
 ### Diretrizes de Engenharia para Aplicação em Chão de Fábrica
@@ -194,7 +194,7 @@ Embora ambos os algoritmos garantam a otimalidade global e a mesma extensão de 
   Na etapa de obra civil e montagem eletromecânica, o algoritmo de Prim é significativamente superior. Como ele expande uma árvore estritamente conexa a partir do nó raiz (`SILO-101`), as equipes de montagem podem lançar o cabeamento de rede PROFINET e as linhas de ar comprimido de forma sequencial e ininterrupta. Isto viabiliza testes ponto a ponto e comissionamento progressivo setor por setor (Setor 100 $\to$ Setor 200 $\to$ Setor 300 $\to$ Setor 400) sem deixar segmentos isolados ou desenergizados no galpão.
 
 * **Distinção Crítica entre MST Física e Redes Ethernet RSTP (Aula 23):**  
-  Um erro comum de engenharia é confundir a **MST física** com o **protocolo de árvore geradora de rede (RSTP / IEEE 802.1w)**. A MST de Kruskal/Prim minimiza o **custo de implantação física** (metros de cabos e canaletas). Já o RSTP constrói uma **Árvore de Caminhos Mínimos (SPT)** calculada via Dijkstra a partir do switch raiz (*Root Bridge*), visando minimizar a latência de tráfego de dados e eliminar *broadcast storms*, mesmo que a soma dos enlaces seja maior que a MST.
+  Um erro comum de engenharia é confundir a **MST física** com o **protocolo de árvore geradora de rede (RSTP / IEEE 802.1w)**. A MST de Kruskal/Prim minimiza o **custo de implantação física** (metros de cabos e canaletas). Já o RSTP constrói uma **Árvore de Caminhos Mínimos (SPT)** calculada via Dijkstra a partir do switch raiz (*Root Bridge*), visando minimizar a latência de tráfego de dados e eliminar *broadcast storms*, mesmo que a soma dos enlaces seja maior que a MST. Por isso a MST define apenas o traçado da eletrocalha-tronco; na rede de comunicação, os enlaces de fechamento do anel e o backbone de 10 Gbps da Aula 23 são acrescentados de propósito, já que numa árvore física toda aresta é uma ponte e qualquer cabo rompido isola um setor.
 
 ---
 
