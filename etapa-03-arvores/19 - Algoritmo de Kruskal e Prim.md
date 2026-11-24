@@ -44,7 +44,7 @@ O chão de fábrica é modelado formalmente pela tripla $G = (V, E, w)$:
   * $v_3$: `FOR-201` — Forno Contínuo de Torra a Gás (`TT-201`, `TS-201`, `XV-201`, Setor 200)
   * $v_4$: `DES-202` — Rolos Despeliculadores e Ciclone de Extração de Película (`M-202`, Setor 200)
   * $v_5$: `MAN-301` — Manifold de Dosagem Gravimétrica (`WT-301`, `WT-302`, `WT-303`, Setor 300)
-  * $v_6$: `MOI-301` — Moinho de Martelos Industrial (`M-301`, Setor 300)
+  * $v_6$: `MOI-301` — Conjunto de moinhos de martelos `MOI-301A` (operante) e `MOI-301B` (reserva), tratado como um único nó de layout (`M-301`, Setor 300)
   * $v_7$: `HOM-301` — Misturador Homogeneizador Helicoidal de Duplo Eixo (`HOM-301`, Setor 300)
   * $v_8$: `PRN-401` — Prensa Rotativa de Compactação e Embalagem (`PS-401`, `M-401`, Setor 400)
 
