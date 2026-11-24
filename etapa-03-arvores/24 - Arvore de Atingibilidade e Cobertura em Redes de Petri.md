@@ -79,7 +79,7 @@ $$y^T M' = y^T M + y^T C\,\vec{e}_j = y^T M \;\Rightarrow\; y^T M = y^T M_0 \qua
 
 ### 3.1. Modelo
 
-O forno de torra é o ponto de maior risco da planta (gás, 160–180 °C, poeira e óleo de amendoim). A lógica segue o princípio clássico de queimadores: **purgar a câmara com ar antes de qualquer ignição** e **repetir a purga após qualquer bloqueio**, para eliminar gás residual.
+O forno de torra é o ponto de maior risco da planta (gás, operação abaixo do limite de segurança de 160 °C, poeira e óleo de amendoim). A lógica segue o princípio clássico de queimadores: **purgar a câmara com ar antes de qualquer ignição** e **repetir a purga após qualquer bloqueio**, para eliminar gás residual.
 
 | Lugar | Significado | Instrumentos | $M_0$ |
 | :--- | :--- | :--- | :---: |
@@ -97,7 +97,7 @@ O forno de torra é o ponto de maior risco da planta (gás, 160–180 °C, poeir
 | `T2_FIM_PURGA` | P2 | P3 | Purga cumprida com `FS-201` OK |
 | `T3_IGNICAO_OK` | P3 | P4, P7 | Abre `XV-201`, `TS-201` confirma chama |
 | `T4_FALHA_IGNICAO` | P3 | P5 | Chama não confirmada no tempo de segurança |
-| `T5_TRIP` | P4, P7 | P5 | Sobretemperatura `TT-201`, perda de chama ou de exaustão |
+| `T5_TRIP` | P4, P7 | P5 | Qualquer trip da BDT da Aula 21: `ESD-100`, sobretemperatura `TT-201`, perda de exaustão `FS-201`, perda de chama `TS-201` ou esteira `M-201` parada |
 | `T6_DESLIGAR` | P4, P7, P6 | P1 | Parada normal |
 | `T7_RESET` | P5, P6 | P1 | Reset manual após inspeção |
 
@@ -235,7 +235,7 @@ Uma rede pode ser segura e viva e ainda desperdiçar equipamento. Comparamos a P
 | Parte C (capacidade no `HOM-301` e na `MOE-302`) | 216 | **2** |
 | Conservadora (reserva o `HOM-301` na descarga) | 108 | 1 |
 
-A versão conservadora parece mais segura, mas **serializa a linha**: o moinho reserva nunca trabalha em paralelo. A árvore de atingibilidade mostra isso de forma objetiva pelo limite de `P9_MOENDO`.
+O `MOI-301B` é reserva. A lógica da Parte C permite colocá-lo em paralelo quando necessário (por exemplo, para recuperar atraso de produção); a lógica conservadora impede isso, limitando `P9_MOENDO` a 1. A árvore de atingibilidade mostra isso de forma objetiva pelo limite de `P9_MOENDO`.
 
 ---
 
