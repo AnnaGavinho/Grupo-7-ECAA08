@@ -33,6 +33,7 @@
       <ul class="nav-links">
         <li><a href="index.html" class="active">🏠 Início</a></li>
         <li><a href="doc/etapa-01-logica.html">⚡ Etapa 01 (Disponível)</a></li>
+        <li><a href="#etapa-03">🌲 Etapa 03 (Disponível)</a></li>
         <li><a href="doc/planta-pacoca.html">🏭 Planta da Fábrica</a></li>
         <li><a href="doc/diretrizes-github.html">🐙 GitHub &amp; 5W2H</a></li>
       </ul>
@@ -63,6 +64,9 @@
       <div class="hero-actions">
         <a href="doc/etapa-01-logica.html" class="btn btn-primary" style="font-size: 1rem; padding: 0.85rem 1.8rem;">
           ⚡ Acessar Etapa 01: Lógica Formal (Disponível) →
+        </a>
+        <a href="#etapa-03" class="btn btn-primary" style="font-size: 1rem; padding: 0.85rem 1.8rem; background: linear-gradient(135deg, #d97706, #f59e0b);">
+          🌲 Acessar Etapa 03: Árvores (Disponível) →
         </a>
         <a href="doc/planta-pacoca.html" class="btn btn-outline">
           🏭 Conhecer a Planta da Fábrica de Paçoca
@@ -132,18 +136,26 @@
           </div>
         </div>
 
-        <div class="card" style="opacity: 0.85;">
+        <div class="card" style="border-color: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);">
           <div class="card-header">
-            <span class="module-badge" style="background: rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3);">Módulo 3 • Árvores</span>
-            <span class="status-pill status-soon">⏳ EM BREVE</span>
+            <span class="module-badge" style="background: rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3);">Módulo 3 • Aulas 19 a 24</span>
+            <span class="status-pill status-ok">✅ DISPONÍVEL AGORA</span>
           </div>
-          <h3 class="card-title">🌲 Etapa 03: Árvores &amp; Gestão de Alarmes (ISA-18.2)</h3>
+          <h3 class="card-title" style="color: #fbbf24;">🌲 Etapa 03: Árvores na Automação</h3>
           <p class="card-description">
-            Hierarquia de ativos da fábrica, árvores binárias de busca para varredura de tags, e supressão de
-            inundação de alarmes (Alarm Flood) no supervisório.
+            Árvore geradora mínima da infraestrutura (Kruskal/Prim), Huffman na telemetria do forno, BDT do
+            intertravamento e AVL do historiador, RRT para o AGV, RSTP na rede Ethernet industrial e árvores de
+            atingibilidade e cobertura em Redes de Petri.
           </p>
-          <div class="callout callout-warning" style="margin: 0.75rem 0; padding: 0.6rem 0.9rem; font-size: 0.82rem;">
-            <strong>Previsão de liberação:</strong> conforme cronograma semestral.
+          <ul style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--text-muted); margin: 0 0 1.25rem;">
+            <li>📽️ <strong>Apresentação</strong> em 8 slides.</li>
+            <li>🎛️ <strong>Laboratório SCADA-Tree:</strong> falhas na rede RSTP, BDT + Petri do forno e Huffman.</li>
+            <li>📖 <strong>Aulas 19 a 24:</strong> memorial com links para os notebooks em Python.</li>
+          </ul>
+          <div class="card-footer">
+            <a href="#etapa-03" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #d97706, #f59e0b);">
+              Acessar Etapa 03 →
+            </a>
           </div>
         </div>
 
@@ -192,6 +204,820 @@
       </div>
     </section>
 
+
+    <!-- ===================================================
+         ETAPA 03: ÁRVORES (Aulas 19 a 24)
+         =================================================== -->
+    <section id="etapa-03" style="margin-top: 4.5rem;">
+      <div class="section-header">
+        <span class="section-tag" style="color: #f59e0b;">Módulo 3 • Aulas 19 a 24</span>
+        <h2 class="section-title">🌲 Etapa 03: Árvores na Automação da Fábrica de Paçoca</h2>
+        <p class="section-subtitle">
+          Apresentação em 8 slides, laboratório interativo SCADA-Tree e memorial das Aulas 19 a 24.
+        </p>
+      </div>
+
+    <!-- CALLOUT NOTA DE ENGENHARIA -->
+    <div class="callout callout-warning" style="background: rgba(245, 158, 11, 0.07); margin-bottom: 3.5rem;">
+      <div class="callout-title">
+        🌲 Por que Árvores no Controle &amp; Automação da Fábrica de Paçoca?
+      </div>
+      <p>
+        Uma árvore é o grafo conexo mais econômico que existe: liga todos os vértices com exatamente $|V| - 1$ arestas e sem nenhum ciclo. Essa propriedade aparece na fábrica em lugares muito diferentes. Ela dá o traçado mínimo de eletrocalhas e utilidades (<strong>Kruskal/Prim</strong>), o dicionário de prefixos que comprime a telemetria do forno (<strong>Huffman</strong>), a sequência de testes do intertravamento e o índice do historiador (<strong>BDT e AVL</strong>), a exploração do chão de fábrica pelo AGV (<strong>RRT</strong>), a topologia lógica sem laços da rede Ethernet (<strong>RSTP</strong>) e a enumeração de todos os estados possíveis de um sistema a eventos discretos (<strong>árvores de atingibilidade e de cobertura</strong>). Em todos os casos, a árvore transforma um problema de engenharia em uma estrutura que pode ser percorrida, auditada e provada.
+      </p>
+    </div>
+
+      <div id="apresentacao-03" style="margin-bottom: 4rem;">
+      <div class="presentation-wrapper" style="border-color: #78350f;">
+        <div class="presentation-toolbar">
+          <div class="pres-info">
+            <span>📽️ <strong>SCADA-Core: Módulo 3 • Árvores</strong></span>
+            <span id="pres-slide-counter">Slide 1 de 8</span>
+          </div>
+          <div class="pres-controls">
+            <button id="pres-prev-btn" class="pres-btn" disabled>← Anterior</button>
+            <button id="pres-next-btn" class="pres-btn">Próximo →</button>
+          </div>
+        </div>
+
+        <div class="presentation-viewport">
+
+          <!-- SLIDE 1 -->
+          <div class="slide active">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 01 / 08 • Abertura
+            </span>
+            <h3 class="slide-title">SCADA-Tree: Árvores na Infraestrutura, na Supervisão e na Segurança da Fábrica de Paçoca</h3>
+            <p class="slide-subtitle">Módulo 3: Árvores Geradoras, Árvores Binárias, Árvores de Busca e Árvores de Estados (Aulas 19 a 24)</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div>
+                  <p><strong>Definição que une as seis aulas:</strong> uma árvore é um grafo $T = (V, E)$ conexo e acíclico, o que equivale a $|E| = |V| - 1$ com conexidade. Cada aula usa essa estrutura com um objetivo de engenharia diferente.</p>
+                  <ul style="padding-left: 1.25rem; margin-top: 0.75rem; color: var(--text-muted);">
+                    <li><strong>Custo:</strong> MST de eletrocalhas e utilidades (Aula 19).</li>
+                    <li><strong>Informação:</strong> código de prefixo de Huffman na telemetria do forno (Aula 20).</li>
+                    <li><strong>Decisão e busca:</strong> BDT do intertravamento e AVL do historiador (Aula 21).</li>
+                    <li><strong>Movimento:</strong> RRT/RRT* para o AGV de amostragem (Aula 22).</li>
+                    <li><strong>Redundância:</strong> STP/RSTP na rede Ethernet industrial (Aula 23).</li>
+                    <li><strong>Estados:</strong> árvores de atingibilidade e de cobertura em Redes de Petri (Aula 24).</li>
+                  </ul>
+                </div>
+                <div class="card" style="text-align: center; background: rgba(245, 158, 11, 0.05); border-color: #f59e0b;">
+                  <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌲 🥜 🔥</div>
+                  <h4 style="color: #f59e0b;">Uma estrutura, seis usos</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    Toda aula tem notebook em Python com verificação formal das propriedades de árvore e resultados conferidos contra o memorial em Markdown.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 02 / 08 • Aula 19
+            </span>
+            <h3 class="slide-title">Aula 19: Árvore Geradora Mínima da Infraestrutura (Kruskal e Prim)</h3>
+            <p class="slide-subtitle">Eletrocalhas, ar comprimido e utilidades ligando 8 equipamentos com o menor comprimento possível</p>
+            <div class="slide-body">
+              <p>Grafo de layout com $|V| = 8$ equipamentos (de <code>SILO-101</code> a <code>PRN-401</code>) e $|E| = 14$ rotas viáveis. A MST precisa de $|V| - 1 = 7$ trechos.</p>
+              <div class="grid-2" style="margin-top: 0.75rem;">
+                <div>
+                  $$W_{\text{inicial}} = 272\text{ m} \quad\longrightarrow\quad W_{\text{MST}} = 99\text{ m}$$
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Economia de <strong>63,60%</strong> (173 m a menos). Kruskal ($O(|E|\log|E|)$) e Prim a partir do <code>SILO-101</code> chegam ao mesmo custo.</p>
+                </div>
+                <div class="callout callout-info" style="margin: 0;">
+                  <div class="callout-title">MST ≠ rede de comunicação</div>
+                  <p style="font-size: 0.85rem;">A MST define o traçado da eletrocalha-tronco. Numa árvore física toda aresta é uma ponte, então a rede Ethernet recebe enlaces extras de propósito e quem elimina os laços é o RSTP (Aula 23).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 03 / 08 • Aula 20
+            </span>
+            <h3 class="slide-title">Aula 20: Código de Huffman na Telemetria do Forno de Torra</h3>
+            <p class="slide-subtitle">Vetor de 5 bits <code>[TT-201, TS-201, FS-201, M-201, M-202]</code> enviado pelo CLP 02 ao SCADA</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div class="table-responsive" style="margin-top: 0;">
+                  <table>
+                    <tr><th>Estado</th><th>$P(s)$</th><th>Código</th></tr>
+                    <tr><td>Nominal <code>00000</code></td><td>0,920</td><td><code>0</code></td></tr>
+                    <tr><td>Esteira parada</td><td>0,040</td><td><code>11</code></td></tr>
+                    <tr><td>Perda de exaustão</td><td>0,020</td><td><code>101</code></td></tr>
+                    <tr><td>Sobretemperatura</td><td>0,010</td><td><code>1001</code></td></tr>
+                    <tr><td>Perda de chama</td><td>0,007</td><td><code>10000</code></td></tr>
+                    <tr><td>Rolos parados</td><td>0,003</td><td><code>10001</code></td></tr>
+                  </table>
+                </div>
+                <div>
+                  $$H(S) \approx 0{,}551 \qquad L = 1{,}150 \text{ bits/símbolo}$$
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Redução teórica de <strong>77,0%</strong> em relação aos 5 bits fixos (76,93% na simulação de 10.000 varreduras). Eficiência $H/L \approx 47{,}9\%$: Huffman não gasta menos de 1 bit por símbolo, e o estado nominal domina.</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Quadros de 100 varreduras com campo <code>Count</code> e CRC-16; quadro corrompido é descartado.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 4 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 04 / 08 • Aula 21
+            </span>
+            <h3 class="slide-title">Aula 21: BDT do Intertravamento do Forno e AVL do Historiador</h3>
+            <p class="slide-subtitle">Árvore de decisão de altura fixa para o SIS e árvore de busca balanceada para séries temporais</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div>
+                  <p><strong>BDT (CLP 02):</strong> testa, em ordem de gravidade, <code>ESD-100</code> → <code>TT-201</code> &gt; 160 °C → <code>FS-201</code> → <code>TS-201</code> → <code>M-201</code>. Altura $h = 5$, custo $O(1)$ por varredura.</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Verificação exaustiva das $2^5 = 32$ combinações: <strong>0 violações</strong> da regra de trip da Etapa 01. A BDT vale com o forno em regime; a partida é sequenciada pela rede de Petri da Aula 24.</p>
+                </div>
+                <div>
+                  <p><strong>AVL (historiador a 10 Hz):</strong> timestamps chegam em ordem crescente, o pior caso de uma BST comum.</p>
+                  $$h_{\text{AVL}} = 11 \quad \text{contra} \quad h_{\text{BST}} = 2000 \quad (N = 2000)$$
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">A consulta de RCA de ±2 s em torno do primeiro trip devolveu 41 registros e identificou o lote <code>L-20261117-02</code>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 5 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 05 / 08 • Aula 22
+            </span>
+            <h3 class="slide-title">Aula 22: RRT e RRT* para a Trajetória do AGV de Amostragem</h3>
+            <p class="slide-subtitle">O TSP da Aula 17 diz a ordem das visitas; a RRT diz como ir de um ponto a outro sem colidir</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div class="table-responsive" style="margin-top: 0;">
+                  <table>
+                    <tr><th>Lab → PT-PRN401</th><th>Nós</th><th>Caminho</th></tr>
+                    <tr><td>RRT padrão</td><td>90</td><td>19,83 m</td></tr>
+                    <tr><td>RRT* ($N = 1.000$)</td><td>842</td><td>16,80 m</td></tr>
+                    <tr><td>RRT* ($N = 2.000$)</td><td>1.652</td><td>16,55 m</td></tr>
+                    <tr><td>RRT* ($N = 5.000$)</td><td>4.034</td><td>16,53 m</td></tr>
+                  </table>
+                </div>
+                <div>
+                  <p style="font-size: 0.9rem;">A reta Lab → PT-PRN401 mede 16,38 m; o RRT* converge para 16,53 m (0,9% acima). Cada execução verifica raiz única, $|E| = |V| - 1$, conexidade e ausência de colisão.</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Quando a porta <code>XV-PORT-200</code> fecha com o queimador aceso (<code>TS-201 = 1</code>), o SCADA dispara o replanejamento: 13 nós e ≈ 1,3 ms na execução de referência, em thread separada do ciclo de 50 ms.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 6 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 06 / 08 • Aula 23
+            </span>
+            <h3 class="slide-title">Aula 23: STP / RSTP na Rede Ethernet Industrial</h3>
+            <p class="slide-subtitle">7 switches (Sala de Controle, Setores 100–400, Laboratório e Galpão B) e uma árvore lógica sem laços</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div>
+                  <p><strong>RSTP não é Kruskal:</strong> constrói a árvore de caminhos mínimos até o Root Bridge (SPT), não a MST.</p>
+                  $$W_{\text{SPT}} = 462.000 \quad \text{vs.} \quad W_{\text{MST}} = 282.000$$
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">A MST pesa menos, mas alongaria o caminho do CLP 04 e do WMS até o SCADA.</p>
+                </div>
+                <div>
+                  <p><strong>Tarjan:</strong> na topologia v1 o <code>SW-SCADA</code> é ponto de articulação; sem ele, Laboratório e Expedição ficam isolados (risco de expedir lote bloqueado pelo <code>MD-401</code>).</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Correção v2: fibra <code>SW-S400 ↔ SW-EXP</code>. Teste N-1: v1 15/16 → <strong>v2 17/17</strong>. Com RSTP/MRP a perda de rastreabilidade numa falha cai de ≈ 7 kg (STP) para gramas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 7 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 07 / 08 • Aula 24
+            </span>
+            <h3 class="slide-title">Aula 24: Árvores de Atingibilidade e de Cobertura em Redes de Petri</h3>
+            <p class="slide-subtitle">Verificação formal da lógica do CLP antes de programá-la</p>
+            <div class="slide-body">
+              <div class="grid-2">
+                <div>
+                  <p><strong>Forno de torra (CLP 02):</strong> purga → ignição → torra → trip → reset. 5 marcações alcançáveis; rede segura, viva e reversível.</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Provas: gás só com exaustão e chama; lockout sempre com gás fechado; purga obrigatória após lockout. Invariante $M(P4) - M(P7) = 0$ (gás aberto ⇔ torrando). Um reset que pula a purga é detectado automaticamente.</p>
+                </div>
+                <div>
+                  <p><strong>Linha de massa (CLP 03/04):</strong> dosagem paralela (fork/join), moinhos <code>MOI-301A/B</code>, <code>HOM-301</code>, <code>MOE-302</code>, prensa.</p>
+                  <p style="font-size: 0.88rem; color: var(--text-muted);">Sem capacidade: $\omega$ no <code>HOM-301</code> e na <code>MOE-302</code> (transbordo). Com lugares complementares $K_{HOM} = 1$ e $K_{MOE} = 3$: 216 marcações, sem deadlock, e a lógica ainda permite acionar o moinho reserva em paralelo.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 8 -->
+          <div class="slide">
+            <span class="slide-number-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+              Slide 08 / 08 • Síntese Integrada
+            </span>
+            <h3 class="slide-title">Síntese da Etapa 03</h3>
+            <p class="slide-subtitle">Seis árvores, seis decisões de engenharia na mesma planta</p>
+            <div class="slide-body">
+              <div class="table-responsive" style="margin-top: 0.75rem;">
+                <table>
+                  <tr><th>Aula</th><th>Árvore</th><th>Aplicação SCADA-Core</th><th>Resultado-chave</th></tr>
+                  <tr><td>19</td><td>MST (Kruskal/Prim)</td><td>Eletrocalhas e utilidades</td><td>272 m → 99 m</td></tr>
+                  <tr><td>20</td><td>Árvore de Huffman</td><td>Telemetria do forno</td><td>−77% de banda, sem perda</td></tr>
+                  <tr><td>21</td><td>BDT e AVL</td><td>Intertravamento e historiador</td><td>32/32 casos; altura 11</td></tr>
+                  <tr><td>22</td><td>RRT / RRT*</td><td>Trajetória do AGV</td><td>16,53 m sem colisão</td></tr>
+                  <tr><td>23</td><td>SPT do RSTP</td><td>Rede Ethernet industrial</td><td>N-1: 17/17 na v2</td></tr>
+                  <tr><td>24</td><td>Atingibilidade / Cobertura</td><td>Forno e linha de massa</td><td>S1–S4 provadas; $\omega$ eliminado</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dots Controller -->
+        <div class="presentation-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; background: #091224; border-top: 1px solid #78350f;">
+          <div class="slide-dots" id="slide-dots"></div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Dica: Utilize as setas ← e → do teclado</span>
+        </div>
+      </div>
+      </div>
+
+      <div id="laboratorio-03" style="margin-bottom: 4rem;">
+        <div class="section-header">
+          <span class="section-tag" style="color: #f59e0b;">Ambiente Ciberfísico Interativo</span>
+          <h2 class="section-title">Laboratório SCADA-Tree</h2>
+          <p class="section-subtitle">
+            Três experimentos em JavaScript com os mesmos dados dos notebooks: a rede RSTP da Aula 23, o forno de torra com a BDT da Aula 21 e a rede de Petri da Aula 24, e a telemetria Huffman da Aula 20.
+          </p>
+        </div>
+      <div id="lab-etapa03" class="scada-sim-container" style="border-color: #b45309; box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);">
+
+        <div class="scada-header" style="border-bottom-color: #78350f;">
+          <div class="scada-title-box">
+            <div class="scada-live-indicator" style="background: #f59e0b; box-shadow: 0 0 10px #f59e0b;"></div>
+            <div>
+              <h3 style="font-size: 1.15rem; margin: 0; font-family: var(--font-mono); color: #ffffff;">
+                SCADA-TREE: FÁBRICA DE PAÇOCA • REDE, FORNO E TELEMETRIA
+              </h3>
+              <small style="color: #94a3b8; font-family: var(--font-mono);">
+                Motor em JavaScript • RSTP IEEE 802.1w • BMS do queimador • Huffman • Grupo 7
+              </small>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+            <button class="preset-btn" data-lab-tab="rstp" style="border-color: #f59e0b; color: #fde68a;">🌐 Rede RSTP (Aula 23)</button>
+            <button class="preset-btn" data-lab-tab="forno" style="border-color: #f59e0b; color: #fde68a;">🔥 Forno: BDT + Petri (Aulas 21/24)</button>
+            <button class="preset-btn" data-lab-tab="huffman" style="border-color: #f59e0b; color: #fde68a;">📡 Telemetria Huffman (Aula 20)</button>
+          </div>
+        </div>
+
+        <!-- PAINEL A: RSTP -->
+        <div data-lab-panel="rstp">
+          <div class="preset-buttons" style="display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1rem;">
+            <button id="lab03-v1" class="preset-btn" style="border-color: #38bdf8; color: #bae6fd;">🔵 Topologia v1 (projeto inicial)</button>
+            <button id="lab03-v2" class="preset-btn" style="border-color: #10b981; color: #6ee7b7;">🟢 Topologia v2 (fibra S400 ↔ EXP)</button>
+            <button id="lab03-falha1" class="preset-btn" style="border-color: #f59e0b; color: #fde68a;">⚡ Falha 1: backbone SCADA ↔ S200</button>
+            <button id="lab03-falha2" class="preset-btn" style="border-color: #ef4444; color: #fca5a5;">🔴 Falha 2: perda do SW-SCADA</button>
+          </div>
+          <div class="scada-grid" style="grid-template-columns: 1.4fr 1fr;">
+            <div class="scada-synoptic" style="background: #030816; border: 1px solid #78350f; padding: 1rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <strong id="lab03-topo-label" style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.85rem;">Topologia v1 (projeto inicial)</strong>
+                <small style="color: #64748b; font-family: var(--font-mono);">Clique em enlaces ou switches</small>
+              </div>
+              <div class="synoptic-svg-wrap" style="height: 400px; width: 100%;">
+                <svg id="lab03-rstp-svg" viewBox="0 -25 640 410" style="width: 100%; height: 100%; display: block;"></svg>
+              </div>
+              <small style="color: #94a3b8; font-family: var(--font-mono); font-size: 0.72rem;">
+                Verde: Forwarding • Vermelho tracejado: Discarding (AP = Alternate Port) • Cinza: rompido/desligado • Dourado: Root Bridge • Espessura: 10G / 1G / 100M
+              </small>
+            </div>
+            <div class="scada-controls-panel" style="background: #0a1628; border-color: #78350f;">
+              <div id="lab03-rstp-status" class="callout callout-success" style="margin: 0 0 0.75rem; font-size: 0.85rem;"></div>
+              <div class="table-responsive" style="margin-top: 0;">
+                <table id="lab03-rstp-table" style="font-size: 0.8rem;"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL B: FORNO -->
+        <div data-lab-panel="forno" style="display: none;">
+          <div class="scada-grid" style="grid-template-columns: 1.4fr 1fr;">
+            <div class="scada-synoptic" style="background: #030816; border: 1px solid #78350f; padding: 1rem;">
+              <strong style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.85rem;">REDE DE PETRI DO QUEIMADOR (CLP 02) — MARCAÇÃO ATUAL</strong>
+              <div id="lab03-places" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 0.5rem; margin: 0.75rem 0;"></div>
+              <small style="color: #94a3b8; font-family: var(--font-mono);">Transições habilitadas (clique para disparar):</small>
+              <div id="lab03-transitions" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.4rem; margin-top: 0.4rem;"></div>
+              <div id="lab03-safety" style="margin-top: 0.9rem; font-size: 0.8rem; line-height: 1.6; background: #020617; border: 1px solid #1e293b; border-radius: 6px; padding: 0.6rem;"></div>
+              <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+                <button id="lab03-forno-reset" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🔄 Reiniciar forno</button>
+                <label style="font-size: 0.82rem; color: #fca5a5;"><input type="checkbox" id="lab03-bug"> Carregar lógica com erro (reset sem purga)</label>
+              </div>
+            </div>
+            <div class="scada-controls-panel" style="background: #0a1628; border-color: #78350f;">
+              <h4 style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.92rem; margin-bottom: 0.75rem;">🌳 BDT DO INTERTRAVAMENTO (AULA 21)</h4>
+              <div style="display: grid; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.9rem;">
+                <label><input type="checkbox" id="lab03-e1"> <code>ESD-100</code> acionado ($e_1$)</label>
+                <label><input type="checkbox" id="lab03-t2"> <code>TT-201</code> acima de 160 °C ($t_2$)</label>
+                <label><input type="checkbox" id="lab03-f2" checked> <code>FS-201</code> exaustão com fluxo ($f_2$)</label>
+                <label><input type="checkbox" id="lab03-c1" checked> <code>TS-201</code> chama detectada ($c_1$)</label>
+                <label><input type="checkbox" id="lab03-m2" checked> <code>M-201</code> esteira ligada ($m_2$)</label>
+              </div>
+              <div id="lab03-bdt" style="background: #040d1a; border: 1px solid #1e3a5f; border-radius: 8px; padding: 0.75rem;"></div>
+              <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.75rem;">Roteiro: dispare T1 → T2 → T3 até <code>P4_TORRANDO</code> e então mude um sensor para ver a BDT acionar o <code>T5_TRIP</code>. Depois marque a lógica com erro e tente religar sem purga.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL C: HUFFMAN -->
+        <div data-lab-panel="huffman" style="display: none;">
+          <div class="scada-grid" style="grid-template-columns: 1.4fr 1fr;">
+            <div class="scada-synoptic" style="background: #030816; border: 1px solid #78350f; padding: 1rem;">
+              <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.75rem;">
+                <strong style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.85rem;">QUADRO DE 100 VARREDURAS (10 s) DO CLP 02</strong>
+                <select id="lab03-turno" style="background: #0a1628; color: #e2e8f0; border: 1px solid #78350f; border-radius: 6px; padding: 0.3rem;">
+                  <option value="projeto">Distribuição de projeto (P nominal = 0,92)</option>
+                  <option value="ruim">Turno com falhas (P nominal = 0,60)</option>
+                </select>
+                <button id="lab03-huff-run" class="btn btn-primary" style="padding: 0.4rem 0.9rem; font-size: 0.82rem; background: #d97706;">📡 Gerar e codificar quadro</button>
+              </div>
+              <div id="lab03-huff-out"></div>
+            </div>
+            <div class="scada-controls-panel" style="background: #0a1628; border-color: #78350f;">
+              <h4 style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.92rem; margin-bottom: 0.75rem;">📖 DICIONÁRIO DE PREFIXOS</h4>
+              <div class="table-responsive" style="margin-top: 0;"><table id="lab03-huff-table" style="font-size: 0.8rem;"></table></div>
+              <p style="font-size: 0.78rem; color: #94a3b8; margin-top: 0.6rem;">O dicionário foi construído para a distribuição de projeto. Num turno com muitas falhas a compressão piora, o que mostra por que as probabilidades devem ser recalculadas com dados do historiador.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Console -->
+        <div style="margin-top: 1.25rem;">
+          <span style="font-size: 0.78rem; color: #94a3b8; font-family: var(--font-mono); font-weight: bold;">HISTÓRICO DO SUPERVISÓRIO (SCADA HISTORIAN):</span>
+          <div class="scada-console" id="lab03-console" style="height: 130px; font-size: 0.75rem; background: #020617; border-color: #1e293b; margin-top: 0.35rem;"></div>
+        </div>
+      </div>
+      </div>
+
+      <div id="aulas-03">
+        <div class="section-header">
+          <span class="section-tag" style="color: #f59e0b;">Ementa &amp; Entregáveis</span>
+          <h2 class="section-title">Memorial das Aulas 19 a 24</h2>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 2rem;">
+          <a href="#aula-19" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 19: Algoritmos de Kruskal e Prim</a>
+          <a href="#aula-20" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 20: Algoritmo de Huffman na Telemetria do Forno de Torra</a>
+          <a href="#aula-21" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 21: Árvores Binárias</a>
+          <a href="#aula-22" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 22: Rapidly-exploring Random Trees (RRT) para o AGV</a>
+          <a href="#aula-23" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 23: Protocolo de Árvore Geradora (STP / RSTP)</a>
+          <a href="#aula-24" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">Aula 24: Árvore de Atingibilidade e de Cobertura em Redes de Petri</a>
+        </div>
+
+      <div id="aula-19" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 19</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Algoritmos de Kruskal e Prim</h3>
+        <p class="card-description">Árvore Geradora Mínima (MST) para o traçado de eletrocalhas, ar comprimido e utilidades entre os Setores 100 e 400.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. O layout fabril como grafo ponderado</h4>
+    <p>
+      O chão de fábrica é modelado como um grafo não direcionado e ponderado $G = (V, E, w)$, com $|V| = 8$ equipamentos
+      (<code>SILO-101</code>, <code>SEC-101</code>, <code>FOR-201</code>, <code>DES-202</code>, <code>MAN-301</code>,
+      <code>MOI-301</code>, <code>HOM-301</code> e <code>PRN-401</code>) e $|E| = 14$ rotas de canaleta e <em>pipe rack</em>
+      fisicamente viáveis. O nó <code>MOI-301</code> representa o conjunto de moinhos <code>MOI-301A</code> (operante) e
+      <code>MOI-301B</code> (reserva). O peso $w(e)$ é o comprimento real da rota.
+    </p>
+    $$W_{\text{inicial}} = \sum_{e \in E} w(e) = 272{,}00\text{ m}$$
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. Kruskal e Prim</h4>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="card-title">Kruskal — centrado em arestas</h3>
+        <p class="card-description">Ordena as 14 rotas por comprimento e aceita cada uma se ela unir componentes diferentes (Union-Find). Para ao atingir $|V| - 1 = 7$ arestas. Complexidade $O(|E|\log|E|)$: indicado para orçamento e lista de materiais.</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Prim — centrado em vértices</h3>
+        <p class="card-description">Cresce uma única árvore a partir do <code>SILO-101</code>, sempre pela aresta mais curta que cruza o corte. Complexidade $O(|E|\log|V|)$: indicado para montagem e comissionamento setor por setor.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 1.5rem 0;">
+      <pre class="mermaid">
+graph LR
+    SILO["SILO-101"] ---|15 m| SEC["SEC-101"]
+    SEC ---|20 m| FOR["FOR-201"]
+    FOR ---|12 m| DES["DES-202"]
+    DES ---|10 m| MAN["MAN-301"]
+    MAN ---|12 m| MOI["MOI-301A/B"]
+    MOI ---|16 m| HOM["HOM-301"]
+    HOM ---|14 m| PRN["PRN-401"]
+      </pre>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <tr><th>Indicador</th><th>Valor</th></tr>
+        <tr><td>Comprimento da malha completa</td><td>272,00 m</td></tr>
+        <tr><td>Comprimento da MST (Kruskal = Prim)</td><td>99,00 m</td></tr>
+        <tr><td>Economia de infraestrutura</td><td><strong>63,60%</strong> (173,00 m a menos)</td></tr>
+        <tr><td>Rotas rejeitadas por formar ciclo</td><td>7 (de 15 m a 35 m)</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">MST física × rede de comunicação (ligação com a Aula 23)</div>
+      <p>
+        A MST minimiza metros de cabo e canaleta. Ela define apenas o traçado da eletrocalha-tronco: numa árvore física toda
+        aresta é uma ponte, e qualquer cabo rompido isola um setor. Por isso a rede Ethernet da Aula 23 recebe enlaces de
+        fechamento de anel e um backbone de 10 Gbps de propósito, e quem elimina os laços lógicos é o RSTP, que constrói uma
+        árvore de caminhos mínimos (SPT) até o Root Bridge.
+      </p>
+    </div>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/19%20-%20Algoritmo%20de%20Kruskal%20e%20Prim.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/19%20-%20Algoritmo%20de%20Kruskal%20e%20Prim.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      <div id="aula-20" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 20</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Algoritmo de Huffman na Telemetria do Forno de Torra</h3>
+        <p class="card-description">Compressão sem perda do vetor de desvios enviado pelo CLP 02 ao SCADA-Core.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. A fonte de informação</h4>
+    <p>
+      A cada varredura de 100 ms o CLP 02 monta o vetor de desvios <code>[TT-201, TS-201, FS-201, M-201, M-202]</code>
+      (bit 1 = condição anormal). No formato fixo são 5 bits por amostra. Como o forno passa quase todo o tempo em regime,
+      o estado nominal <code>00000</code> domina a fonte — e é essa assimetria que o código de Huffman explora.
+      As probabilidades são estimativas de projeto e devem ser recalculadas com dados do historiador.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. Árvore de Huffman e dicionário de prefixos</h4>
+    <div class="card" style="margin: 1rem 0 1.5rem;">
+      <pre class="mermaid">
+graph TD
+    R["Raiz (1,000)"] -- 0 --> S0["00000 Nominal: 0"]
+    R -- 1 --> N4["N4 (0,080)"]
+    N4 -- 0 --> N3["N3 (0,040)"]
+    N4 -- 1 --> S1["00010 Esteira parada: 11"]
+    N3 -- 0 --> N2["N2 (0,020)"]
+    N3 -- 1 --> S2["00100 Perda de exaustão: 101"]
+    N2 -- 0 --> N1["N1 (0,010)"]
+    N2 -- 1 --> S3["10000 Sobretemperatura: 1001"]
+    N1 -- 0 --> S4["01000 Perda de chama: 10000"]
+    N1 -- 1 --> S5["00001 Rolos parados: 10001"]
+      </pre>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Estado</th><th>Condição</th><th>$P(s_i)$</th><th>Código</th><th>$l(s_i)$</th></tr>
+        <tr><td><code>00000</code></td><td>Operação nominal</td><td>0,920</td><td><code>0</code></td><td>1</td></tr>
+        <tr><td><code>00010</code></td><td>Esteira do forno parada (<code>M-201</code>)</td><td>0,040</td><td><code>11</code></td><td>2</td></tr>
+        <tr><td><code>00100</code></td><td>Perda de exaustão (<code>FS-201</code>)</td><td>0,020</td><td><code>101</code></td><td>3</td></tr>
+        <tr><td><code>10000</code></td><td>Sobretemperatura &gt; 160 °C (<code>TT-201</code>)</td><td>0,010</td><td><code>1001</code></td><td>4</td></tr>
+        <tr><td><code>01000</code></td><td>Perda de chama (<code>TS-201</code>)</td><td>0,007</td><td><code>10000</code></td><td>5</td></tr>
+        <tr><td><code>00001</code></td><td>Rolos despeliculadores parados (<code>M-202</code>)</td><td>0,003</td><td><code>10001</code></td><td>5</td></tr>
+      </table>
+    </div>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">3. Desempenho</h4>
+    $$H(S) \approx 0{,}5510 \qquad L = \sum_i P(s_i)\,l(s_i) = 1{,}1500 \text{ bits/símbolo} \qquad \text{Redução} = 1 - \frac{1{,}15}{5} = 77{,}00\%$$
+    <p>
+      A eficiência $H/L \approx 47{,}9\%$ fica abaixo de 50% porque Huffman não gasta menos de 1 bit por símbolo e o estado
+      nominal tem $P = 0{,}92$; codificar blocos de varreduras aproximaria $L$ de $H$.
+    </p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Simulação (10.000 varreduras)</th><th>Resultado</th></tr>
+        <tr><td>Volume sem compressão</td><td>50.000 bits (6,10 KB)</td></tr>
+        <tr><td>Volume com Huffman</td><td>11.535 bits (1,41 KB)</td></tr>
+        <tr><td>Redução de volume</td><td>76,93% (teórico 77,00%)</td></tr>
+        <tr><td>Quadros de 100 varreduras com CRC-16</td><td>19,9 B em média contra 68 B no formato fixo</td></tr>
+        <tr><td>Quadro com 1 bit invertido</td><td>Rejeitado pelo CRC-16</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-title">Independência do SIS</div>
+      <p>A compressão atua só no transporte para supervisão. O intertravamento do forno (Aula 21) roda localmente no CLP 02 e não depende deste enlace.</p>
+    </div>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/20%20-%20Algoritmo%20de%20Huffman.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/20%20-%20Algoritmo%20de%20Huffman.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      <div id="aula-21" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 21</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Árvores Binárias: BDT do Forno de Torra e AVL do Historiador</h3>
+        <p class="card-description">Uma árvore estática para decidir o intertravamento e uma árvore dinâmica para indexar a telemetria.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. BDT — intertravamento do forno (CLP 02)</h4>
+    <p>
+      O forno de torra (gás GN/GLP, operação abaixo do limite de segurança de 160 °C) é o ponto de maior risco de incêndio da
+      planta. A regra de trip da Etapa 01, $\text{Trip}_{\text{Forno}} \equiv \neg f_2 \lor t_2 \lor e_1$, é reorganizada como
+      uma árvore de decisão avaliada em ordem de gravidade, com curto-circuito.
+    </p>
+    <div class="card" style="margin: 1rem 0 1.5rem;">
+      <pre class="mermaid">
+graph TD
+    Root{"ESD-100 = 1 ?"}
+    Root -- Sim --> T0["TRIP TOTAL: XV-201=0, M-201=0"]
+    Root -- Não --> TT{"TT-201 > 160 C ?"}
+    TT -- Sim --> T1["TRIP SOBRETEMPERATURA: XV-201=0, M-201=1"]
+    TT -- Não --> FS{"FS-201 sem fluxo ?"}
+    FS -- Sim --> T2["TRIP EXAUSTÃO: XV-201=0, M-201=1"]
+    FS -- Não --> TS{"TS-201 sem chama ?"}
+    TS -- Sim --> T3["TRIP PERDA DE CHAMA: XV-201=0, M-201=1"]
+    TS -- Não --> M{"M-201 parada ?"}
+    M -- Sim --> T4["BLOQUEIO ESTEIRA: XV-201=0, M-201=0"]
+    M -- Não --> OK["OPERAÇÃO NORMAL: XV-201=1"]
+      </pre>
+    </div>
+    <ul>
+      <li><strong>Verificação exaustiva:</strong> as $2^5 = 32$ combinações de $(e_1, t_2, f_2, c_1, m_2)$ foram testadas — 0 violações da regra da Etapa 01.</li>
+      <li><strong>Determinismo:</strong> altura fixa $h = 5$, custo $O(1)$ por varredura.</li>
+      <li><strong>Trips térmico, de exaustão e de chama:</strong> a esteira continua ligada para descarregar o forno; no <code>ESD-100</code> tudo é desenergizado.</li>
+    </ul>
+    <div class="callout callout-warning">
+      <div class="callout-title">BDT em regime, rede de Petri na partida</div>
+      <p>
+        A BDT é avaliada com o forno em regime (estado <code>P4_TORRANDO</code> da Aula 24). Na partida, a purga e a ignição são
+        sequenciadas pela rede de Petri da Aula 24: <code>XV-201</code> abre e <code>TS-201</code> tem um tempo de segurança para
+        confirmar a chama; sem confirmação, o forno vai para bloqueio (<code>T4_FALHA_IGNICAO</code>).
+      </p>
+    </div>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. AVL — índice do historiador SCADA</h4>
+    <p>
+      O historiador grava a telemetria do forno a 10 Hz com chave $\tau$ (timestamp em ms). Como as chaves chegam em ordem
+      crescente — o pior caso de uma árvore de busca comum —, a AVL mantém $|BF(n)| \le 1$ com rotações e garante altura $O(\log N)$.
+    </p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Resultado do notebook</th><th>Valor</th></tr>
+        <tr><td>Altura da AVL com $N = 2000$ amostras</td><td><strong>11</strong></td></tr>
+        <tr><td>Altura da BST sem balanceamento</td><td>2000 (vira uma lista)</td></tr>
+        <tr><td>Inserção, busca pontual</td><td>$O(\log N)$</td></tr>
+        <tr><td>Consulta por intervalo $[\tau_1, \tau_2]$</td><td>$O(\log N + K)$</td></tr>
+        <tr><td>RCA do 1º trip por sobretemperatura (±2 s)</td><td>41 registros; lote <code>L-20261117-02</code></td></tr>
+      </table>
+    </div>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/21%20-%20Arvores%20Binarias.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/21%20-%20Arvores%20Binarias.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      <div id="aula-22" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 22</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Rapidly-exploring Random Trees (RRT) para o AGV</h3>
+        <p class="card-description">A Aula 17 define a ordem das visitas; a RRT define como ir de um ponto a outro sem colidir.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. Espaço de configuração e árvore RRT</h4>
+    <p>
+      O AGV é um disco de raio $r_{AGV} = 0{,}35$ m num corredor de $20 \times 12$ m com forno, moinhos <code>MOI-301A/B</code>,
+      <code>HOM-301</code>, <code>PRN-401</code> e colunas estruturais como obstáculos. A RRT cresce uma árvore enraizada em
+      $q_{\text{init}}$: amostra $q_{\text{rand}}$, liga o nó mais próximo a um novo nó a $\epsilon = 0{,}5$ m de distância e só
+      aceita a aresta se ela estiver livre de colisão. Com viés de meta $p_{\text{goal}} = 0{,}10$, a exploração favorece o destino sem
+      perder a cobertura do espaço (viés de Voronoi).
+    </p>
+    $$q_{\text{new}} = q_{\text{near}} + \epsilon\,\frac{q_{\text{rand}} - q_{\text{near}}}{\lVert q_{\text{rand}} - q_{\text{near}} \rVert}$$
+    <p>
+      O RRT* acrescenta a escolha do pai de menor custo e o <em>rewiring</em> dentro de um raio de vizinhança (fixo em 1,5 m na
+      implementação), o que torna o caminho assintoticamente ótimo.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. Resultados: Lab → PT-PRN401</h4>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Algoritmo</th><th>Nós na árvore</th><th>Comprimento [m]</th><th>Tempo [ms] (referência)</th></tr>
+        <tr><td>RRT (padrão)</td><td>90</td><td>19,83</td><td>≈ 6</td></tr>
+        <tr><td>RRT* ($N = 1.000$)</td><td>842</td><td>16,80</td><td>≈ 288</td></tr>
+        <tr><td>RRT* ($N = 2.000$)</td><td>1.652</td><td>16,55</td><td>≈ 776</td></tr>
+        <tr><td>RRT* ($N = 5.000$)</td><td>4.034</td><td>16,53</td><td>≈ 4.109</td></tr>
+      </table>
+    </div>
+    <p>
+      A distância em linha reta é 16,38 m. Forno e moinhos ficam em $y \approx 8$ m, fora dessa reta, então o desvio é pequeno:
+      o RRT* converge para 16,53 m, só 0,9% acima. Após cada execução o notebook confirma raiz única, $|E| = |V| - 1$,
+      conexidade e ausência de colisão em todas as arestas.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">3. Replanejamento com a porta do Setor 200</h4>
+    <p>
+      A porta automática <code>XV-PORT-200</code> fecha durante a torra ativa (<code>TS-201 = 1</code>, queimador aceso —
+      estado <code>P4_TORRANDO</code> da Aula 24). Se o AGV estiver a caminho do <code>PT-TT201</code>, o SCADA envia o novo
+      obstáculo e a RRT replaneja a partir da posição atual.
+    </p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Cenário</th><th>Nós na árvore</th><th>Tempo (Python, referência)</th><th>Ciclos SCADA bloqueados</th></tr>
+        <tr><td>Rota Lab → PT-PRN401 (RRT padrão)</td><td>90</td><td>≈ 6 ms</td><td>0 (assíncrono)</td></tr>
+        <tr><td>Replanejamento com a porta fechada</td><td>13</td><td>≈ 1,3 ms</td><td>0 (assíncrono)</td></tr>
+        <tr><td>Otimização RRT* ($N = 1.000$)</td><td>842</td><td>≈ 288 ms</td><td>0 (assíncrono)</td></tr>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">Thread dedicada</div>
+      <p>O RRT* passa do ciclo de supervisão de 50 ms (Aula 10), por isso o planejador roda em thread separada e o AGV mantém a última rota válida até o novo caminho ficar pronto. Os tempos variam com a máquina.</p>
+    </div>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/22%20-%20Rapidly-exploring%20Random%20Trees.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/22%20-%20Rapidly-exploring%20Random%20Trees%20-%20code.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      <div id="aula-23" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 23</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Protocolo de Árvore Geradora (STP / RSTP)</h3>
+        <p class="card-description">Redundância física sem laços lógicos na rede de 7 switches da fábrica de paçoca.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. Por que uma árvore na rede Ethernet</h4>
+    <p>
+      Enlaces redundantes evitam que um cabo rompido deixe um setor sem supervisão, mas criam ciclos. Em camada 2 o quadro
+      Ethernet não tem TTL: um <em>broadcast</em> circularia para sempre (<em>broadcast storm</em>). O RSTP (IEEE 802.1w) escolhe,
+      de forma distribuída, uma árvore geradora do grafo físico e deixa os demais enlaces em <em>Discarding</em>.
+      Com $|V| = 7$ switches e $|E| = 9$ enlaces na topologia v1, são bloqueados exatamente $|E| - (|V| - 1) = 3$ enlaces.
+    </p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Switch</th><th>Local</th><th>Prioridade</th><th>Root Path Cost (v1)</th></tr>
+        <tr><td><code>SW-SCADA</code></td><td>Sala de Controle</td><td>4096 (raiz)</td><td>0</td></tr>
+        <tr><td><code>SW-S200</code></td><td>Torra/Despeliculagem (CLP 02)</td><td>8192 (raiz secundária)</td><td>2.000</td></tr>
+        <tr><td><code>SW-S100</code></td><td>Recepção/Limpeza (CLP 01)</td><td>32768</td><td>20.000</td></tr>
+        <tr><td><code>SW-S400</code></td><td>Prensa/Embalagem (CLP 04)</td><td>32768</td><td>20.000</td></tr>
+        <tr><td><code>SW-S300</code></td><td>Dosagem/Moagem (CLP 03)</td><td>32768</td><td>22.000</td></tr>
+        <tr><td><code>SW-LAB</code></td><td>Laboratório + AP do AGV</td><td>32768</td><td>200.000</td></tr>
+        <tr><td><code>SW-EXP</code></td><td>Galpão B / WMS</td><td>32768</td><td>200.000</td></tr>
+      </table>
+    </div>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. RSTP não é Kruskal</h4>
+    <p>
+      O RSTP minimiza o custo de <strong>cada switch até a raiz</strong> (árvore de caminhos mínimos, SPT); Kruskal e Prim minimizam
+      a <strong>soma</strong> dos pesos (MST). Na topologia v1 elas diferem: $W_{\text{SPT}} = 462.000$ e $W_{\text{MST}} = 282.000$.
+      A MST pesa menos, mas levaria o <code>SW-S400</code> a 42.000 e o <code>SW-EXP</code> a 220.000 até o SCADA. Para tráfego
+      supervisório, o critério do RSTP é o correto.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">3. Falhas, pontos de articulação e topologia v2</h4>
+    <ul>
+      <li><strong>Falha 1 — backbone SCADA ↔ S200:</strong> as <em>Alternate Ports</em> do anel assumem; o forno passa a custo 40.000 e a telemetria de <code>TT-201</code>, <code>TS-201</code> e <code>FS-201</code> não se perde.</li>
+      <li><strong>Falha 2 — perda do SW-SCADA:</strong> o algoritmo de Tarjan aponta o <code>SW-SCADA</code> como ponto de articulação. O núcleo fabril elege o <code>SW-S200</code>, mas Laboratório e Expedição ficam isolados — o CLP 04 não consegue avisar o WMS de um palete bloqueado pelo <code>MD-401</code>.</li>
+      <li><strong>Correção v2:</strong> fibra de 1 Gbps <code>SW-S400 ↔ SW-EXP</code>, seguindo o fluxo embalagem → paletização → Galpão B. A rede fica 2-conexa e os cobres de 100 Mbps viram reserva.</li>
+    </ul>
+    <div class="card" style="margin: 1rem 0 1.5rem;">
+      <pre class="mermaid">
+graph TD
+    SCADA["SW-SCADA (raiz)"] ==>|10G| S200["SW-S200"]
+    SCADA ---|1G| S100["SW-S100"]
+    SCADA ---|1G| S400["SW-S400"]
+    S200 ---|1G| S300["SW-S300"]
+    S400 ---|1G NOVO| EXP["SW-EXP"]
+    EXP ---|1G| LAB["SW-LAB"]
+    S100 -.-|bloqueado| S200
+    S300 -.-|bloqueado| S400
+    SCADA -.-|100M reserva| LAB
+    SCADA -.-|100M reserva| EXP
+      </pre>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Teste de contingência N-1</th><th>Cenários</th><th>Atendidos</th></tr>
+        <tr><td>Topologia v1</td><td>16</td><td>15 (falha: perda do <code>SW-SCADA</code>)</td></tr>
+        <tr><td>Topologia v2</td><td>17</td><td><strong>17</strong></td></tr>
+      </table>
+    </div>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">4. Convergência e rastreabilidade</h4>
+    <p>Com ciclo de supervisão de 50 ms (Aula 10) e capacidade de 500 kg/h (Aula 15):</p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Protocolo / cenário</th><th>Convergência</th><th>Ciclos perdidos</th><th>Paçoca sem registro</th></tr>
+        <tr><td>STP — falha indireta</td><td>50 s</td><td>1.000</td><td>6,94 kg</td></tr>
+        <tr><td>STP — perda de link detectada</td><td>30 s</td><td>600</td><td>4,17 kg</td></tr>
+        <tr><td>RSTP — falha percebida só por BPDU</td><td>6 s</td><td>120</td><td>0,83 kg</td></tr>
+        <tr><td>MRP (IEC 62439-2), classe 200 ms</td><td>0,2 s</td><td>4</td><td>0,03 kg</td></tr>
+        <tr><td>RSTP — <em>Alternate Port</em> pronta</td><td>0,05 s</td><td>1</td><td>0,007 kg</td></tr>
+      </table>
+    </div>
+    <div class="callout callout-danger">
+      <div class="callout-title">Segurança funcional</div>
+      <p>O RSTP aumenta a disponibilidade da supervisão, mas não faz parte da camada de segurança: o corte de gás <code>XV-201</code>, os ESDs e o trip por sobretemperatura continuam <em>hardwired</em> no SIS (IEC 61511).</p>
+    </div>
+    <p>Experimente as falhas no <a href="#laboratorio-03">Laboratório SCADA-Tree</a>.</p>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/23%20-%20Protocolo%20de%20Arvore%20Geradora%20STP%20RSTP.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/23%20-%20Protocolo%20de%20Arvore%20Geradora%20STP%20RSTP.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      <div id="aula-24" class="card" style="margin-bottom: 2rem; border-color: #78350f;">
+        <div class="card-header">
+          <span class="module-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">Aula 24</span>
+          <a href="#etapa-03" style="font-size: 0.8rem;">↑ topo da Etapa 03</a>
+        </div>
+        <h3 class="card-title" style="font-size: 1.35rem;">Árvore de Atingibilidade e de Cobertura em Redes de Petri</h3>
+        <p class="card-description">Provar propriedades de sequência e de capacidade antes de programar o CLP.</p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">1. Rede de Petri e equação de estado</h4>
+    <p>
+      $N = (P, T, Pre, Post, M_0)$, com matriz de incidência $C = Post - Pre$. Uma transição $t_j$ está habilitada se
+      $M \ge Pre(\cdot, t_j)$ e o disparo produz $M' = M + C\,\vec{e}_j$. A <strong>árvore de atingibilidade</strong> enumera
+      todas as marcações alcançáveis; a <strong>árvore de cobertura</strong> (Karp-Miller) usa o símbolo $\omega$ para representar
+      acúmulo ilimitado e é sempre finita. Um vetor $y$ com $y^T C = 0$ é um <strong>invariante de lugar</strong>:
+      $y^T M = y^T M_0$ em toda marcação alcançável.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">2. Parte A — queimador do forno de torra (CLP 02)</h4>
+    <p>Antes de qualquer ignição a câmara é purgada com ar; após qualquer bloqueio, a purga é refeita.</p>
+    <div class="card" style="margin: 1rem 0 1.5rem;">
+      <pre class="mermaid">
+stateDiagram-v2
+    [*] --> DESLIGADO
+    DESLIGADO --> PURGA: T1 liga exaustor
+    PURGA --> PRONTO_IGNICAO: T2 fim da purga
+    PRONTO_IGNICAO --> TORRANDO: T3 abre XV-201 e TS-201 confirma
+    PRONTO_IGNICAO --> LOCKOUT: T4 falha de ignição
+    TORRANDO --> LOCKOUT: T5 trip da BDT (Aula 21)
+    TORRANDO --> DESLIGADO: T6 parada normal
+    LOCKOUT --> DESLIGADO: T7 reset manual
+      </pre>
+    </div>
+    <p>
+      <code>T5_TRIP</code> corresponde a qualquer trip da BDT da Aula 21: <code>ESD-100</code>, sobretemperatura <code>TT-201</code>,
+      perda de exaustão <code>FS-201</code>, perda de chama <code>TS-201</code> ou esteira <code>M-201</code> parada.
+      Os lugares <code>P6_EXAUSTOR_ON</code> e <code>P7_GAS_ABERTO</code> deixam explícitas as condições físicas.
+    </p>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Propriedade verificada nas 5 marcações alcançáveis</th><th>Resultado</th></tr>
+        <tr><td>S1 — gás aberto só com exaustão</td><td>OK</td></tr>
+        <tr><td>S2 — gás aberto só com chama confirmada</td><td>OK</td></tr>
+        <tr><td>S3 — <em>lockout</em> sempre com gás fechado</td><td>OK</td></tr>
+        <tr><td>S4 — após <em>lockout</em>, não se volta a torrar sem passar pela purga</td><td>OK</td></tr>
+        <tr><td>Limitada / segura / viva / reversível / sem deadlock</td><td>Sim</td></tr>
+      </table>
+    </div>
+    $$M(P1)+M(P2)+M(P3)+M(P4)+M(P5) = 1 \qquad M(P4) - M(P7) = 0 \qquad M(P1) + M(P6) = 1$$
+    <p>
+      Um reset que leva o forno direto a <code>P3_PRONTO_IGNICAO</code> mantém S1–S3, mas viola S4: o verificador encontra o
+      contraexemplo automaticamente.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">3. Parte B — linha de massa sem controle de capacidade</h4>
+    <p>
+      Dosagem paralela nas balanças <code>WT-301/302/303</code> (<em>fork/join</em>), descarga <code>XV-301</code>, moinhos
+      <code>MOI-301A/B</code> como recurso com 2 fichas, homogeneizador <code>HOM-301</code>, moega pulmão <code>MOE-302</code>
+      e prensa <code>PRN-401</code>. A árvore de cobertura (460 nós, 144 marcações) mostra $\omega$ no <code>HOM-301</code> e na
+      <code>MOE-302</code>: se a prensa for mais lenta que a moagem, a lógica permite receita fora de proporção e transbordo.
+    </p>
+
+    <h4 style="margin-top:1.25rem;color:#fbbf24;">4. Parte C — correção por lugares complementares</h4>
+    <div class="table-responsive">
+      <table>
+        <tr><th>Lugar complementar</th><th>Capacidade</th><th>Intertravamento no CLP</th></tr>
+        <tr><td><code>P12_HOM_LIVRE</code></td><td>$K_{HOM} = 1$</td><td>Moinho só descarrega com o homogeneizador vazio</td></tr>
+        <tr><td><code>P13_MOE_VAGAS</code></td><td>$K_{MOE} = 3$</td><td>Nível alto da moega bloqueia a transferência</td></tr>
+      </table>
+    </div>
+    <p>
+      Resultado: 216 marcações, nenhum $\omega$, máximos iguais às capacidades físicas, sem deadlock, reversível e viva. Seis
+      invariantes de lugar foram provados, entre eles $M(P8) + M(P9) = 2$, $M(P10) + M(P12) = 1$ e $M(P11) + M(P13) = 3$.
+      O <code>MOI-301B</code> é reserva: a lógica da Parte C permite acioná-lo em paralelo quando necessário, enquanto uma lógica
+      conservadora (reservar o <code>HOM-301</code> já na descarga) limitaria <code>P9_MOENDO</code> a 1.
+    </p>
+    <p>Experimente a rede do queimador no <a href="#laboratorio-03">Laboratório SCADA-Tree</a>.</p>
+
+        <div class="callout callout-info" style="margin-top: 1.5rem;">
+          <div class="callout-title">📂 Arquivos da aula no repositório</div>
+          <p><a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/24%20-%20Arvore%20de%20Atingibilidade%20e%20Cobertura%20em%20Redes%20de%20Petri.md" target="_blank" rel="noopener">Memorial em Markdown</a> • <a href="https://github.com/AnnaGavinho/Grupo-7-ECAA08/blob/main/etapa-03-arvores/24%20-%20Arvore%20de%20Atingibilidade%20e%20Cobertura%20em%20Redes%20de%20Petri.ipynb" target="_blank" rel="noopener">Notebook em Python</a></p>
+        </div>
+      </div>
+      </div>
+    </section>
+
   </main>
   <footer class="footer">
     <div class="footer-bottom">
@@ -200,5 +1026,418 @@
   </footer>
 
   <script src="doc/js/main.js"></script>
+  <script>
+// ============================================================
+// SCADA-Core Automática — Etapa 03 (Árvores) — Laboratório SCADA-Tree
+// Grupo 7 • Fábrica de Paçoca
+//  A) Rede Ethernet industrial com RSTP (Aula 23)
+//  B) Forno de torra: BDT de intertravamento (Aula 21) + Rede de Petri do queimador (Aula 24)
+//  C) Telemetria do forno com código de Huffman (Aula 20)
+// ============================================================
+(function () {
+  const root = document.getElementById('lab-etapa03');
+  if (!root) return;
+
+  // ---------------------------------------------------------
+  // Utilidades: console do historiador e abas
+  // ---------------------------------------------------------
+  const consoleLog = document.getElementById('lab03-console');
+  function log(msg, level) {
+    if (!consoleLog) return;
+    const ts = new Date().toTimeString().split(' ')[0];
+    const entry = document.createElement('div');
+    entry.className = 'log-entry ' + (level || 'info');
+    entry.textContent = `[${ts}] ${msg}`;
+    consoleLog.insertBefore(entry, consoleLog.firstChild);
+    while (consoleLog.children.length > 80) consoleLog.removeChild(consoleLog.lastChild);
+  }
+  const fmt = (n) => n.toLocaleString('pt-BR');
+
+  const tabButtons = root.querySelectorAll('[data-lab-tab]');
+  const tabPanels = root.querySelectorAll('[data-lab-panel]');
+  function showTab(name) {
+    tabButtons.forEach((b) => {
+      const on = b.dataset.labTab === name;
+      b.style.background = on ? 'rgba(245, 158, 11, 0.18)' : 'transparent';
+      b.style.fontWeight = on ? '700' : '500';
+    });
+    tabPanels.forEach((p) => { p.style.display = p.dataset.labPanel === name ? 'block' : 'none'; });
+  }
+  tabButtons.forEach((b) => b.addEventListener('click', () => showTab(b.dataset.labTab)));
+  showTab('rstp');
+
+  // =========================================================
+  // A) RSTP — mesma topologia e mesmos custos do notebook da Aula 23
+  // =========================================================
+  const C10G = 2000, C1G = 20000, C100M = 200000;
+  const SW = {
+    'SW-SCADA': { prio: 4096, mac: '00:1B:1B:07:00:01', x: 320, y: 95, local: 'Sala de Controle' },
+    'SW-S100': { prio: 32768, mac: '00:1B:1B:07:01:00', x: 85, y: 215, local: 'Recepção/Limpeza (CLP 01)' },
+    'SW-S200': { prio: 8192, mac: '00:1B:1B:07:02:00', x: 220, y: 345, local: 'Torra (CLP 02)' },
+    'SW-S300': { prio: 32768, mac: '00:1B:1B:07:03:00', x: 420, y: 345, local: 'Dosagem/Moagem (CLP 03)' },
+    'SW-S400': { prio: 32768, mac: '00:1B:1B:07:04:00', x: 555, y: 215, local: 'Prensa/Embalagem (CLP 04)' },
+    'SW-LAB': { prio: 32768, mac: '00:1B:1B:07:0A:00', x: 60, y: 95, local: 'Laboratório + AP do AGV' },
+    'SW-EXP': { prio: 32768, mac: '00:1B:1B:07:0B:00', x: 580, y: 95, local: 'Galpão B / WMS' },
+  };
+  const LINKS_V1 = [
+    ['SW-SCADA', 'SW-S200', C10G], ['SW-SCADA', 'SW-S100', C1G], ['SW-S100', 'SW-S200', C1G],
+    ['SW-S200', 'SW-S300', C1G], ['SW-S300', 'SW-S400', C1G], ['SW-S400', 'SW-SCADA', C1G],
+    ['SW-SCADA', 'SW-LAB', C100M], ['SW-SCADA', 'SW-EXP', C100M], ['SW-LAB', 'SW-EXP', C1G],
+  ];
+  const LINK_V2 = ['SW-S400', 'SW-EXP', C1G];
+
+  const net = { versao: 'v1', rompidos: new Set(), mortos: new Set() };
+  const keyOf = (u, v) => [u, v].sort().join('|');
+  const bidLess = (a, b) => (SW[a].prio !== SW[b].prio ? SW[a].prio < SW[b].prio : SW[a].mac < SW[b].mac);
+  const bidCmp = (a, b) => (a === b ? 0 : bidLess(a, b) ? -1 : 1);
+
+  function linksAtuais(versao) {
+    return versao === 'v2' ? LINKS_V1.concat([LINK_V2]) : LINKS_V1.slice();
+  }
+
+  function montarRede(versao, rompidos, mortos) {
+    const nos = Object.keys(SW).filter((n) => !mortos.has(n));
+    const links = linksAtuais(versao).filter(([u, v]) => !mortos.has(u) && !mortos.has(v) && !rompidos.has(keyOf(u, v)));
+    const adj = {};
+    nos.forEach((n) => { adj[n] = {}; });
+    links.forEach(([u, v, c]) => { adj[u][v] = c; adj[v][u] = c; });
+    return { nos, links, adj };
+  }
+
+  function componentes(rede) {
+    const vistos = new Set(), comps = [];
+    rede.nos.slice().sort().forEach((s) => {
+      if (vistos.has(s)) return;
+      const comp = new Set([s]), pilha = [s];
+      while (pilha.length) {
+        const x = pilha.pop();
+        Object.keys(rede.adj[x]).forEach((y) => { if (!comp.has(y)) { comp.add(y); pilha.push(y); } });
+      }
+      comp.forEach((c) => vistos.add(c));
+      comps.push(comp);
+    });
+    return comps;
+  }
+
+  function executarRSTP(rede) {
+    return componentes(rede).map((comp) => {
+      const membros = Array.from(comp);
+      const raiz = membros.slice().sort(bidCmp)[0];
+      const dist = {}; membros.forEach((m) => { dist[m] = Infinity; }); dist[raiz] = 0;
+      const feito = new Set();
+      while (feito.size < membros.length) {
+        let u = null;
+        membros.forEach((m) => { if (!feito.has(m) && (u === null || dist[m] < dist[u])) u = m; });
+        feito.add(u);
+        Object.entries(rede.adj[u]).forEach(([v, c]) => { if (dist[u] + c < dist[v]) dist[v] = dist[u] + c; });
+      }
+      const pai = {}; pai[raiz] = null;
+      membros.forEach((x) => {
+        if (x === raiz) return;
+        pai[x] = Object.keys(rede.adj[x]).sort((a, b) => {
+          const da = dist[a] + rede.adj[x][a], db = dist[b] + rede.adj[x][b];
+          return da !== db ? da - db : bidCmp(a, b);
+        })[0];
+      });
+      const ativos = [], bloqueados = [];
+      rede.links.forEach(([u, v]) => {
+        if (!comp.has(u)) return;
+        if (pai[v] === u || pai[u] === v) ativos.push(keyOf(u, v));
+        else {
+          const desig = (dist[u] !== dist[v] ? dist[u] < dist[v] : bidLess(u, v)) ? u : v;
+          bloqueados.push({ k: keyOf(u, v), ap: desig === u ? v : u });
+        }
+      });
+      return { comp, raiz, dist, pai, ativos, bloqueados };
+    });
+  }
+
+  function articulacoes(rede) {
+    let t = 0; const desc = {}, low = {}, pai = {}, art = new Set();
+    function dfs(u) {
+      desc[u] = low[u] = t++; let filhos = 0;
+      Object.keys(rede.adj[u]).forEach((v) => {
+        if (desc[v] === undefined) {
+          pai[v] = u; filhos++; dfs(v);
+          low[u] = Math.min(low[u], low[v]);
+          if (pai[u] === null && filhos > 1) art.add(u);
+          if (pai[u] !== null && low[v] >= desc[u]) art.add(u);
+        } else if (v !== pai[u]) low[u] = Math.min(low[u], desc[v]);
+      });
+    }
+    rede.nos.forEach((s) => { if (desc[s] === undefined) { pai[s] = null; dfs(s); } });
+    return art;
+  }
+
+  function testeN1(versao) {
+    const base = montarRede(versao, new Set(), new Set());
+    let ok = 0, total = 0;
+    base.links.forEach(([u, v]) => { total++; if (executarRSTP(montarRede(versao, new Set([keyOf(u, v)]), new Set())).length === 1) ok++; });
+    base.nos.forEach((n) => { total++; if (executarRSTP(montarRede(versao, new Set(), new Set([n]))).length === 1) ok++; });
+    return { ok, total };
+  }
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('lab03-rstp-svg');
+  function el(tag, attrs, text) {
+    const e = document.createElementNS(svgNS, tag);
+    Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function pathOf(u, v) {
+    const a = SW[u], b = SW[v];
+    if (keyOf(u, v) === keyOf('SW-LAB', 'SW-EXP')) return { d: `M ${a.x} ${a.y} Q 320 -15 ${b.x} ${b.y}`, lx: 320, ly: 36 };
+    return { d: `M ${a.x} ${a.y} L ${b.x} ${b.y}`, lx: (a.x + b.x) / 2, ly: (a.y + b.y) / 2 - 6 };
+  }
+
+  function renderRSTP(anunciar) {
+    const rede = montarRede(net.versao, net.rompidos, net.mortos);
+    const res = executarRSTP(rede);
+    const ativos = new Set(res.flatMap((r) => r.ativos));
+    const bloqueados = {}; res.forEach((r) => r.bloqueados.forEach((b) => { bloqueados[b.k] = b.ap; }));
+    const raizes = new Set(res.map((r) => r.raiz));
+
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const largura = { 2000: 7, 20000: 3.5, 200000: 1.8 };
+    linksAtuais(net.versao).forEach(([u, v, c]) => {
+      const k = keyOf(u, v); const p = pathOf(u, v);
+      const morto = net.mortos.has(u) || net.mortos.has(v);
+      let cor = '#ef4444', dash = '9 6';
+      if (net.rompidos.has(k) || morto) { cor = '#475569'; dash = '2 6'; }
+      else if (ativos.has(k)) { cor = '#10b981'; dash = ''; }
+      const linha = el('path', { d: p.d, fill: 'none', stroke: cor, 'stroke-width': largura[c], 'stroke-dasharray': dash, style: 'cursor:pointer' });
+      const alvo = el('path', { d: p.d, fill: 'none', stroke: 'transparent', 'stroke-width': 18, style: 'cursor:pointer' });
+      alvo.addEventListener('click', () => {
+        if (morto) return;
+        if (net.rompidos.has(k)) { net.rompidos.delete(k); log(`Enlace ${u} ↔ ${v} restaurado.`, 'success'); }
+        else { net.rompidos.add(k); log(`Enlace ${u} ↔ ${v} ROMPIDO — RSTP reconvergindo.`, 'danger'); }
+        renderRSTP(true);
+      });
+      svg.appendChild(linha); svg.appendChild(alvo);
+      svg.appendChild(el('text', { x: p.lx, y: p.ly, fill: '#94a3b8', 'font-size': 11, 'text-anchor': 'middle', 'font-family': 'JetBrains Mono, monospace' },
+        (net.rompidos.has(k) ? '✖ ' : '') + fmt(c)));
+      if (bloqueados[k] && !net.rompidos.has(k)) {
+        const ap = SW[bloqueados[k]], outro = SW[bloqueados[k] === u ? v : u];
+        const fx = ap.x + (outro.x - ap.x) * 0.32, fy = ap.y + (outro.y - ap.y) * 0.32;
+        svg.appendChild(el('text', { x: fx + 10, y: fy + 14, fill: '#fca5a5', 'font-size': 10, 'text-anchor': 'middle', 'font-weight': 'bold' }, 'AP'));
+      }
+    });
+    Object.entries(SW).forEach(([n, s]) => {
+      const g = el('g', { style: 'cursor:pointer' });
+      const morto = net.mortos.has(n);
+      const cor = morto ? '#334155' : raizes.has(n) ? '#f59e0b' : '#0ea5e9';
+      g.appendChild(el('circle', { cx: s.x, cy: s.y, r: 29, fill: cor, stroke: '#e2e8f0', 'stroke-width': 2 }));
+      g.appendChild(el('text', { x: s.x, y: s.y + 4, fill: morto ? '#94a3b8' : '#0b1220', 'font-size': 11, 'font-weight': 'bold', 'text-anchor': 'middle' }, n.replace('SW-', '')));
+      g.addEventListener('click', () => {
+        if (net.mortos.has(n)) { net.mortos.delete(n); log(`${n} religado.`, 'success'); }
+        else { net.mortos.add(n); log(`${n} FORA DE OPERAÇÃO (perda total do switch).`, 'danger'); }
+        renderRSTP(true);
+      });
+      svg.appendChild(g);
+    });
+
+    // Painel de resultados
+    const art = articulacoes(rede);
+    const linhas = [];
+    res.forEach((r) => {
+      Array.from(r.comp).sort((a, b) => r.dist[a] - r.dist[b]).forEach((x) => {
+        linhas.push(`<tr><td><code>${x}</code></td><td>${r.raiz.replace('SW-', '')}</td><td style="text-align:right">${fmt(r.dist[x])}</td><td>${r.pai[x] ? r.pai[x].replace('SW-', '') : '— (raiz)'}</td></tr>`);
+      });
+    });
+    document.getElementById('lab03-rstp-table').innerHTML =
+      `<tr><th>Switch</th><th>Raiz</th><th>Root Path Cost</th><th>Root Port →</th></tr>${linhas.join('')}`;
+    const bl = res.flatMap((r) => r.bloqueados.map((b) => `${b.k.replace('|', ' ↔ ').replace(/SW-/g, '')} (AP em ${b.ap.replace('SW-', '')})`));
+    const n1 = testeN1(net.versao);
+    const status = document.getElementById('lab03-rstp-status');
+    const ilhas = res.length;
+    status.className = 'callout ' + (ilhas > 1 ? 'callout-danger' : 'callout-success');
+    status.innerHTML =
+      `<div class="callout-title">${ilhas > 1 ? `🔴 Rede particionada em ${ilhas} ilhas` : '🟢 Uma única árvore geradora ativa'}</div>` +
+      `<p style="margin:0">Raiz(es): <strong>${res.map((r) => r.raiz).join(', ')}</strong> • Enlaces bloqueados: ${bl.length ? bl.join('; ') : 'nenhum'}<br>` +
+      `Pontos de articulação (rede no estado atual): <strong>${art.size ? Array.from(art).join(', ') : 'nenhum'}</strong> • ` +
+      `Teste N-1 da topologia ${net.versao}: <strong>${n1.ok}/${n1.total}</strong> cenários atendidos</p>`;
+    if (anunciar) {
+      if (ilhas > 1) log(`Particionamento: ${res.map((r) => '[' + Array.from(r.comp).map((c) => c.replace('SW-', '')).join(',') + '] raiz ' + r.raiz).join(' | ')}`, 'danger');
+      else log(`RSTP convergido. Raiz ${res[0].raiz}; ${res[0].ativos.length} enlaces ativos, ${res[0].bloqueados.length} bloqueados.`, 'info');
+    }
+  }
+
+  function presetRSTP(versao, rompidos, mortos, msg) {
+    net.versao = versao; net.rompidos = new Set(rompidos); net.mortos = new Set(mortos);
+    document.getElementById('lab03-topo-label').textContent = versao === 'v2' ? 'Topologia v2 (com fibra S400 ↔ EXP)' : 'Topologia v1 (projeto inicial)';
+    log(msg, 'warning');
+    renderRSTP(true);
+  }
+  const bind = (id, fn) => { const b = document.getElementById(id); if (b) b.addEventListener('click', fn); };
+  bind('lab03-v1', () => presetRSTP('v1', [], [], 'Topologia v1 carregada.'));
+  bind('lab03-v2', () => presetRSTP('v2', [], [], 'Topologia v2 carregada (nova fibra SW-S400 ↔ SW-EXP).'));
+  bind('lab03-falha1', () => presetRSTP(net.versao, [keyOf('SW-SCADA', 'SW-S200')], [], 'Cenário: rompimento do backbone 10 Gbps SCADA ↔ S200 (forno).'));
+  bind('lab03-falha2', () => presetRSTP(net.versao, [], ['SW-SCADA'], 'Cenário: perda total do Root Bridge SW-SCADA.'));
+  renderRSTP(false);
+
+  // =========================================================
+  // B) Forno de torra — BDT (Aula 21) + Rede de Petri do queimador (Aula 24)
+  // =========================================================
+  const P = ['P1_DESLIGADO', 'P2_PURGA', 'P3_PRONTO_IGNICAO', 'P4_TORRANDO', 'P5_LOCKOUT', 'P6_EXAUSTOR_ON', 'P7_GAS_ABERTO'];
+  const T_OK = {
+    T1_INICIAR_PURGA: [{ P1_DESLIGADO: 1 }, { P2_PURGA: 1, P6_EXAUSTOR_ON: 1 }],
+    T2_FIM_PURGA: [{ P2_PURGA: 1 }, { P3_PRONTO_IGNICAO: 1 }],
+    T3_IGNICAO_OK: [{ P3_PRONTO_IGNICAO: 1 }, { P4_TORRANDO: 1, P7_GAS_ABERTO: 1 }],
+    T4_FALHA_IGNICAO: [{ P3_PRONTO_IGNICAO: 1 }, { P5_LOCKOUT: 1 }],
+    T5_TRIP: [{ P4_TORRANDO: 1, P7_GAS_ABERTO: 1 }, { P5_LOCKOUT: 1 }],
+    T6_DESLIGAR: [{ P4_TORRANDO: 1, P7_GAS_ABERTO: 1, P6_EXAUSTOR_ON: 1 }, { P1_DESLIGADO: 1 }],
+    T7_RESET: [{ P5_LOCKOUT: 1, P6_EXAUSTOR_ON: 1 }, { P1_DESLIGADO: 1 }],
+  };
+  const T_BUG = Object.assign({}, T_OK, { T7_RESET: [{ P5_LOCKOUT: 1 }, { P3_PRONTO_IGNICAO: 1 }] });
+  const forno = { M: {}, bug: false, lockoutSemPurga: false, s4: true };
+  function resetForno() { P.forEach((p) => { forno.M[p] = 0; }); forno.M.P1_DESLIGADO = 1; forno.lockoutSemPurga = false; forno.s4 = true; }
+  resetForno();
+  const transicoes = () => (forno.bug ? T_BUG : T_OK);
+  const habilitada = (t) => Object.entries(transicoes()[t][0]).every(([p, w]) => forno.M[p] >= w);
+
+  function disparar(t, motivo) {
+    if (!habilitada(t)) return false;
+    const [pre, post] = transicoes()[t];
+    Object.entries(pre).forEach(([p, w]) => { forno.M[p] -= w; });
+    Object.entries(post).forEach(([p, w]) => { forno.M[p] += w; });
+    if (forno.M.P5_LOCKOUT) forno.lockoutSemPurga = true;
+    if (forno.M.P2_PURGA) forno.lockoutSemPurga = false;
+    if (t === 'T3_IGNICAO_OK' && forno.lockoutSemPurga) {
+      forno.s4 = false;
+      log('S4 VIOLADA: o forno voltou a torrar depois de um lockout SEM refazer a purga!', 'danger');
+    }
+    log(`Disparo ${t}${motivo ? ' — ' + motivo : ''}.`, t === 'T5_TRIP' || t === 'T4_FALHA_IGNICAO' ? 'danger' : 'info');
+    return true;
+  }
+
+  const sensores = {
+    e1: document.getElementById('lab03-e1'), t2: document.getElementById('lab03-t2'),
+    f2: document.getElementById('lab03-f2'), c1: document.getElementById('lab03-c1'), m2: document.getElementById('lab03-m2'),
+  };
+  function avaliarBDT() {
+    const s = {}; Object.entries(sensores).forEach(([k, e]) => { s[k] = e ? e.checked : false; });
+    if (s.e1) return { folha: 'TRIP TOTAL (ESD-100)', xv: 0, m: 0, alm: 1, caminho: 'ESD-100=1' };
+    if (s.t2) return { folha: 'TRIP SOBRETEMPERATURA', xv: 0, m: 1, alm: 1, caminho: 'ESD-100=0 → TT-201>160 °C' };
+    if (!s.f2) return { folha: 'TRIP FALHA DE EXAUSTÃO', xv: 0, m: 1, alm: 1, caminho: 'ESD=0 → TT ok → FS-201=0' };
+    if (!s.c1) return { folha: 'TRIP PERDA DE CHAMA', xv: 0, m: 1, alm: 1, caminho: 'ESD=0 → TT ok → FS ok → TS-201=0' };
+    if (!s.m2) return { folha: 'BLOQUEIO ESTEIRA PARADA', xv: 0, m: 0, alm: 1, caminho: 'ESD=0 → TT ok → FS ok → TS ok → M-201=0' };
+    return { folha: 'OPERAÇÃO NORMAL', xv: 1, m: 1, alm: 0, caminho: 'todos os nós conformes (h = 5)' };
+  }
+
+  function renderForno() {
+    // A BDT vale com o forno em regime (P4_TORRANDO): qualquer folha de trip dispara T5.
+    const bdt = avaliarBDT();
+    if (forno.M.P4_TORRANDO && bdt.folha !== 'OPERAÇÃO NORMAL') disparar('T5_TRIP', 'BDT: ' + bdt.folha);
+
+    document.getElementById('lab03-places').innerHTML = P.map((p) => {
+      const on = forno.M[p] > 0;
+      const perigo = (p === 'P5_LOCKOUT' && on);
+      const bg = perigo ? 'rgba(239,68,68,0.18)' : on ? 'rgba(245,158,11,0.18)' : 'rgba(148,163,184,0.06)';
+      const bd = perigo ? '#ef4444' : on ? '#f59e0b' : '#334155';
+      return `<div style="border:1px solid ${bd};background:${bg};border-radius:8px;padding:0.45rem 0.6rem;font-family:var(--font-mono);font-size:0.78rem;">` +
+        `<div style="color:#94a3b8">${p.split('_')[0]}</div><div style="color:#e2e8f0;font-weight:700">${p.split('_').slice(1).join('_')}</div>` +
+        `<div style="font-size:1.1rem;color:${on ? '#fbbf24' : '#475569'}">${on ? '●'.repeat(forno.M[p]) : '○'}</div></div>`;
+    }).join('');
+
+    const box = document.getElementById('lab03-transitions');
+    box.innerHTML = '';
+    Object.keys(transicoes()).forEach((t) => {
+      const b = document.createElement('button');
+      b.className = 'btn btn-outline';
+      b.style.cssText = 'padding:0.4rem 0.6rem;font-size:0.78rem;justify-content:center;';
+      b.textContent = t;
+      b.disabled = !habilitada(t);
+      if (b.disabled) b.style.opacity = '0.35';
+      else b.style.borderColor = '#f59e0b';
+      b.addEventListener('click', () => { disparar(t, 'comando do operador'); renderForno(); });
+      box.appendChild(b);
+    });
+
+    const M = forno.M;
+    const s1 = !(M.P7_GAS_ABERTO && !M.P6_EXAUSTOR_ON);
+    const s2 = !(M.P7_GAS_ABERTO && !M.P4_TORRANDO);
+    const s3 = !(M.P5_LOCKOUT && M.P7_GAS_ABERTO);
+    const inv1 = M.P1_DESLIGADO + M.P2_PURGA + M.P3_PRONTO_IGNICAO + M.P4_TORRANDO + M.P5_LOCKOUT;
+    const inv2 = M.P4_TORRANDO - M.P7_GAS_ABERTO;
+    const inv3 = M.P1_DESLIGADO + M.P6_EXAUSTOR_ON;
+    const ok = (v) => `<strong style="color:${v ? '#6ee7b7' : '#fca5a5'}">${v ? 'OK' : 'VIOLADA'}</strong>`;
+    const inv = (v, alvo) => `<strong style="color:${v === alvo ? '#6ee7b7' : '#fca5a5'}">${v}</strong>`;
+    document.getElementById('lab03-safety').innerHTML =
+      `S1 gás ⇒ exaustão: ${ok(s1)} • S2 gás ⇒ chama: ${ok(s2)} • S3 lockout ⇒ gás fechado: ${ok(s3)} • S4 purga após lockout: ${ok(forno.s4)}<br>` +
+      `<span style="color:#94a3b8">Invariantes de lugar:</span> M(P1)+…+M(P5) = ${inv(inv1, 1)} • M(P4)−M(P7) = ${inv(inv2, 0)} • M(P1)+M(P6) = ${inv(inv3, 1)}`;
+
+    document.getElementById('lab03-bdt').innerHTML =
+      `<div style="color:#94a3b8;font-size:0.75rem">Caminho na BDT: ${bdt.caminho}</div>` +
+      `<div style="margin-top:0.25rem;font-weight:700;color:${bdt.folha === 'OPERAÇÃO NORMAL' ? '#6ee7b7' : '#fca5a5'}">${bdt.folha}</div>` +
+      `<div style="font-family:var(--font-mono);font-size:0.78rem;color:#e2e8f0">XV-201=${bdt.xv} • M-201=${bdt.m} • ALM-201=${bdt.alm}</div>` +
+      `<div style="color:#64748b;font-size:0.72rem;margin-top:0.2rem">A BDT é avaliada com o forno em regime (P4_TORRANDO); na partida vale a sequência da rede de Petri.</div>`;
+  }
+  Object.values(sensores).forEach((e) => e && e.addEventListener('change', renderForno));
+  bind('lab03-forno-reset', () => { resetForno(); log('Forno reiniciado em P1_DESLIGADO.', 'info'); renderForno(); });
+  const bugChk = document.getElementById('lab03-bug');
+  if (bugChk) bugChk.addEventListener('change', () => {
+    forno.bug = bugChk.checked;
+    log(forno.bug ? 'Lógica com ERRO carregada: T7_RESET leva direto a P3_PRONTO_IGNICAO (pula a purga).' : 'Lógica correta restaurada: T7_RESET volta a P1_DESLIGADO.', forno.bug ? 'warning' : 'success');
+    renderForno();
+  });
+  renderForno();
+
+  // =========================================================
+  // C) Telemetria Huffman do forno (Aula 20)
+  // =========================================================
+  const SIMBOLOS = [
+    { s: '00000', nome: 'Nominal', p: 0.920, cod: '0' },
+    { s: '00010', nome: 'Esteira parada (M-201)', p: 0.040, cod: '11' },
+    { s: '00100', nome: 'Perda de exaustão (FS-201)', p: 0.020, cod: '101' },
+    { s: '10000', nome: 'Sobretemperatura (TT-201)', p: 0.010, cod: '1001' },
+    { s: '01000', nome: 'Perda de chama (TS-201)', p: 0.007, cod: '10000' },
+    { s: '00001', nome: 'Rolos parados (M-202)', p: 0.003, cod: '10001' },
+  ];
+  const TURNO_RUIM = [0.60, 0.15, 0.10, 0.07, 0.05, 0.03];
+
+  function sortear(probs) {
+    let r = Math.random(), acc = 0;
+    for (let i = 0; i < probs.length; i++) { acc += probs[i]; if (r < acc) return i; }
+    return probs.length - 1;
+  }
+  function decodificar(bits) {
+    const mapa = {}; SIMBOLOS.forEach((x) => { mapa[x.cod] = x.s; });
+    const out = []; let buf = '';
+    for (const b of bits) { buf += b; if (mapa[buf]) { out.push(mapa[buf]); buf = ''; } }
+    return out;
+  }
+  function rodarHuffman() {
+    const ruim = document.getElementById('lab03-turno') && document.getElementById('lab03-turno').value === 'ruim';
+    const probs = ruim ? TURNO_RUIM : SIMBOLOS.map((x) => x.p);
+    const N = 100;
+    const idx = Array.from({ length: N }, () => sortear(probs));
+    const bits = idx.map((i) => SIMBOLOS[i].cod).join('');
+    const ok = decodificar(bits).join('') === idx.map((i) => SIMBOLOS[i].s).join('');
+    const bruto = N * 5;
+    const quadro = 3 + Math.ceil(bits.length / 8) + 2;
+    const quadroFixo = 3 + Math.ceil(bruto / 8) + 2;
+    const L = probs.reduce((a, p, i) => a + p * SIMBOLOS[i].cod.length, 0);
+    document.getElementById('lab03-huff-out').innerHTML =
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:0.6rem">` +
+      `<div><small style="color:#64748b">Formato fixo (100 × 5 bits)</small><br><strong style="font-family:var(--font-mono);color:#e2e8f0">${bruto} bits • quadro ${quadroFixo} B</strong></div>` +
+      `<div><small style="color:#64748b">Huffman (mesmo dicionário)</small><br><strong style="font-family:var(--font-mono);color:#fbbf24">${bits.length} bits • quadro ${quadro} B</strong></div>` +
+      `<div><small style="color:#64748b">Redução nesta janela</small><br><strong style="font-family:var(--font-mono);color:${bits.length < bruto ? '#6ee7b7' : '#fca5a5'}">${(100 * (1 - bits.length / bruto)).toFixed(1).replace('.', ',')}%</strong></div>` +
+      `<div><small style="color:#64748b">Comprimento médio esperado L</small><br><strong style="font-family:var(--font-mono);color:#e2e8f0">${L.toFixed(3).replace('.', ',')} bits/símbolo</strong></div></div>` +
+      `<div style="font-family:var(--font-mono);font-size:0.72rem;color:#94a3b8;word-break:break-all;background:#020617;border:1px solid #1e293b;border-radius:6px;padding:0.5rem">${bits.slice(0, 240)}${bits.length > 240 ? '…' : ''}</div>` +
+      `<div style="margin-top:0.4rem;font-size:0.8rem">Decodificação: <strong style="color:${ok ? '#6ee7b7' : '#fca5a5'}">${ok ? 'idêntica à original (lossless)' : 'FALHOU'}</strong></div>`;
+    log(`Quadro Huffman (${ruim ? 'turno com falhas' : 'distribuição de projeto'}): ${bits.length} bits contra ${bruto} no formato fixo.`, ruim ? 'warning' : 'success');
+  }
+  bind('lab03-huff-run', rodarHuffman);
+  const tabela = document.getElementById('lab03-huff-table');
+  if (tabela) {
+    tabela.innerHTML = '<tr><th>Estado</th><th>Condição</th><th>P(s)</th><th>Código</th></tr>' +
+      SIMBOLOS.map((x) => `<tr><td><code>${x.s}</code></td><td>${x.nome}</td><td>${x.p.toFixed(3).replace('.', ',')}</td><td><code>${x.cod}</code></td></tr>`).join('');
+  }
+  rodarHuffman();
+
+  log('Laboratório SCADA-Tree da Etapa 03 online (RSTP, BDT + Petri do forno, Huffman).', 'success');
+})();
+  </script>
 </body>
 </html>
