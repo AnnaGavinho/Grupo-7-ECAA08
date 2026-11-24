@@ -203,18 +203,18 @@ As Aulas 13 e 14 (Etapa 02) já implementaram BFS/DFS e Dijkstra sobre o **grafo
 | Passo de expansão ($\epsilon$) | 0,5 m |
 | Probabilidade de viés de meta ($p_{\text{goal}}$) | 0,10 |
 | Máximo de iterações ($N$) | 5.000 |
-| Raio de vizinhança RRT\* ($r_N$ inicial) | 1,5 m |
+| Raio de vizinhança RRT\* ($r_N$, fixo na implementação) | 1,5 m |
 | Semente aleatória | 42 (reprodutibilidade) |
 
 ### 5.2 Resultados: Lab → PT-PRN401 (Exemplo de Maior Distância)
 
-| Algoritmo | Nós na árvore | Comprimento do caminho [m] | Iterações até conexão |
+| Algoritmo | Nós na árvore | Comprimento do caminho [m] | Tempo [ms] (execução de referência) |
 | :--- | :---: | :---: | :---: |
-| RRT (padrão) | ≈ 420 | ≈ 28,4 | ≈ 350 |
-| RRT\* ($N = 2.000$) | 2.000 | ≈ 23,1 | — (continua otimizando) |
-| RRT\* ($N = 5.000$) | 5.000 | ≈ 21,8 | — |
-
-> **Referência:** a distância euclidiana direta Lab → PT-PRN401 (sem obstáculos) é $\approx 18{,}4\,\text{m}$; o caminho real com obstáculos contorna o Forno e os Moinhos, tornando o mínimo absoluto $\approx 20{,}5\,\text{m}$.
+| RRT (padrão) | 90 | 19,83 | ≈ 6 |
+| RRT\* ($N = 1.000$) | 842 | 16,80 | ≈ 288 |
+| RRT\* ($N = 2.000$) | 1.652 | 16,55 | ≈ 776 |
+| RRT\* ($N = 5.000$) | 4.034 | 16,53 | ≈ 4.109 |
+> **Referência:** a distância euclidiana direta Lab → PT-PRN401 (sem obstáculos) é $\approx 16{,}38\,\text{m}$. Forno e moinhos ficam em $y \approx 8\,\text{m}$, fora dessa reta, então o desvio é pequeno: o RRT\* converge para $16{,}53\,\text{m}$, só 0,9% acima da reta.
 
 ### 5.3 Verificação de Propriedades da Árvore
 
@@ -233,7 +233,7 @@ O notebook verifica, após cada execução, que $T$ satisfaz as propriedades de 
 
 ### 6.1 Fluxo de Replanejamento Dinâmico
 
-A porta automática do Setor 200 (`XV-PORT-200`) fecha automaticamente durante o ciclo de torra ativa (`TS-201 = 1` e `TT-201 > 160°C`). Se o AGV estava em rota para `PT-TT201` e a porta fecha a meio caminho, o SCADA dispara um **evento de replanning**:
+A porta automática do Setor 200 (`XV-PORT-200`) fecha automaticamente durante o ciclo de torra ativa (`TS-201 = 1`, queimador aceso — estado `P4_TORRANDO` da Aula 24). Se o AGV estava em rota para `PT-TT201` e a porta fecha a meio caminho, o SCADA dispara um **evento de replanning**:
 
 ```mermaid
 flowchart TD
@@ -249,12 +249,13 @@ flowchart TD
 
 ### 6.2 Tempo de Replanejamento vs. Ciclo de Supervisão
 
-O ciclo de supervisão do SCADA é de 50 ms (Aula 10). O RRT em Python (implementação de referência) leva $\approx 85\,\text{ms}$ para 1.000 iterações em um mapa 20 × 12 m. Para operação em tempo real, o planejador é executado em **thread dedicada** e o AGV mantém sua última rota válida enquanto o novo caminho não está disponível.
+O ciclo de supervisão do SCADA é de 50 ms (Aula 10). Na execução de referência em Python, o RRT padrão levou $\approx 6\,\text{ms}$ para ligar Lab → PT-PRN401 e o replanejamento com a porta fechada levou $\approx 1{,}3\,\text{ms}$; já o RRT\* com $N = 1.000$ levou $\approx 288\,\text{ms}$, acima do ciclo de 50 ms. Para operação em tempo real, o planejador é executado em **thread dedicada** e o AGV mantém sua última rota válida enquanto o novo caminho não está disponível.
 
-| Cenário | Iterações RRT | Tempo de cálculo (Python, referência) | Ciclos SCADA bloqueados |
+| Cenário | Nós na árvore | Tempo de cálculo (Python, referência) | Ciclos SCADA bloqueados |
 | :--- | :---: | :---: | :---: |
-| Rota simples (sem desvios) | 300–600 | ≈ 25–50 ms | 0 (assíncrono) |
-| Replanejamento com obstáculo novo | 800–1.500 | ≈ 70–130 ms | 0 (assíncrono) |
+| Rota Lab → PT-PRN401 (RRT padrão) | 90 | ≈ 6 ms | 0 (assíncrono) |
+| Replanejamento com a porta `XV-PORT-200` fechada | 13 | ≈ 1,3 ms | 0 (assíncrono) |
+| Otimização RRT\* ($N = 1.000$) | 842 | ≈ 288 ms | 0 (assíncrono) |
 
 > **Nota:** esses tempos são medições ilustrativas em Python. Um implementação em C++ embarcada no controlador do AGV é tipicamente 50–100× mais rápida.
 
@@ -312,4 +313,4 @@ $$q_{\text{new}} = (11{,}3;\, 5{,}8) + 0{,}5 \cdot \frac{(2{,}7;\, 1{,}2)}{2{,}9
 
 ## 10. Entregável da Aula 22
 
-* **Notebook `22 - Rapidly-exploring Random Trees.ipynb`:** implementação do RRT e RRT\* em Python com visualização do mapa da fábrica de paçoca, obstáculos dos Setores 200–400, expansão animada da árvore, reconstrução do caminho, verificação de propriedades de árvore (aciclia, conexidade, livre de colisão), comparativo RRT vs. RRT\* em custo de caminho, e simulação de replanejamento dinâmico com a porta `XV-PORT-200`.
+* **Notebook `22 - Rapidly-exploring Random Trees - code.ipynb`:** implementação do RRT e RRT\* em Python com visualização do mapa da fábrica de paçoca, obstáculos dos Setores 200–400, expansão animada da árvore, reconstrução do caminho, verificação de propriedades de árvore (aciclia, conexidade, livre de colisão), comparativo RRT vs. RRT\* em custo de caminho, e simulação de replanejamento dinâmico com a porta `XV-PORT-200`.
